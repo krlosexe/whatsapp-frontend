@@ -15,10 +15,19 @@ import { loginUser, apiError } from '../../redux/actions';
 import logodark from "../../assets/images/logo-dark.png";
 import logolight from "../../assets/images/logo-light.png";
 
+
+
+import {WhatsAppService} from '../../services'
+
+
 import QRCode from'qrcode.react';
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://192.168.1.69:3001/";
+const ENDPOINT = "http://127.0.0.1:3001/";
+
+
+
+
 
 /**
  * Login component
@@ -27,6 +36,8 @@ const ENDPOINT = "http://192.168.1.69:3001/";
 const Login = (props) => {
 
     const [Qr, setQr] = useState(false)
+
+    
 
     /* intilize t variable for multi language implementation */
     const { t } = useTranslation();
@@ -38,6 +49,12 @@ const Login = (props) => {
 
 
     useEffect(() => {
+
+        WhatsAppService.GetChats().then((data) =>{
+            console.log(data)
+        })
+
+
         const socket = socketIOClient(ENDPOINT);
         socket.emit("setAvailable");
         socket.on("ShowQr", data => {

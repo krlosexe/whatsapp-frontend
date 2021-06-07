@@ -7,6 +7,8 @@ import UserChat from "./UserChat/";
 import { connect } from "react-redux";
 import axios from 'axios';
 
+import WhatsApp from '../../services/whasatpp'
+
 import img4 from "../../assets/images/small/img-4.jpg";
 
 
@@ -16,7 +18,7 @@ import img4 from "../../assets/images/small/img-4.jpg";
 
         useEffect(() => {
             const GetData = async ()=>{
-                const req = 'http://192.168.1.69:3001/whatsapp/get/chats'
+                const req = 'http://127.0.0.1:3001/whatsapp/get/chats'
                 try {
                     const response = await axios.post(req)
 

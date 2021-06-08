@@ -16,10 +16,6 @@ import logodark from "../../assets/images/logo-dark.png";
 import logolight from "../../assets/images/logo-light.png";
 
 
-
-import {WhatsAppService} from '../../services'
-
-
 import QRCode from'qrcode.react';
 
 import socketIOClient from "socket.io-client";
@@ -49,11 +45,6 @@ const Login = (props) => {
 
 
     useEffect(() => {
-
-        WhatsAppService.GetChats().then((data) =>{
-            console.log(data)
-        })
-
 
         const socket = socketIOClient(ENDPOINT);
         socket.emit("setAvailable");

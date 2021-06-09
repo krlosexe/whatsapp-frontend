@@ -28,7 +28,7 @@ function UserChat(props) {
 
     const ref = useRef();
 
-    console.log(props, "EPA 2")
+ 
     const [modal, setModal] = useState(false);
 
     /* intilize t variable for multi language implementation */
@@ -195,7 +195,7 @@ function UserChat(props) {
                                                                 {
                                                                     chat.fileMessage &&
                                                                         //file input component
-                                                                        <FileList fileName={chat.fileMessage} fileSize={chat.size} />
+                                                                        <FileList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype}  />
                                                                 }
                                                                 {
                                                                     chat.isTyping &&
@@ -291,7 +291,7 @@ function UserChat(props) {
                                                                 {
                                                                     chat.fileMessage &&
                                                                         //file input component
-                                                                        <FileList fileName={chat.fileMessage} fileSize={chat.size} />
+                                                                        <FileList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype}/>
                                                                 }
                                                                 {
                                                                     chat.isTyping &&

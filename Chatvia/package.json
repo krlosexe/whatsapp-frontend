@@ -17,6 +17,7 @@
     "formik": "^2.1.5",
     "i18next": "^19.6.3",
     "i18next-browser-languagedetector": "^6.0.0",
+    "js-file-download": "^0.4.12",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.14.1",
     "qrcode.react": "^1.0.1",

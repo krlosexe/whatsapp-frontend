@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DropdownMenu, DropdownItem, DropdownToggle, UncontrolledDropdown } from "reactstrap";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import {WhatsAppService} from '../../../services'
 //i18n
 import { useTranslation } from 'react-i18next';
 
@@ -18,12 +18,18 @@ function ImageList(props) {
     const { t } = useTranslation();
 
     const toggleLightbox = (currentImage) => {
-
         console.log(currentImage)
         setisOpen(!isOpen);
         setcurrentImage(currentImage);
     } 
 
+
+    const getImage = async (mediaKey, url) => {
+       await WhatsAppService.DecrypImage(mediaKey, url).then(async (data)=>{
+            console.log(data.file, "DECRYP")
+           await toggleLightbox(data.file)
+        }).catch(function (response) {console.log(response)})
+    }
     return (
         <React.Fragment>
             <ul className="list-inline message-img  mb-0">
@@ -33,17 +39,19 @@ function ImageList(props) {
                 
                     <li key={key} className="list-inline-item message-img-list">
                             <div>
-                                <Link to="#" onClick={() => toggleLightbox(`data:image/jpeg; base64,${imgMsg.image}`)} className="popup-img d-inline-block m-1" title="Project 1">
+                                <Link to="#" onClick={() => getImage(imgMsg.mediaKey, imgMsg.url)} className="popup-img d-inline-block m-1" title="Project 1">
                                     <img src={`data:image/jpeg; base64,${imgMsg.image}`} alt="chat" className="rounded border" />
                                 </Link>
                             </div>
                             <div className="message-img-link">
                                 <ul className="list-inline mb-0">
-                                    <li className="list-inline-item">
-                                        <Link to="#">
+                                    {/*
+                                        <li className="list-inline-item">
+                                        <Link to="#" onClick={() => getImage(imgMsg.mediaKey, imgMsg.url)}>
                                             <i className="ri-download-2-line"></i>
                                         </Link>
                                     </li>
+                                    */}
                                     <UncontrolledDropdown tag="li" className="list-inline-item">
                                     <DropdownToggle tag="a">
                                         <i className="ri-more-fill"></i>

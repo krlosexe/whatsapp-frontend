@@ -1,14 +1,27 @@
 import React from 'react';
 import { Card, Media, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { Link } from "react-router-dom";
-
+import {WhatsAppService} from '../../../services'
 //i18n
 import { useTranslation } from 'react-i18next';
+
+
 
 function FileList(props) {
 
     /* intilize t variable for multi language implementation */
     const { t } = useTranslation();
+
+    const getFile = async (mediaKey, url, FileName) => {
+        const extension = FileName.split(".")[1]
+
+        await WhatsAppService.DecrypDocument(mediaKey, url, extension).then(async (data)=>{
+            console.log(data.file, "DECRYP")
+            window.open(data.file);
+        }).catch(function (response) {console.log(response)})
+
+     }
+
 
     return (
         <React.Fragment>
@@ -29,7 +42,7 @@ function FileList(props) {
                                                             <div className="ml-4">
                                                                 <ul className="list-inline mb-0 font-size-20">
                                                                     <li className="list-inline-item">
-                                                                        <Link to="#" className="text-muted">
+                                                                        <Link to="#" onClick={() => getFile(props.mediaKey, props.url, props.fileName)} className="text-muted">
                                                                             <i className="ri-download-2-line"></i>
                                                                         </Link>
                                                                     </li>

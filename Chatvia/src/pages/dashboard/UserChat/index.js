@@ -13,6 +13,7 @@ import UserHead from "./UserHead";
 import ImageList from "./ImageList";
 import ChatInput from "./ChatInput";
 import FileList from "./FileList";
+import AudioList from "./AudioList";
 
 //actions
 import { openUserSidebar,setFullUser } from "../../../redux/actions";
@@ -293,6 +294,17 @@ function UserChat(props) {
                                                                         //file input component
                                                                         <FileList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype}/>
                                                                 }
+
+
+                                                                {
+                                                                    chat.fileAudio &&
+                                                                        //audio input component
+                                                                        <AudioList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype}/>
+                                                                }
+
+
+
+                                                                
                                                                 {
                                                                     chat.isTyping &&
                                                                         <p className="mb-0">

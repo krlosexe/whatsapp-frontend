@@ -42,6 +42,7 @@ const WhatsApp = () => ({
                                         "time"           : "01:05", "userType": userType, 
                                         "isImageMessage" : true, 
                                         "isFileMessage"  : false,
+                                        "isAudioMessage" : false,
                                         "imageMessage"   : [ { 
                                             image : item2.message.imageMessage.jpegThumbnail,
                                             "url"            : item2.message.imageMessage.url,
@@ -60,7 +61,8 @@ const WhatsApp = () => ({
                                         "time"           : "01:05", 
                                         "userType"       : userType, 
                                         "isImageMessage" : false,
-                                        "isFileMessage"  : true, 
+                                        "isFileMessage"   : true, 
+                                        "isAudioMessage"  : false, 
                                         "fileMessage"    : item2.message.documentMessage.fileName, 
                                         "size"           : `${item2.message.documentMessage.fileLength} Kb`,
                                         "url"            : item2.message.documentMessage.url,
@@ -69,17 +71,48 @@ const WhatsApp = () => ({
                                     }
                                    await messages.push(message)
                                 }
+
+
+                                if(item2.message.audioMessage){
+                                    let message
+                                    message = { 
+                                        "id"              : key2,
+                                        "message"         :  "Audio", 
+                                        "time"            : "01:05", 
+                                        "userType"        : userType, 
+                                        "isImageMessage"  : false,
+                                        "isFileMessage"   : false, 
+                                        "isAudioMessage"  : true, 
+                                        "fileAudio"       : "audio.mp3", 
+                                        "size"            : `${item2.message.audioMessage.fileLength} Kb`,
+                                        "url"             : item2.message.audioMessage.url,
+                                        "mediaKey"        : item2.message.audioMessage.mediaKey,
+                                        "mimetype"        : item2.message.audioMessage.mimetype,
+                                    }
+                                   await messages.push(message)
+                                }
+
+
                                  
                             }
                             
                         })
+
+
+                        console.log(item.jid)
+
+                       // const req =  `http://127.0.0.1:3001/whatsapp/get/avatar/${item.jid}`
+                        //const avatar = await axios.get(req)
+
+
                        
                         conversations = {
                             "id"             : key,
                             "isGroup"        : false,
                             "messages"       : messages,
                             "name"           : item.name,
-                            "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
+                           // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
+                           "profilePicture" :  "Null",
                             "roomType"       : "contact",
                             "status"         : "online",
                             "unRead"         : 0
@@ -119,8 +152,6 @@ const WhatsApp = () => ({
 
     },
 
-
-
     DecrypDocument : async (mediaKey, url, extension) => {
 
      
@@ -135,7 +166,21 @@ const WhatsApp = () => ({
                                         headers: { "Content-Type": "multipart/form-data" }})
 
         return response
+    },
 
+
+    DecrypAudio : async (mediaKey, url) => {
+
+        var bodyFormData = new FormData();
+        bodyFormData.append('mediakey', mediaKey)
+        bodyFormData.append('filenc', url)
+
+        const response = await axios({ method: "post",
+                                        url: "http://31.220.60.218:5000/decrypt/audio",
+                                        data: bodyFormData,
+                                        headers: { "Content-Type": "multipart/form-data" }})
+
+        return response
     }
 
 

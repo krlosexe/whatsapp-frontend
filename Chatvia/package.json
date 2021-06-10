@@ -23,6 +23,7 @@
     "qrcode.react": "^1.0.1",
     "react": "^16.13.1",
     "react-alice-carousel": "^1.19.3",
+    "react-audio-player": "^0.17.0",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.0",
     "react-image-lightbox": "^5.1.1",

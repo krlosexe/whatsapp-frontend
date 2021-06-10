@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 
 import { TabContent, TabPane } from "reactstrap";
@@ -9,8 +9,7 @@ import Chats from "./Tabs/Chats";
 import Groups from "./Tabs/Groups";
 import Contacts from "./Tabs/Contacts";
 import Settings from "./Tabs/Settings";
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+
 
 function ChatLeftSidebar(props) {
 

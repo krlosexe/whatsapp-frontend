@@ -14,6 +14,9 @@ import ImageList from "./ImageList";
 import ChatInput from "./ChatInput";
 import FileList from "./FileList";
 import AudioList from "./AudioList";
+import VideoList from "./VideoList";
+import LinkList from "./LinkList";
+import LocationList from "./LocationList";
 
 //actions
 import { openUserSidebar,setFullUser } from "../../../redux/actions";
@@ -24,6 +27,15 @@ import avatar1 from "../../../assets/images/users/avatar-1.jpg";
 
 //i18n
 import { useTranslation } from 'react-i18next';
+
+
+
+import createDOMPurify from 'dompurify'
+import { JSDOM } from 'jsdom'
+
+const window = (new JSDOM('')).window
+const DOMPurify = createDOMPurify(window)
+
 
 function UserChat(props) {
 
@@ -185,7 +197,7 @@ function UserChat(props) {
                                                                 {
                                                                     chat.message &&
                                                                         <p className="mb-0">
-                                                                            {chat.message}
+                                                                           { <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(chat.message) }} /> }
                                                                         </p>
                                                                 }
                                                                 {
@@ -278,12 +290,22 @@ function UserChat(props) {
                                                     <div className="user-chat-content">
                                                         <div className="ctext-wrap">
                                                             <div className="ctext-wrap-content">
+                                                                { chat.description &&
+                                                                    <LinkList image={chat.jpegThumbnail} description = {chat.description} link = {chat.link} />
+
+                                                                }
                                                                 {
                                                                     chat.message &&
-                                                                        <p className="mb-0">
-                                                                            {chat.message}
-                                                                        </p>
+                                                                     <div dangerouslySetInnerHTML={{ __html: chat.message.replace(/\n/g, '<br />')}} /> 
                                                                 }
+
+
+                                                                {
+                                                                    chat.address &&
+                                                                     <p> {chat.address} </p> 
+                                                                }
+
+
                                                                 {
                                                                     chat.imageMessage &&
                                                                         // image list component
@@ -301,6 +323,22 @@ function UserChat(props) {
                                                                         //audio input component
                                                                         <AudioList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype}/>
                                                                 }
+
+
+                                                                {
+                                                                    chat.fileVideo &&
+                                                                        //video input component
+                                                                        <VideoList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} poster = {chat.jpegThumbnail}/>
+                                                                }
+
+                                                                {
+                                                                    chat.degreesLatitude &&
+                                                                        //location input component
+                                                                        <LocationList image={chat.jpegThumbnail} degreesLatitude={chat.degreesLatitude} degreesLongitude = {chat.degreesLongitude}/>
+                                                                }
+
+
+
 
 
 

@@ -38,12 +38,13 @@ const WhatsApp = () => ({
                                     let message
                                    
                                     message = { 
-                                        "id"             : key2, "message": item2.message.conversation, 
-                                        "time"           : "01:05", "userType": userType, 
-                                        "isImageMessage" : true, 
-                                        "isFileMessage"  : false,
-                                        "isAudioMessage" : false,
-                                        "imageMessage"   : [ { 
+                                        "id"              : key2, "message": item2.message.conversation, 
+                                        "time"            : "01:05", "userType": userType, 
+                                        "isImageMessage"  : true, 
+                                        "isFileMessage"   : false,
+                                        "isAudioMessage"  : false,
+                                        "isVideoMessage"  : false,
+                                        "imageMessage"    : [ { 
                                             image : item2.message.imageMessage.jpegThumbnail,
                                             "url"            : item2.message.imageMessage.url,
                                             "mediaKey"       : item2.message.imageMessage.mediaKey,
@@ -63,6 +64,7 @@ const WhatsApp = () => ({
                                         "isImageMessage" : false,
                                         "isFileMessage"   : true, 
                                         "isAudioMessage"  : false, 
+                                        "isVideoMessage"  : false,
                                         "fileMessage"    : item2.message.documentMessage.fileName, 
                                         "size"           : `${item2.message.documentMessage.fileLength} Kb`,
                                         "url"            : item2.message.documentMessage.url,
@@ -83,6 +85,7 @@ const WhatsApp = () => ({
                                         "isImageMessage"  : false,
                                         "isFileMessage"   : false, 
                                         "isAudioMessage"  : true, 
+                                        "isVideoMessage"  : false, 
                                         "fileAudio"       : "audio.mp3", 
                                         "size"            : `${item2.message.audioMessage.fileLength} Kb`,
                                         "url"             : item2.message.audioMessage.url,
@@ -91,6 +94,74 @@ const WhatsApp = () => ({
                                     }
                                    await messages.push(message)
                                 }
+
+
+
+                                if(item2.message.videoMessage){
+                                    let message
+                                    message = { 
+                                        "id"              : key2,
+                                        "message"         :  "Video", 
+                                        "time"            : "01:05", 
+                                        "userType"        : userType, 
+                                        "isImageMessage"  : false,
+                                        "isFileMessage"   : false, 
+                                        "isAudioMessage"  : false,
+                                        "isVideoMessage"  : true, 
+                                        "fileVideo"       : "video.mp4", 
+                                        "size"            : `${item2.message.videoMessage.fileLength} Kb`,
+                                        "url"             : item2.message.videoMessage.url,
+                                        "mediaKey"        : item2.message.videoMessage.mediaKey,
+                                        "mimetype"        : item2.message.videoMessage.mimetype,
+                                        "jpegThumbnail"   : item2.message.videoMessage.jpegThumbnail
+                                    }
+                                   await messages.push(message)
+                                }
+
+
+                                if(item2.message.extendedTextMessage){
+                                    let message
+                                    message = { 
+                                        "id"              : key2,
+                                        "message"         : item2.message.extendedTextMessage.text,
+                                        "description"     : item2.message.extendedTextMessage.description,
+                                        "link"            : item2.message.extendedTextMessage.matchedText,
+                                        "time"            : "01:05", 
+                                        "userType"        : userType, 
+                                        "isImageMessage"  : false,
+                                        "isFileMessage"   : false, 
+                                        "isAudioMessage"  : false,
+                                        "isVideoMessage"  : false,
+                                        "jpegThumbnail"   : item2.message.extendedTextMessage.jpegThumbnail
+                                    }
+                                   await messages.push(message)
+                                }
+
+                                if(item2.message.locationMessage){
+                                    let message
+                                    message = { 
+                                        "id"                 : key2,
+                                        "message"            : item2.message.locationMessage.name,
+                                        "address"            : item2.message.locationMessage.address,
+                                        "degreesLatitude"    : item2.message.locationMessage.degreesLatitude,
+                                        "degreesLongitude"   : item2.message.locationMessage.degreesLongitude,
+                                        "time"               : "01:05", 
+                                        "userType"           : userType, 
+                                        "isImageMessage"     : false,
+                                        "isFileMessage"      : false, 
+                                        "isAudioMessage"     : false,
+                                        "isVideoMessage"     : false,
+                                        "jpegThumbnail"      : item2.message.locationMessage.jpegThumbnail
+                                    }
+                                   await messages.push(message)
+                                }
+
+
+
+
+
+
+
 
 
                                  
@@ -181,7 +252,24 @@ const WhatsApp = () => ({
                                         headers: { "Content-Type": "multipart/form-data" }})
 
         return response
+    },
+
+    DecrypVideo : async (mediaKey, url) => {
+
+        var bodyFormData = new FormData();
+        bodyFormData.append('mediakey', mediaKey)
+        bodyFormData.append('filenc', url)
+
+        const response = await axios({ method: "post",
+                                        url: "http://31.220.60.218:5000/decrypt/video",
+                                        data: bodyFormData,
+                                        headers: { "Content-Type": "multipart/form-data" }})
+
+        return response
     }
+
+
+
 
 
 

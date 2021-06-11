@@ -17,6 +17,7 @@ import AudioList from "./AudioList";
 import VideoList from "./VideoList";
 import LinkList from "./LinkList";
 import LocationList from "./LocationList";
+import ContactList from "./ContactList";
 
 //actions
 import { openUserSidebar,setFullUser } from "../../../redux/actions";
@@ -130,6 +131,7 @@ function UserChat(props) {
     }
 
     function scrolltoBottom(){
+
         if (ref.current.el) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
         }
@@ -304,6 +306,16 @@ function UserChat(props) {
                                                                     chat.address &&
                                                                      <p> {chat.address} </p> 
                                                                 }
+
+
+
+                                                                {
+                                                                    chat.vcard &&
+                                                                    <ContactList name={chat.displayName} />
+                                                                }
+
+
+
 
 
                                                                 {

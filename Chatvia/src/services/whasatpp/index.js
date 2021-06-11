@@ -158,13 +158,25 @@ const WhatsApp = () => ({
 
 
 
+                                if(item2.message.contactMessage){
+                                    let message
+                                    message = { 
+                                        "id"                 : key2,
+                                        "message"            : "Contacto",
+                                        "displayName"        : item2.message.contactMessage.displayName,
+                                        "time"               : "01:05", 
+                                        "userType"           : userType, 
+                                        "isImageMessage"     : false,
+                                        "isFileMessage"      : false, 
+                                        "isAudioMessage"     : false,
+                                        "isVideoMessage"     : false,
+                                        "vcard"              : item2.message.contactMessage.vcard
+                                    }
+                                   await messages.push(message)
+                                }
 
 
 
-
-
-
-                                 
                             }
                             
                         })

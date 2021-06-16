@@ -29,6 +29,8 @@ import avatar1 from "../../../assets/images/users/avatar-1.jpg";
 //i18n
 import { useTranslation } from 'react-i18next';
 
+import {WhatsAppService} from '../../../services'
+
 
 
 import createDOMPurify from 'dompurify'
@@ -41,7 +43,6 @@ const DOMPurify = createDOMPurify(window)
 function UserChat(props) {
 
     const ref = useRef();
-
  
     const [modal, setModal] = useState(false);
 
@@ -66,6 +67,8 @@ function UserChat(props) {
     const addMessage = (message, type) => {
         var messageObj = null;
 
+        const user = props.recentChatList[props.active_user].jid
+
         let d = new Date();
         var n = d.getSeconds();
 
@@ -81,6 +84,9 @@ function UserChat(props) {
                     isFileMessage : false,
                     isImageMessage : false
                 }
+
+                WhatsAppService.SendMmessageText(messageObj, user)
+
                 break;
 
             case "fileMessage":
@@ -102,6 +108,9 @@ function UserChat(props) {
                     { image : message },
                 ]
 
+
+                console.log(message)
+
                 messageObj = {
                     id : chatMessages.length+1,
                     message : 'image',
@@ -113,12 +122,16 @@ function UserChat(props) {
                     isImageMessage : true,
                     isFileMessage : false
                 }
+
                 break;
         
             default:
                 break;
         }
-     
+        
+
+        
+
         //add message object to chat        
         setchatMessages([...chatMessages, messageObj]);
 

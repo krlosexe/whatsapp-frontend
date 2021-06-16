@@ -35,10 +35,25 @@ function ChatInput(props) {
     }
 
     //function for image input change
-    const handleImageChange = e => {
-        if(e.target.files.length !==0 )
-        setfileImage(URL.createObjectURL(e.target.files[0]))
+    const handleImageChange = async (e) => {
+
+        if(e.target.files.length !==0 ){
+            //setfileImage(URL.createObjectURL(e.target.files[0]))
+            setfileImage(await toBase64(e.target.files[0]))
+             
+        }
+        
     }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.replace("data:image/jpeg;base64,", ""));
+        reader.onerror = error => reject(error);
+    });
+
+
+
 
     //function for send data to onaddMessage function(in userChat/index.js component)
     const onaddMessage = (e, textMessage) => {

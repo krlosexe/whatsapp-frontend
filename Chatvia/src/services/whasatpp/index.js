@@ -191,6 +191,7 @@ const WhatsApp = () => ({
                        
                         conversations = {
                             "id"             : key,
+                            "jid"            : item.jid,
                             "isGroup"        : false,
                             "messages"       : messages,
                             "name"           : item.name,
@@ -278,13 +279,23 @@ const WhatsApp = () => ({
                                         headers: { "Content-Type": "multipart/form-data" }})
 
         return response
+    },
+
+    SendMmessageText : async (messageObj, user) => {
+
+        var bodyFormData = {
+            "message" : messageObj.message,
+            user
+        }
+
+        console.log(bodyFormData)
+        const response = await axios({ method: "post",
+                                        url: "http://127.0.0.1:3001/whatsapp/send/message/text",
+                                        data: bodyFormData})
+
+        return response
+
     }
-
-
-
-
-
-
 
 
 });

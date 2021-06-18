@@ -287,15 +287,46 @@ const WhatsApp = () => ({
             "message" : messageObj.message,
             user
         }
-
         console.log(bodyFormData)
         const response = await axios({ method: "post",
                                         url: "http://127.0.0.1:3001/whatsapp/send/message/text",
                                         data: bodyFormData})
 
         return response
+    },
 
+    SendMmessageImage : async (image, user) => {
+
+        var bodyFormData = {
+            image,
+            user
+        }
+        console.log(bodyFormData)
+        const response = await axios({ method: "post",
+                                        url: "http://127.0.0.1:3001/whatsapp/send/message/image",
+                                        data: bodyFormData})
+
+        return response
+    },
+
+    SendMmessageAudio : async (audio, user) => {
+
+        var bodyFormData = {
+            audio,
+            user
+        }
+        console.log(bodyFormData)
+
+        return false
+        
+        const response = await axios({ method: "post",
+                                        url: "http://127.0.0.1:3001/whatsapp/send/message/image",
+                                        data: bodyFormData})
+
+        return response
     }
+
+
 
 
 });

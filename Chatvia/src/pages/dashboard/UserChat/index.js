@@ -72,6 +72,9 @@ function UserChat(props) {
         let d = new Date();
         var n = d.getSeconds();
 
+
+        console.log(message, type, "EPAAAAA")
+
         //matches the message type is text, file or image, and create object according to it
         switch (type) {
             case "textMessage":
@@ -108,7 +111,6 @@ function UserChat(props) {
                     { image : message },
                 ]
 
-
                 console.log(message)
 
                 messageObj = {
@@ -121,7 +123,9 @@ function UserChat(props) {
                     image : avatar4,
                     isImageMessage : true,
                     isFileMessage : false
-                }
+                }   
+
+                WhatsAppService.SendMmessageImage(message, user)
 
                 break;
         

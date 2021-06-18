@@ -3,8 +3,13 @@ import { Button, Input, Row, Col, UncontrolledTooltip, ButtonDropdown, DropdownT
 import { Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
 
+
+import OpusMediaRecorderView from './OpusMediaRecorderView'
+import {WhatsAppService} from '../../../services'
+
 function ChatInput(props) {
     const [textMessage, settextMessage] = useState("");
+    const [AudioBase64, setAudioBase64] = useState("");
     const [isOpen, setisOpen] = useState(false);
     const [file, setfile] = useState({
         name : "",
@@ -13,6 +18,7 @@ function ChatInput(props) {
     const [fileImage, setfileImage] = useState("")
 
     const toggle = () => setisOpen(!isOpen);
+
 
     //function for text input value change
     const handleChange = e => {
@@ -48,7 +54,7 @@ function ChatInput(props) {
     const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.replace("data:image/jpeg;base64,", ""));
+        reader.onload = () => resolve(reader.result.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", "").replace("data:image/jpg;base64,", ""));
         reader.onerror = error => reject(error);
     });
 
@@ -56,7 +62,8 @@ function ChatInput(props) {
 
 
     //function for send data to onaddMessage function(in userChat/index.js component)
-    const onaddMessage = (e, textMessage) => {
+    const onaddMessage = (e, textMessage, audio = false) => {
+
         e.preventDefault();
         //if text value is not emptry then call onaddMessage function
         if(textMessage !== "") {
@@ -78,12 +85,55 @@ function ChatInput(props) {
             props.onaddMessage(fileImage, "imageMessage");
             setfileImage("")
         }
+
+        if(audio){
+            console.log(audio, "QUE PASO ?")
+            props.onaddMessage(AudioBase64, "AudioMessage");
+            setAudioBase64("")
+        }
     }
 
     return (
         <React.Fragment>
             <div className="p-3 p-lg-4 border-top mb-0">
                             <Form onSubmit={(e) => onaddMessage(e, textMessage)} >
+
+
+
+                            <div className="App">
+                                <OpusMediaRecorderView
+                                    onDataAvailable={(e) => {
+
+                                        let reader = new window.FileReader();
+                                        reader.onloadend = async function() {
+                                            const data = reader.result;
+
+                                            await setAudioBase64(data)
+                                            await onaddMessage(e, "", data)
+                                            //console.log(data);
+                                        };
+
+                                        reader.readAsDataURL(e.data);
+                                    }}
+                                    render={({ state, start, stop, pause, resume }) => (
+                                        <div>
+                                        <p>{state}</p>
+                                        <button onClick={start}>Start Recording</button>
+                                        <button onClick={stop}>Stop Recording</button>
+                                        </div>
+                                    )}
+                                    />
+                            </div>
+
+
+
+
+                            {/* <AudioReactRecorder state={recordState} onStop={onStop} type="audio/mp3"/>
+ 
+                            <button onClick={start}>Start</button>
+                            <button onClick={stop}>Stop</button> */}
+
+
                                 <Row noGutters>
                                     <Col>
                                         <div>
@@ -123,6 +173,14 @@ function ChatInput(props) {
                                                     <UncontrolledTooltip target="images" placement="top">
                                                         Images
                                                     </UncontrolledTooltip>
+                                                </li>
+
+
+                                                <li>
+
+                                                
+
+
                                                 </li>
                                                 <li className="list-inline-item">
                                                     <Button type="submit" color="primary" className="font-size-16 btn-lg chat-send waves-effect waves-light">

@@ -10,6 +10,7 @@ import {WhatsAppService} from '../../../services'
 function ChatInput(props) {
     const [textMessage, settextMessage] = useState("");
     const [AudioBase64, setAudioBase64] = useState("");
+    const [VideoBase64, setVideoBase64] = useState(false);
     const [isOpen, setisOpen] = useState(false);
     const [file, setfile] = useState({
         name : "",
@@ -32,12 +33,21 @@ function ChatInput(props) {
     };
 
     //function for file input change
-    const handleFileChange = e => {
+    const handleFileChange = async (e) => {
         if(e.target.files.length !==0 )
-        setfile({
-            name : e.target.files[0].name,
-            size : e.target.files[0].size
-        })
+
+       // console.log(e.target.files[0].type)
+        //console.log(await toBase64(e.target.files[0]))
+
+        if(e.target.files[0].type == 'video/mp4'){
+            setVideoBase64(await toBase64(e.target.files[0]))
+        }else{
+            setfile({
+                name : e.target.files[0].name,
+                size : e.target.files[0].size
+            })
+        }
+        
     }
 
     //function for image input change
@@ -71,8 +81,16 @@ function ChatInput(props) {
             settextMessage("");
         }
 
+
+        if(VideoBase64 != false){
+            props.onaddMessage(VideoBase64.replace("data:video/mp4;base64,", ""), "VideoMessage");
+            setVideoBase64(false);
+        }
+
         //if file input value is not empty then call onaddMessage function
         if(file.name !== "") {
+
+            console.log(file, "fileMessage")
             props.onaddMessage(file, "fileMessage");
             setfile({
                 name : "",
@@ -87,8 +105,7 @@ function ChatInput(props) {
         }
 
         if(audio){
-            console.log(audio, "QUE PASO ?")
-            props.onaddMessage(AudioBase64, "AudioMessage");
+            props.onaddMessage(audio.replace("data:audio/ogg;base64,", ""), "AudioMessage");
             setAudioBase64("")
         }
     }

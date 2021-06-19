@@ -23,10 +23,16 @@ function AudioList(props) {
     const [Video, setVideo]   = useState(false)
 
      const getVideo = async (mediaKey, url) => {
-        await WhatsAppService.DecrypVideo(mediaKey, url).then(async (data)=>{
-             console.log(data.file, "DECRYP")
-            await toggleLightbox(data.file)
-         }).catch(function (response) {console.log(response)})
+
+        if(!props.base64Video){
+            await WhatsAppService.DecrypVideo(mediaKey, url).then(async (data)=>{
+                console.log(data.file, "DECRYP")
+               await toggleLightbox(data.file)
+            }).catch(function (response) {console.log(response)})
+        }else{
+            await toggleLightbox(props.base64Video)
+        }
+        
      }
 
 

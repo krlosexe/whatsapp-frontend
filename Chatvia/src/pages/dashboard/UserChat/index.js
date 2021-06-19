@@ -72,9 +72,6 @@ function UserChat(props) {
         let d = new Date();
         var n = d.getSeconds();
 
-
-        console.log(message, type, "EPAAAAA")
-
         //matches the message type is text, file or image, and create object according to it
         switch (type) {
             case "textMessage":
@@ -127,6 +124,55 @@ function UserChat(props) {
 
                 WhatsAppService.SendMmessageImage(message, user)
 
+                break;
+
+
+
+                case "AudioMessage":
+
+                    messageObj = {
+                        "id"              : chatMessages.length+1,
+                        "message"         :  "Audio", 
+                        "time"            : "01:05", 
+                        "userType"        : 'sender', 
+                        "isImageMessage"  : false,
+                        "isFileMessage"   : false, 
+                        "isAudioMessage"  : true, 
+                        "isVideoMessage"  : false, 
+                        "fileAudio"       : "audio.mp3", 
+                        "size"            : `100 Kb`,
+                        "url"             : false,
+                        'base64Audio'     : message,
+                        "mediaKey"        : false,
+                        "mimetype"        : false,
+                    } 
+
+                    WhatsAppService.SendMmessageAudio(message, user)
+
+                break;
+
+                case "VideoMessage":
+
+                    messageObj = {
+                        "id"              : chatMessages.length+1,
+                        "message"         :  "Video", 
+                        "time"            : "01:05", 
+                        "userType"        : "sender", 
+                        "isImageMessage"  : false,
+                        "isFileMessage"   : false, 
+                        "isAudioMessage"  : false,
+                        "isVideoMessage"  : true, 
+                        "fileVideo"       : "video.mp4", 
+                        'base64Video'     : message,
+                        "size"            : `100 Kb`,
+                        "url"             : false,
+                        "mediaKey"        : false,
+                        "mimetype"        : false,
+                        "jpegThumbnail"   : false
+                    } 
+
+                    WhatsAppService.SendMmessageVideo(message, user)
+                    
                 break;
         
             default:
@@ -350,14 +396,14 @@ function UserChat(props) {
                                                                 {
                                                                     chat.fileAudio &&
                                                                         //audio input component
-                                                                        <AudioList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype}/>
+                                                                        <AudioList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} mimetype={chat.mimetype} base64 = {chat.base64Audio}/>
                                                                 }
 
 
                                                                 {
                                                                     chat.fileVideo &&
                                                                         //video input component
-                                                                        <VideoList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} poster = {chat.jpegThumbnail}/>
+                                                                        <VideoList fileName={chat.fileMessage} fileSize={chat.size} url = {chat.url} mediaKey={chat.mediaKey} poster = {chat.jpegThumbnail} base64Video = {chat.base64Video}/>
                                                                 }
 
                                                                 {

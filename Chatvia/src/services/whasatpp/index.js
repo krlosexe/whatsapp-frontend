@@ -86,6 +86,7 @@ const WhatsApp = () => ({
                                         "isFileMessage"   : false, 
                                         "isAudioMessage"  : true, 
                                         "isVideoMessage"  : false, 
+                                        "base64Audio"     : false,
                                         "fileAudio"       : "audio.mp3", 
                                         "size"            : `${item2.message.audioMessage.fileLength} Kb`,
                                         "url"             : item2.message.audioMessage.url,
@@ -109,6 +110,7 @@ const WhatsApp = () => ({
                                         "isAudioMessage"  : false,
                                         "isVideoMessage"  : true, 
                                         "fileVideo"       : "video.mp4", 
+                                        "base64Video"     : false,
                                         "size"            : `${item2.message.videoMessage.fileLength} Kb`,
                                         "url"             : item2.message.videoMessage.url,
                                         "mediaKey"        : item2.message.videoMessage.mediaKey,
@@ -296,7 +298,6 @@ const WhatsApp = () => ({
     },
 
     SendMmessageImage : async (image, user) => {
-
         var bodyFormData = {
             image,
             user
@@ -310,19 +311,26 @@ const WhatsApp = () => ({
     },
 
     SendMmessageAudio : async (audio, user) => {
-
         var bodyFormData = {
             audio,
             user
         }
-        console.log(bodyFormData)
 
-        return false
-        
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/send/message/image",
+                                        url: "http://127.0.0.1:3001/whatsapp/send/message/audio",
                                         data: bodyFormData})
+        return response
+    },
 
+    SendMmessageVideo : async (video, user) => {
+        var bodyFormData = {
+            video,
+            user
+        }
+
+        const response = await axios({ method: "post",
+                                        url: "http://127.0.0.1:3001/whatsapp/send/message/video",
+                                        data: bodyFormData})
         return response
     }
 

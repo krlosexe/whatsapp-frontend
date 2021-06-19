@@ -101,6 +101,13 @@ function UserChat(props) {
                     isFileMessage : true,
                     isImageMessage : false
                 }
+
+                console.log(message.fileBase64)
+                console.log(message.type_file)
+                console.log(message.extenxion)
+
+                WhatsAppService.SendMmessageDocuments(message.fileBase64, user, message.extenxion)
+
                 break;
 
             case "imageMessage":

@@ -298,10 +298,7 @@ const WhatsApp = () => ({
     },
 
     SendMmessageImage : async (image, user) => {
-        var bodyFormData = {
-            image,
-            user
-        }
+        var bodyFormData = { image, user }
         console.log(bodyFormData)
         const response = await axios({ method: "post",
                                         url: "http://127.0.0.1:3001/whatsapp/send/message/image",
@@ -311,11 +308,7 @@ const WhatsApp = () => ({
     },
 
     SendMmessageAudio : async (audio, user) => {
-        var bodyFormData = {
-            audio,
-            user
-        }
-
+        var bodyFormData = { audio, user }
         const response = await axios({ method: "post",
                                         url: "http://127.0.0.1:3001/whatsapp/send/message/audio",
                                         data: bodyFormData})
@@ -323,18 +316,21 @@ const WhatsApp = () => ({
     },
 
     SendMmessageVideo : async (video, user) => {
-        var bodyFormData = {
-            video,
-            user
-        }
-
+        var bodyFormData = {video, user }
         const response = await axios({ method: "post",
                                         url: "http://127.0.0.1:3001/whatsapp/send/message/video",
                                         data: bodyFormData})
         return response
+    },
+
+
+    SendMmessageDocuments : async (file, user, extension) => {
+        var bodyFormData = {file, extension, user}
+        const response = await axios({ method: "post",
+                                        url: "http://127.0.0.1:3001/whatsapp/send/message/document",
+                                        data: bodyFormData})
+        return response
     }
-
-
 
 
 });

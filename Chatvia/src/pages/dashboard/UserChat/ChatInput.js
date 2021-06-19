@@ -34,19 +34,27 @@ function ChatInput(props) {
 
     //function for file input change
     const handleFileChange = async (e) => {
-        if(e.target.files.length !==0 )
+        if(e.target.files.length !==0 ){
 
-       // console.log(e.target.files[0].type)
-        //console.log(await toBase64(e.target.files[0]))
+            const type_file   = e.target.files[0].type
+            const extenxion   = type_file.split("/")[1]
+            console.log(type_file, extenxion)
+           
+            if(e.target.files[0].type == 'video/mp4'){
+                setVideoBase64(await toBase64(e.target.files[0]))
+            }else{
+                setfile({   
+                    name : e.target.files[0].name,
+                    size : e.target.files[0].size,
+                    extenxion,
+                    type_file,
+                    fileBase64 : await toBase64(e.target.files[0])
+                })
+            }
 
-        if(e.target.files[0].type == 'video/mp4'){
-            setVideoBase64(await toBase64(e.target.files[0]))
-        }else{
-            setfile({
-                name : e.target.files[0].name,
-                size : e.target.files[0].size
-            })
         }
+
+        
         
     }
 
@@ -89,8 +97,7 @@ function ChatInput(props) {
 
         //if file input value is not empty then call onaddMessage function
         if(file.name !== "") {
-
-            console.log(file, "fileMessage")
+            file.fileBase64  = file.fileBase64.replace(`data:${file.type_file};base64,`, "")
             props.onaddMessage(file, "fileMessage");
             setfile({
                 name : "",

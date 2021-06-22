@@ -52,15 +52,39 @@ function UserChat(props) {
     //demo conversation messages
     //userType must be required
     const [ allUsers ] = useState(props.recentChatList);
-    const [ chatMessages, setchatMessages ] = useState(props.recentChatList[props.active_user].messages);
+    const [ chatMessages, setchatMessages ] = useState([]);
+    const [ Cursor, setCursor ] = useState("0");
+
 
     useEffect(() => {
-        setchatMessages(props.recentChatList[props.active_user].messages);
+        setchatMessages([])
+        getChats("0")
+        
+       // setchatMessages(props.recentChatList[props.active_user].messages);
         ref.current.recalculate();
         if (ref.current.el) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
         }
     },[props.active_user, props.recentChatList]);
+
+
+    const getChats = async (cursor) => {
+        
+        
+        await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
+            console.log(data, "DATA")
+            setCursor(data.cursor)
+
+            if(cursor == "0"){
+                setchatMessages(data.messages)
+            }else{
+                setchatMessages([...data.messages, ...chatMessages])
+            }
+
+            
+        })
+    };
+
 
     const toggle = () => setModal(!modal);
 
@@ -236,6 +260,8 @@ function UserChat(props) {
                                 className="chat-conversation p-3 p-lg-4"
                                 id="messages">
                             <ul className="list-unstyled mb-0">
+
+                            <button onClick={() => getChats(Cursor)}>Scroll</button>
                             
                                 
                                 {

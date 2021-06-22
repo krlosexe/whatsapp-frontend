@@ -17,15 +17,15 @@ import img4 from "../../assets/images/small/img-4.jpg";
         const [Conversations, setConversations] = useState([]);
 
         useEffect(() => {
-
             getChats()
-
         }, []);
 
 
         async function getChats(){
             await WhatsAppService.GetChats().then(setConversations)
         }
+
+        
 
         return (
             <React.Fragment>

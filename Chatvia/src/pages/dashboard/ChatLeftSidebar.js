@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { connect } from "react-redux";
 
 import { TabContent, TabPane } from "reactstrap";
@@ -11,9 +11,14 @@ import Contacts from "./Tabs/Contacts";
 import Settings from "./Tabs/Settings";
 
 
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:3001/";
+
+
 function ChatLeftSidebar(props) {
 
     const activeTab = props.activeTab;
+
 
     return (
         <React.Fragment>

@@ -36,6 +36,10 @@ import {WhatsAppService} from '../../../services'
 import createDOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
 
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:3001/";
+
+
 const window = (new JSDOM('')).window
 const DOMPurify = createDOMPurify(window)
 
@@ -56,6 +60,16 @@ function UserChat(props) {
     const [ Cursor, setCursor ] = useState("0");
 
 
+
+    useEffect(() => {
+        const socket = socketIOClient(ENDPOINT);
+
+        socket.on("chat-update", data => {
+            NewMessage(data)
+        });
+    }, []);
+
+
     useEffect(() => {
         setchatMessages([])
         getChats("0")
@@ -66,6 +80,55 @@ function UserChat(props) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
         }
     },[props.active_user, props.recentChatList]);
+
+
+
+
+
+    const NewMessage = async (data) => {
+
+       // console.log(data, "NEW MESSAGE USERCHAT")
+
+        if(data.hasNewMessage){
+
+            if(!data.messages[0].key.fromMe){
+            //     let message = { 
+            //         "id":  chatMessages.length+1, 
+            //         "message": data.messages[0].message.conversation, 
+            //         "time": "01:05",
+            //         "userType": "receiver",
+            //         "isImageMessage" : false, 
+            //         "isFileMessage" : false 
+            //     }
+
+            //     //console.log(data.jid)
+            //    // console.log(message, "NEW MESSAGE")
+
+              //  const conversation = props.recentChatList.find( item => item.jid == data.jid )
+            
+            //    conversation.messages.push(message)
+
+                //conversation.unRead = 1
+
+
+               // console.log(conversation)
+
+            //    setchatMessages([...conversation.messages, ...chatMessages])
+
+
+              // console.log(props.recentChatList.find( item => item.jid == data.jid ).messages, "BUSQUEDA")
+
+
+
+            }
+            
+        }
+        
+    }
+
+
+
+
 
 
     const getChats = async (cursor) => {

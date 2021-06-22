@@ -36,75 +36,52 @@ class Chats extends Component {
         if(data.hasNewMessage){
 
             if(!data.messages[0].key.fromMe){
+
+
+                
+                // let message = { 
+                //     "id":  4124124, 
+                //     "message": data.messages[0].message.conversation, 
+                //     "time": "01:05",
+                //     "userType": "receiver",
+                //     "isImageMessage" : false, 
+                //     "isFileMessage" : false 
+                // }
+
+            //     //console.log(data.jid)
+                // console.log(message, "NEW MESSAGE")
+
+                //const conversation = this.state.recentChatList.find( item => item.jid == data.jid )
+
+
+                this.state.recentChatList.push(
+                    {
+                        "id": 1,
+                        "jid": "44214412424@s.whatsapp.net",
+                        "isGroup": false,
+                        "messages": [
+                            {
+                                "id": 0,
+                                "message": "Que???",
+                                "time": "01:05",
+                                "userType": "receiver",
+                                "isImageMessage": false,
+                                "isFileMessage": false
+                            }
+                        ],
+                        "name": "Sebas",
+                        "profilePicture": "Null",
+                        "roomType": "contact",
+                        "status": "online",
+                        "unRead": 0
+                    }
+                )
                 
                 
+            // //    conversation.messages.push(message)
 
-                const conversationNew  = this.state.recentChatList.find( item => item.jid == data.jid )
-                conversationNew.unRead = 1
-
-
-
-                let message = { 
-                    "id":  conversationNew.messages.length + 1, 
-                    "message": data.messages[0].message.conversation, 
-                    "time": "01:05",
-                    "userType": "receiver",
-                    "isImageMessage" : false, 
-                    "isFileMessage" : false 
-                }
-
-                conversationNew.messages.push(message)
-
-                let filtered = this.state.recentChatList.filter(function(item) { return item.jid != data.jid });
-
-                filtered.unshift(conversationNew)
-
-                console.log(filtered, "filtered")
-
-
-                this.setState({
-                    recentChatList : filtered
-                });
-
-
-
-                // this.state.recentChatList.unshift(
-                //     {
-                //         "id": 1,
-                //         "jid": "44214412424@s.whatsapp.net",
-                //         "isGroup": false,
-                //         "messages": [
-                //             {
-                //                 "id": 0,
-                //                 "message": "Que???",
-                //                 "time": "01:05",
-                //                 "userType": "receiver",
-                //                 "isImageMessage": false,
-                //                 "isFileMessage": false
-                //             }
-                //         ],
-                //         "name": "Sebas",
-                //         "profilePicture": "Null",
-                //         "roomType": "contact",
-                //         "status": "online",
-                //         "unRead": 0
-                //     }
-                // )
-
-
-                //conversation.messages.push(message)
-
-              //  
-    
-
-
-            //   console.log(this.state.recentChatList, "this.state.recentChatList")
-            // this.setState({
-            //     recentChatList : this.state.recentChatList
-            // });
-
-
-           //  console.log(this.state.recentChatList, "CHATS")
+            //     conversation.unRead = 1
+             console.log(this.state.recentChatList, "CHATS")
 
 
             //     console.log(this.state.recentChatList, "recentChatList")
@@ -145,12 +122,10 @@ class Chats extends Component {
     }
 
     componentDidUpdate(prevProps) {
-
-        console.log(prevProps, "prevProps")
         if (prevProps !== this.props) {
-        //   this.setState({
-        //     recentChatList : this.props.recentChatList
-        //   });
+          this.setState({
+            recentChatList : this.props.recentChatList
+          });
         }
     }
 

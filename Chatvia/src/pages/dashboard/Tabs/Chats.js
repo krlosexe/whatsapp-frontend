@@ -30,8 +30,8 @@ class Chats extends Component {
 
 
     NewMessage(data){
+        //console.log(data, "NEW ERROR")
 
-        console.log(data, "NEW ERROR")
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
             if(!data.messages[0].key.fromMe){
 
@@ -42,9 +42,10 @@ class Chats extends Component {
                 //}
                 console.log(conversationNew, "CHAT ERROR")
                 conversationNew.unRead = 1
+                conversationNew.id = 0
 
 
-                let message
+                let message = false
                 if(data.messages[0].message.conversation){
                     message = { 
                         "id":  conversationNew.messages.length + 1, 
@@ -79,16 +80,36 @@ class Chats extends Component {
 
 
 
-                if(this.state.recentChatList[this.state.ActiveUser].jid != data.jid){
-                    conversationNew.messages.push(message)
-                }
-                
-                let filtered = this.state.recentChatList.filter(function(item) { return item.jid != data.jid });
-                filtered.unshift(conversationNew)
+                if(message){
+                   
+                    if(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))].jid != data.jid){
 
-                this.setState({
-                    recentChatList : filtered
-                });
+                        console.log(this.state.recentChatList)
+                        console.log("LEFT ENTRO")
+                        
+
+                        console.log(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))])
+                        console.log(parseInt(localStorage.getItem("active_user")))
+
+
+                        //conversationNew.messages.push(message)
+                    }
+                    
+                    let filtered = this.state.recentChatList.filter(function(item) { return item.jid != data.jid });
+                    filtered.unshift(conversationNew)
+                    
+
+                    filtered.map((item, key)=>{
+                        item.id = key
+                    })
+
+                    this.setState({
+                        recentChatList : filtered
+                    });
+
+                }
+
+                
             }
             
         }
@@ -113,8 +134,6 @@ class Chats extends Component {
     }
 
     componentDidUpdate(prevProps) {
-
-        console.log(prevProps, "prevProps")
         if (prevProps !== this.props) {
         //   this.setState({
         //     recentChatList : this.props.recentChatList
@@ -156,7 +175,7 @@ class Chats extends Component {
         //find index of current chat in array
         var index = this.props.recentChatList.indexOf(chat);
 
-        this.setState({ ActiveUser : index })
+        this.setState({ ActiveUser : chat.id })
   
         // set activeUser 
         this.props.activeUser(index);

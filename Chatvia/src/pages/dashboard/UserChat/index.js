@@ -77,7 +77,7 @@ function UserChat(props) {
         getChats("0")
 
         localStorage.setItem("active_user", props.active_user)
-        
+
         ref.current.recalculate();
         if (ref.current.el) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
@@ -92,7 +92,7 @@ function UserChat(props) {
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
             if(!data.messages[0].key.fromMe){
 
-                let message
+                let message = false
                 if(data.messages[0].message.conversation){
                     message = { 
                         "id":  chatMessages.length+1, 
@@ -126,13 +126,16 @@ function UserChat(props) {
 
 
                  
+                if(message){
+                    const conversation = props.recentChatList.find( item => item.jid == data.jid )
+                    conversation.messages.push(message)
 
-                const conversation = props.recentChatList.find( item => item.jid == data.jid )
-                conversation.messages.push(message)
-
-                if(props.recentChatList[localStorage.getItem("active_user")].jid == data.jid){
-                    setchatMessages([...conversation.messages, ...chatMessages])  
+                    if(props.recentChatList[parseInt(localStorage.getItem("active_user"))].jid == data.jid){
+                        setchatMessages([...conversation.messages, ...chatMessages])  
+                    }
                 }
+
+                
         
             }
             
@@ -146,19 +149,13 @@ function UserChat(props) {
 
 
     const getChats = async (cursor) => {
-        
-        
         await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
-            console.log(data, "DATA")
             setCursor(data.cursor)
-
             if(cursor == "0"){
                 setchatMessages(data.messages)
             }else{
                 setchatMessages([...data.messages, ...chatMessages])
             }
-
-            
         })
     };
 
@@ -343,11 +340,11 @@ function UserChat(props) {
                                 
                                 {
                                     chatMessages.map((chat, key) => 
-                                        chat.isToday && chat.isToday === true ? <li key={"dayTitle" + key}> 
-                                            <div className="chat-day-title">
-                                                <span className="title">Today</span>
-                                            </div>
-                                        </li> : 
+                                        // chat.isToday && chat.isToday === true ? <li key={"dayTitle" + key}> 
+                                        //     <div className="chat-day-title">
+                                        //         <span className="title">Today</span>
+                                        //     </div>
+                                        // </li> : 
                                         (props.recentChatList[props.active_user].isGroup === true) ? 
                                             <li key={key} className={chat.userType === "sender" ? "right" : ""}>
                                                 <div className="conversation-list">

@@ -12,8 +12,10 @@ const WhatsApp = () => ({
 
                     let Chats = []
 
+                     let count = 0
                      await response.data.chats.map(async (item, key)=>{
-                    
+                        
+                        
                         let messages = []
                         let conversations
 
@@ -27,10 +29,17 @@ const WhatsApp = () => ({
                             }
 
                             if(item2.message){
+
+                                //console.log(ProcessMessage(item2.message, key2, userType))
+                                //messages.push(ProcessMessage(item2.message, key2, userType))
+                               // console.log(messages)
+
                                 if(item2.message.conversation){
                                    let message = { 
                                         "id": key2, "message": item2.message.conversation, "time": "01:05", "userType": userType, "isImageMessage" : false, "isFileMessage" : false 
                                     }
+
+                                   
                                     await messages.push(message)
                                 }
                                 
@@ -40,6 +49,7 @@ const WhatsApp = () => ({
                                     message = { 
                                         "id"              : key2, "message": item2.message.conversation, 
                                         "time"            : "01:05", "userType": userType, 
+                                        "message"         : item2.message.imageMessage.caption,
                                         "isImageMessage"  : true, 
                                         "isFileMessage"   : false,
                                         "isAudioMessage"  : false,
@@ -183,16 +193,8 @@ const WhatsApp = () => ({
                             
                         })
 
-
-                        console.log(item.jid)
-
-                       // const req =  `http://127.0.0.1:3001/whatsapp/get/avatar/${item.jid}`
-                        //const avatar = await axios.get(req)
-
-
-                       
                         conversations = {
-                            "id"             : key,
+                            "id"             : count,
                             "jid"            : item.jid,
                             "isGroup"        : false,
                             "messages"       : messages,
@@ -205,11 +207,11 @@ const WhatsApp = () => ({
                         }
 
                         if(item.name){
+                            count++
                             await Chats.push(conversations)
                         }
                         
                     })
-
                    return Chats
                     
                 } catch (error) {
@@ -263,6 +265,7 @@ const WhatsApp = () => ({
                     message = { 
                         "id"              : key2, "message": item2.message.conversation, 
                         "time"            : "01:05", "userType": userType, 
+                        "message"         : item2.message.imageMessage.caption,
                         "isImageMessage"  : true, 
                         "isFileMessage"   : false,
                         "isAudioMessage"  : false,
@@ -520,10 +523,174 @@ const WhatsApp = () => ({
                                         url: "http://127.0.0.1:3001/whatsapp/send/message/document",
                                         data: bodyFormData})
         return response
-    }
+    },
 
 
-});
+
+    
+
+
+}); 
+
+
+function ProcessMessage(data, key2, userType){
+
+
+
+    if(data.conversation){
+        let message = { 
+             "id": key2, "message": data.conversation, "time": "01:05", "userType": userType, "isImageMessage" : false, "isFileMessage" : false 
+         }
+
+        
+         return message
+     }
+     
+     if(data.imageMessage){
+         let message
+        
+         message = { 
+             "id"              : key2, "message": data.conversation, 
+             "time"            : "01:05", "userType": userType, 
+             "message"         : data.imageMessage.caption,
+             "isImageMessage"  : true, 
+             "isFileMessage"   : false,
+             "isAudioMessage"  : false,
+             "isVideoMessage"  : false,
+             "imageMessage"    : [ { 
+                 image : data.imageMessage.jpegThumbnail,
+                 "url"            : data.imageMessage.url,
+                 "mediaKey"       : data.imageMessage.mediaKey,
+            } ]
+         }
+        return message
+      
+     }
+     
+     if(data.documentMessage){
+         let message
+         message = { 
+             "id"             : key2,
+             "message"        :  "Documento", 
+             "time"           : "01:05", 
+             "userType"       : userType, 
+             "isImageMessage" : false,
+             "isFileMessage"   : true, 
+             "isAudioMessage"  : false, 
+             "isVideoMessage"  : false,
+             "fileMessage"    : data.documentMessage.fileName, 
+             "size"           : `${data.documentMessage.fileLength} Kb`,
+             "url"            : data.documentMessage.url,
+             "mediaKey"       : data.documentMessage.mediaKey,
+             "mimetype"       : data.documentMessage.mimetype,
+         }
+        return message
+     }
+
+
+     if(data.audioMessage){
+         let message
+         message = { 
+             "id"              : key2,
+             "message"         :  "Audio", 
+             "time"            : "01:05", 
+             "userType"        : userType, 
+             "isImageMessage"  : false,
+             "isFileMessage"   : false, 
+             "isAudioMessage"  : true, 
+             "isVideoMessage"  : false, 
+             "base64Audio"     : false,
+             "fileAudio"       : "audio.mp3", 
+             "size"            : `${data.audioMessage.fileLength} Kb`,
+             "url"             : data.audioMessage.url,
+             "mediaKey"        : data.audioMessage.mediaKey,
+             "mimetype"        : data.audioMessage.mimetype,
+         }
+        return message
+     }
+
+
+
+     if(data.videoMessage){
+         let message
+         message = { 
+             "id"              : key2,
+             "message"         :  "Video", 
+             "time"            : "01:05", 
+             "userType"        : userType, 
+             "isImageMessage"  : false,
+             "isFileMessage"   : false, 
+             "isAudioMessage"  : false,
+             "isVideoMessage"  : true, 
+             "fileVideo"       : "video.mp4", 
+             "base64Video"     : false,
+             "size"            : `${data.videoMessage.fileLength} Kb`,
+             "url"             : data.videoMessage.url,
+             "mediaKey"        : data.videoMessage.mediaKey,
+             "mimetype"        : data.videoMessage.mimetype,
+             "jpegThumbnail"   : data.videoMessage.jpegThumbnail
+         }
+        return message
+     }
+
+
+     if(data.extendedTextMessage){
+         let message
+         message = { 
+             "id"              : key2,
+             "message"         : data.extendedTextMessage.text,
+             "description"     : data.extendedTextMessage.description,
+             "link"            : data.extendedTextMessage.matchedText,
+             "time"            : "01:05", 
+             "userType"        : userType, 
+             "isImageMessage"  : false,
+             "isFileMessage"   : false, 
+             "isAudioMessage"  : false,
+             "isVideoMessage"  : false,
+             "jpegThumbnail"   : data.extendedTextMessage.jpegThumbnail
+         }
+        return message
+     }
+
+     if(data.locationMessage){
+         let message
+         message = { 
+             "id"                 : key2,
+             "message"            : data.locationMessage.name,
+             "address"            : data.locationMessage.address,
+             "degreesLatitude"    : data.locationMessage.degreesLatitude,
+             "degreesLongitude"   : data.locationMessage.degreesLongitude,
+             "time"               : "01:05", 
+             "userType"           : userType, 
+             "isImageMessage"     : false,
+             "isFileMessage"      : false, 
+             "isAudioMessage"     : false,
+             "isVideoMessage"     : false,
+             "jpegThumbnail"      : data.locationMessage.jpegThumbnail
+         }
+        return message
+     }
+
+
+
+     if(data.contactMessage){
+         let message
+         message = { 
+             "id"                 : key2,
+             "message"            : "Contacto",
+             "displayName"        : data.contactMessage.displayName,
+             "time"               : "01:05", 
+             "userType"           : userType, 
+             "isImageMessage"     : false,
+             "isFileMessage"      : false, 
+             "isAudioMessage"     : false,
+             "isVideoMessage"     : false,
+             "vcard"              : data.contactMessage.vcard
+         }
+        return message
+     }
+
+}
 
 export default WhatsApp
 

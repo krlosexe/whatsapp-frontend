@@ -62,6 +62,7 @@ function UserChat(props) {
 
 
     useEffect(() => {
+        
         const socket = socketIOClient(ENDPOINT);
 
         socket.on("chat-update", data => {
@@ -71,10 +72,12 @@ function UserChat(props) {
 
 
     useEffect(() => {
+
         setchatMessages([])
         getChats("0")
+
+        localStorage.setItem("active_user", props.active_user)
         
-       // setchatMessages(props.recentChatList[props.active_user].messages);
         ref.current.recalculate();
         if (ref.current.el) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
@@ -86,40 +89,51 @@ function UserChat(props) {
 
 
     const NewMessage = async (data) => {
-
-       // console.log(data, "NEW MESSAGE USERCHAT")
-
-        if(data.hasNewMessage){
-
+        if(data.hasNewMessage && data.jid != 'status@broadcast'){
             if(!data.messages[0].key.fromMe){
-            //     let message = { 
-            //         "id":  chatMessages.length+1, 
-            //         "message": data.messages[0].message.conversation, 
-            //         "time": "01:05",
-            //         "userType": "receiver",
-            //         "isImageMessage" : false, 
-            //         "isFileMessage" : false 
-            //     }
 
-            //     //console.log(data.jid)
-            //    // console.log(message, "NEW MESSAGE")
-
-              //  const conversation = props.recentChatList.find( item => item.jid == data.jid )
-            
-            //    conversation.messages.push(message)
-
-                //conversation.unRead = 1
+                let message
+                if(data.messages[0].message.conversation){
+                    message = { 
+                        "id":  chatMessages.length+1, 
+                        "message": data.messages[0].message.conversation, 
+                        "time": "01:05",
+                        "userType": "receiver",
+                        "isImageMessage" : false, 
+                        "isFileMessage" : false 
+                    }
+                }
 
 
-               // console.log(conversation)
+                if(data.messages[0].message.imageMessage){
+                    message = { 
+                        "id":  chatMessages.length+1, 
+                        "message": "..", 
+                        "time"            : "01:05", 
+                        "userType": "receiver", 
+                        "isImageMessage"  : true, 
+                        "isFileMessage"   : false,
+                        "isAudioMessage"  : false,
+                        "isVideoMessage"  : false,
+                        "imageMessage"    : [ { 
+                            image : data.messages[0].message.imageMessage.jpegThumbnail,
+                            "url"            : data.messages[0].message.imageMessage.url,
+                            "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
+                       } ]
+                    }
+                 
+                }
 
-            //    setchatMessages([...conversation.messages, ...chatMessages])
 
+                 
 
-              // console.log(props.recentChatList.find( item => item.jid == data.jid ).messages, "BUSQUEDA")
+                const conversation = props.recentChatList.find( item => item.jid == data.jid )
+                conversation.messages.push(message)
 
-
-
+                if(props.recentChatList[localStorage.getItem("active_user")].jid == data.jid){
+                    setchatMessages([...conversation.messages, ...chatMessages])  
+                }
+        
             }
             
         }

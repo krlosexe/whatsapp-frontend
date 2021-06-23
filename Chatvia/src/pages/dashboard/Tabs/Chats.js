@@ -21,106 +21,74 @@ class Chats extends Component {
         super(props);
         this.state = {
             searchChat : "",
-            recentChatList : this.props.recentChatList
+            recentChatList : this.props.recentChatList,
+            ActiveUser     : 0
         }
         this.handleChange = this.handleChange.bind(this);
         this.openUserChat = this.openUserChat.bind(this);
     }
 
 
-
     NewMessage(data){
 
-        //console.log(data, "NEW MESSAGE LEFT CHAT")
-
-        if(data.hasNewMessage){
-
+        console.log(data, "NEW ERROR")
+        if(data.hasNewMessage && data.jid != 'status@broadcast'){
             if(!data.messages[0].key.fromMe){
-                
-                
 
                 const conversationNew  = this.state.recentChatList.find( item => item.jid == data.jid )
+
+                //if(conversationNew){
+
+                //}
+                console.log(conversationNew, "CHAT ERROR")
                 conversationNew.unRead = 1
 
 
+                let message
+                if(data.messages[0].message.conversation){
+                    message = { 
+                        "id":  conversationNew.messages.length + 1, 
+                        "message": data.messages[0].message.conversation, 
+                        "time": "01:05",
+                        "userType": "receiver",
+                        "isImageMessage" : false, 
+                        "isFileMessage" : false 
+                    }
+                }
+                
 
-                let message = { 
-                    "id":  conversationNew.messages.length + 1, 
-                    "message": data.messages[0].message.conversation, 
-                    "time": "01:05",
-                    "userType": "receiver",
-                    "isImageMessage" : false, 
-                    "isFileMessage" : false 
+
+                if(data.messages[0].message.imageMessage){
+                    message = { 
+                        "id":  conversationNew.messages.length + 1, 
+                        "message": "..", 
+                        "time"            : "01:05", 
+                        "userType": "receiver", 
+                        "isImageMessage"  : true, 
+                        "isFileMessage"   : false,
+                        "isAudioMessage"  : false,
+                        "isVideoMessage"  : false,
+                        "imageMessage"    : [ { 
+                            image : data.messages[0].message.imageMessage.jpegThumbnail,
+                            "url"            : data.messages[0].message.imageMessage.url,
+                            "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
+                       } ]
+                    }
+                 
                 }
 
-                conversationNew.messages.push(message)
 
+
+                if(this.state.recentChatList[this.state.ActiveUser].jid != data.jid){
+                    conversationNew.messages.push(message)
+                }
+                
                 let filtered = this.state.recentChatList.filter(function(item) { return item.jid != data.jid });
-
                 filtered.unshift(conversationNew)
-
-                console.log(filtered, "filtered")
-
 
                 this.setState({
                     recentChatList : filtered
                 });
-
-
-
-                // this.state.recentChatList.unshift(
-                //     {
-                //         "id": 1,
-                //         "jid": "44214412424@s.whatsapp.net",
-                //         "isGroup": false,
-                //         "messages": [
-                //             {
-                //                 "id": 0,
-                //                 "message": "Que???",
-                //                 "time": "01:05",
-                //                 "userType": "receiver",
-                //                 "isImageMessage": false,
-                //                 "isFileMessage": false
-                //             }
-                //         ],
-                //         "name": "Sebas",
-                //         "profilePicture": "Null",
-                //         "roomType": "contact",
-                //         "status": "online",
-                //         "unRead": 0
-                //     }
-                // )
-
-
-                //conversation.messages.push(message)
-
-              //  
-    
-
-
-            //   console.log(this.state.recentChatList, "this.state.recentChatList")
-            // this.setState({
-            //     recentChatList : this.state.recentChatList
-            // });
-
-
-           //  console.log(this.state.recentChatList, "CHATS")
-
-
-            //     console.log(this.state.recentChatList, "recentChatList")
-
-                
-
-
-//                console.log(conversation)
-
-            //    setchatMessages([...conversation.messages, ...chatMessages])
-
-
-              // console.log(props.recentChatList.find( item => item.jid == data.jid ).messages, "BUSQUEDA")
-
-
-
             }
             
         }
@@ -188,6 +156,8 @@ class Chats extends Component {
         //find index of current chat in array
         var index = this.props.recentChatList.indexOf(chat);
 
+        this.setState({ ActiveUser : index })
+  
         // set activeUser 
         this.props.activeUser(index);
 

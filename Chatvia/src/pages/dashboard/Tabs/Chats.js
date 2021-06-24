@@ -26,6 +26,7 @@ class Chats extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.openUserChat = this.openUserChat.bind(this);
+
     }
 
 
@@ -84,12 +85,10 @@ class Chats extends Component {
                    
                     if(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))].jid != data.jid){
 
-                        console.log(this.state.recentChatList)
-                        console.log("LEFT ENTRO")
-                        
-
-                        console.log(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))])
-                        console.log(parseInt(localStorage.getItem("active_user")))
+                        //console.log(this.state.recentChatList)
+                        //console.log("LEFT ENTRO")
+                        //console.log(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))])
+                        //console.log(parseInt(localStorage.getItem("active_user")))
 
 
                         //conversationNew.messages.push(message)

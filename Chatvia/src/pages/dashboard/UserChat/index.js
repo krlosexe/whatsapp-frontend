@@ -93,20 +93,30 @@ function UserChat(props) {
             if(!data.messages[0].key.fromMe){
 
                 let message = false
-                if(data.messages[0].message.conversation){
-                    message = { 
+
+                await WhatsAppService.ProcessMessage(data.messages[0].message, chatMessages.length+1, "receiver").then((data)=>{
+                    // console.log(data, 'MESSAGE')
+                    message = data
+                 })
+
+
+                //if(data.messages[0].message.conversation){
+
+                   
+
+                   /* message = { 
                         "id":  chatMessages.length+1, 
                         "message": data.messages[0].message.conversation, 
                         "time": "01:05",
                         "userType": "receiver",
                         "isImageMessage" : false, 
                         "isFileMessage" : false 
-                    }
-                }
+                    }*/
+               // }
 
 
-                if(data.messages[0].message.imageMessage){
-                    message = { 
+                //if(data.messages[0].message.imageMessage){
+                    /*message = { 
                         "id":  chatMessages.length+1, 
                         "message": "..", 
                         "time"            : "01:05", 
@@ -120,9 +130,9 @@ function UserChat(props) {
                             "url"            : data.messages[0].message.imageMessage.url,
                             "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
                        } ]
-                    }
+                    }*/
                  
-                }
+               // }
 
 
                  

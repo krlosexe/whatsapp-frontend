@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from "react-redux";
-import { Button, Card, Media, Badge } from "reactstrap";
+import { Button, Card, Media, Badge, Input } from "reactstrap";
 
 //Simple bar
 import SimpleBar from "simplebar-react";
@@ -18,6 +18,9 @@ import { useTranslation } from 'react-i18next';
 //image
 import avatar7 from "../assets/images/users/avatar-7.jpg";
 
+import {CrmService} from "../services";
+
+
 function UserProfileSidebar(props) {
     
     const [isOpen1, setIsOpen1] = useState(true);
@@ -29,6 +32,12 @@ function UserProfileSidebar(props) {
         { name : "Image-2.jpg", size : "3.1 MB", thumbnail : "ri-image-fill" },
         { name : "Landing-A.zip", size : "6.7 MB", thumbnail : "ri-file-text-fill" },
     ]);
+
+
+    const [textname, settextname]                     = useState("")
+    const [textidentification, settextidentification] = useState("")
+    const [telefono, settelefono]                     = useState("")
+    const [textemail, settextemail]                   = useState("")
 
     /* intilize t variable for multi language implementation */
     const { t } = useTranslation();
@@ -50,11 +59,51 @@ function UserProfileSidebar(props) {
         setIsOpen1(false);
         setIsOpen2(false);
     };
+    
 
     // closes sidebar
     const closeuserSidebar=()=> {
         props.closeUserSidebar();
     }
+
+
+    const handleChangeName = e => {
+        settextname(e.target.value)
+    }
+
+
+    const handleChangIdentificacion = e => {
+        settextidentification(e.target.value)
+    }
+
+    const handleChangeTelefono = e => {
+        settelefono(e.target.value)
+    }
+
+    const handleChangeEmail = e => {
+        settextemail(e.target.value)
+    }
+
+
+
+    const SaveClient = e => {
+
+        const data = {
+            "nombres"        : textname,
+            "identificacion" : textidentification,
+            "telefono"       : telefono,
+            "email"          : textemail,
+            "id_line"        : 20,
+            "user_id"        : 86,
+            "jid"            : props.activeUser.jid
+        }
+        CrmService.RegisterClient(data).then((response)=>{
+            console.log(response)
+        })
+    }
+
+    
+
     // style={{display: props.userSidebar  ? "block" : "none"}}
     return (
         <React.Fragment>
@@ -126,47 +175,43 @@ function UserProfileSidebar(props) {
                                 <Card className="shadow-none border mb-2">
                                     {/* import collaps */}
                                         <CustomCollapse
-                                            title = "About"
+                                            title = "Datos del Paciente"
                                             iconClass = "ri-user-2-line"
                                             isOpen={isOpen1}
                                             toggleCollapse={toggleCollapse1}
                                         >
+                                            <div>
+                                                <p className="text-muted mb-1">Nombre y Apellido</p>
+                                                <Input type="text" value={textname} onChange={handleChangeName} className="form-control form-control-lg bg-light border-light"/>
+                                            </div>
+
 
                                             <div>
-                                                <p className="text-muted mb-1">{t('Name')}</p>
-                                                <h5 className="font-size-14">{props.activeUser.name}</h5>
+                                                <p className="text-muted mb-1 mt-3">Identificacion</p>
+                                                <Input type="text" value={textidentification} onChange={handleChangIdentificacion} className="form-control form-control-lg bg-light border-light"/>
                                             </div>
 
-                                            <div className="mt-4">
-                                                <p className="text-muted mb-1">{t('Email')}</p>
-                                                <h5 className="font-size-14">{props.activeUser.email}</h5>
+
+                                            <div>
+                                                <p className="text-muted mb-1 mt-3">Telefono</p>
+                                                <Input type="text" value={telefono} onChange={handleChangeTelefono} className="form-control form-control-lg bg-light border-light"/>
                                             </div>
 
-                                            <div className="mt-4">
-                                                <p className="text-muted mb-1">{t('Time')}</p>
-                                                <h5 className="font-size-14">11:40 AM</h5>
+
+                                            <div>
+                                                <p className="text-muted mb-3 mt-3">Email</p>
+                                                <Input type="text" value={textemail} onChange={handleChangeEmail} className="form-control form-control-lg bg-light border-light"/>
                                             </div>
 
-                                            <div className="mt-4">
-                                                <p className="text-muted mb-1">{t('Location')}</p>
-                                                <h5 className="font-size-14 mb-0">California, USA</h5>
-                                            </div>
+
+                                            <Button onClick={SaveClient} color="primary" className="font-size-16 btn-lg chat-send waves-effect waves-light mt-3">
+                                                Guardar <i className="ri-send-plane-2-fill"></i>
+                                            </Button>
+
                                         </CustomCollapse>
                                 </Card>
                                 {/* End About card */}
 
-                                <Card className="mb-1 shadow-none border">
-                                    {/* import collaps */}
-                                    <CustomCollapse
-                                            title = "Attached Files"
-                                            iconClass = "ri-attachment-line"
-                                            isOpen={isOpen2}
-                                            toggleCollapse={toggleCollapse2}
-                                        >
-                                            {/* attached files */}
-                                            <AttachedFiles files={files} />
-                                        </CustomCollapse>
-                                </Card>
 
                                 {
                                     props.activeUser.isGroup === true &&

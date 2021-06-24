@@ -90,64 +90,32 @@ function UserChat(props) {
 
     const NewMessage = async (data) => {
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
-            if(!data.messages[0].key.fromMe){
 
+                console.log(data.messages[0])
+
+                let userType
+                if(data.messages[0].key.fromMe == false){
+                    userType = "receiver"
+                }else{
+                    userType = "sender"
+                }
                 let message = false
 
-                await WhatsAppService.ProcessMessage(data.messages[0].message, chatMessages.length+1, "receiver").then((data)=>{
-                    // console.log(data, 'MESSAGE')
+                await WhatsAppService.ProcessMessage(data.messages[0].message, chatMessages.length+1, userType).then((data)=>{
                     message = data
                  })
-
-
-                //if(data.messages[0].message.conversation){
-
-                   
-
-                   /* message = { 
-                        "id":  chatMessages.length+1, 
-                        "message": data.messages[0].message.conversation, 
-                        "time": "01:05",
-                        "userType": "receiver",
-                        "isImageMessage" : false, 
-                        "isFileMessage" : false 
-                    }*/
-               // }
-
-
-                //if(data.messages[0].message.imageMessage){
-                    /*message = { 
-                        "id":  chatMessages.length+1, 
-                        "message": "..", 
-                        "time"            : "01:05", 
-                        "userType": "receiver", 
-                        "isImageMessage"  : true, 
-                        "isFileMessage"   : false,
-                        "isAudioMessage"  : false,
-                        "isVideoMessage"  : false,
-                        "imageMessage"    : [ { 
-                            image : data.messages[0].message.imageMessage.jpegThumbnail,
-                            "url"            : data.messages[0].message.imageMessage.url,
-                            "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
-                       } ]
-                    }*/
-                 
-               // }
-
-
                  
                 if(message){
                     const conversation = props.recentChatList.find( item => item.jid == data.jid )
                     conversation.messages.push(message)
 
                     if(props.recentChatList[parseInt(localStorage.getItem("active_user"))].jid == data.jid){
-                        setchatMessages([...conversation.messages, ...chatMessages])  
+                        if(userType == "receiver"){
+                            setchatMessages([...conversation.messages, ...chatMessages])  
+                        }
                     }
                 }
 
-                
-        
-            }
             
         }
         

@@ -31,82 +31,102 @@ class Chats extends Component {
 
 
     NewMessage(data){
-        //console.log(data, "NEW ERROR")
+        console.log(data, "NEW ERROR")
+        console.log("QUE PASO ¿?")
 
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
             if(!data.messages[0].key.fromMe){
 
                 const conversationNew  = this.state.recentChatList.find( item => item.jid == data.jid )
 
-                //if(conversationNew){
-
-                //}
-                console.log(conversationNew, "CHAT ERROR")
-                conversationNew.unRead = 1
-                conversationNew.id = 0
-
-
                 let message = false
-                if(data.messages[0].message.conversation){
-                    message = { 
-                        "id":  conversationNew.messages.length + 1, 
-                        "message": data.messages[0].message.conversation, 
-                        "time": "01:05",
-                        "userType": "receiver",
-                        "isImageMessage" : false, 
-                        "isFileMessage" : false 
+                if(conversationNew){
+                    conversationNew.unRead = 1
+                    conversationNew.id = 0
+
+                    if(data.messages[0].message.conversation){
+                        message = { 
+                            "id":  conversationNew.messages.length + 1, 
+                            "message": data.messages[0].message.conversation, 
+                            "time": "01:05",
+                            "userType": "receiver",
+                            "isImageMessage" : false, 
+                            "isFileMessage" : false 
+                        }
                     }
-                }
-                
+                    
 
 
-                if(data.messages[0].message.imageMessage){
-                    message = { 
-                        "id":  conversationNew.messages.length + 1, 
-                        "message": "..", 
-                        "time"            : "01:05", 
-                        "userType": "receiver", 
-                        "isImageMessage"  : true, 
-                        "isFileMessage"   : false,
-                        "isAudioMessage"  : false,
-                        "isVideoMessage"  : false,
-                        "imageMessage"    : [ { 
-                            image : data.messages[0].message.imageMessage.jpegThumbnail,
-                            "url"            : data.messages[0].message.imageMessage.url,
-                            "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
-                       } ]
+                    if(data.messages[0].message.imageMessage){
+                        message = { 
+                            "id":  conversationNew.messages.length + 1, 
+                            "message": "..", 
+                            "time"            : "01:05", 
+                            "userType": "receiver", 
+                            "isImageMessage"  : true, 
+                            "isFileMessage"   : false,
+                            "isAudioMessage"  : false,
+                            "isVideoMessage"  : false,
+                            "imageMessage"    : [ { 
+                                image : data.messages[0].message.imageMessage.jpegThumbnail,
+                                "url"            : data.messages[0].message.imageMessage.url,
+                                "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
+                        } ]
+                        }
+                    
                     }
-                 
-                }
 
 
-
-                if(message){
+                    if(message){
                    
-                    if(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))].jid != data.jid){
+                        if(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))].jid != data.jid){
+                            //console.log(this.state.recentChatList)
+                            //console.log("LEFT ENTRO")
+                            //console.log(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))])
+                            //console.log(parseInt(localStorage.getItem("active_user")))
+    
+                            //conversationNew.messages.push(message)
+                        }
+                        
+                        let filtered = this.state.recentChatList.filter(function(item) { return item.jid != data.jid });
+                        filtered.unshift(conversationNew)
+                        
+    
+                        filtered.map((item, key)=>{
+                            item.id = key
+                        })
 
-                        //console.log(this.state.recentChatList)
-                        //console.log("LEFT ENTRO")
-                        //console.log(this.state.recentChatList[parseInt(localStorage.getItem("active_user"))])
-                        //console.log(parseInt(localStorage.getItem("active_user")))
-
-
-                        //conversationNew.messages.push(message)
+                        
+    
+                        this.setState({
+                            recentChatList : filtered
+                        });
+    
                     }
-                    
-                    let filtered = this.state.recentChatList.filter(function(item) { return item.jid != data.jid });
-                    filtered.unshift(conversationNew)
-                    
 
-                    filtered.map((item, key)=>{
-                        item.id = key
-                    })
+                }else{
 
-                    this.setState({
-                        recentChatList : filtered
-                    });
+                   
 
+                    const chat = {
+                        "id"             : 0,
+                        "jid"            : data.jid,
+                        "isGroup"        : false,
+                        "messages"       : [],
+                        "name"           :  data.jid,
+                       // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
+                       "profilePicture" :  "Null",
+                        "roomType"       : "contact",
+                        "status"         : "online",
+                        "unRead"         : 1
+                    } 
+
+                    this.state.recentChatList.push(chat)
+                   
                 }
+
+
+                
 
                 
             }
@@ -128,8 +148,6 @@ class Chats extends Component {
         socket.on("chat-update", data => {
             this.NewMessage(data)
         });
-
-
     }
 
     componentDidUpdate(prevProps) {

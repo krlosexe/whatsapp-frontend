@@ -75,6 +75,7 @@ function UserChat(props) {
 
         setchatMessages([])
         getChats("0")
+        WhatsAppService.ChatRead(props.recentChatList[props.active_user].jid)
 
         localStorage.setItem("active_user", props.active_user)
 
@@ -91,31 +92,34 @@ function UserChat(props) {
     const NewMessage = async (data) => {
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
 
-                console.log(data.messages[0])
 
-                let userType
-                if(data.messages[0].key.fromMe == false){
-                    userType = "receiver"
-                }else{
-                    userType = "sender"
-                }
-                let message = false
+            let userType
+            if(data.messages[0].key.fromMe == false){
+                userType = "receiver"
+            }else{
+                userType = "sender"
+            }
 
+            let message = false
+            if(data.messages[0].message){
                 await WhatsAppService.ProcessMessage(data.messages[0].message, chatMessages.length+1, userType).then((data)=>{
                     message = data
-                 })
-                 
-                if(message){
-                    const conversation = props.recentChatList.find( item => item.jid == data.jid )
-                    conversation.messages.push(message)
+                })
+            }
+                
+            if(message){
+                const conversation = props.recentChatList.find( item => item.jid == data.jid )
 
+                if(conversation){
+                    conversation.messages.push(message)
                     if(props.recentChatList[parseInt(localStorage.getItem("active_user"))].jid == data.jid){
                         if(userType == "receiver"){
                             setchatMessages([...conversation.messages, ...chatMessages])  
                         }
                     }
                 }
-
+                
+            }
             
         }
         
@@ -374,6 +378,8 @@ function UserChat(props) {
                                                                 {
                                                                     !chat.isTyping && <p className="chat-time mb-0"><i className="ri-time-line align-middle"></i> <span className="align-middle">{chat.time}</span></p>
                                                                 }
+
+                                                               
                                                             </div>
                                                             {
                                                                 !chat.isTyping &&
@@ -498,6 +504,9 @@ function UserChat(props) {
                                                                 }
 
 
+                                                              
+
+
 
 
 
@@ -532,15 +541,23 @@ function UserChat(props) {
                                                                         </DropdownMenu>
                                                                     </UncontrolledDropdown>
                                                             }
-                                                            
+                                                                  
                                                         </div>
+                                                        
+
+                                                        {chat.userType === "sender" &&
+                                                             <p>VV</p>
+                                                        }
+                                                       
+
+
                                                         {
                                                             chatMessages[key+1] ? chatMessages[key].userType === chatMessages[key+1].userType ? null :  <div className="conversation-name">{chat.userType === "sender" ? "Patricia Smith" : props.recentChatList[props.active_user].name}</div> : <div className="conversation-name">{chat.userType === "sender" ? "Admin" : props.recentChatList[props.active_user].name}</div>
                                                         }
                                                         {/* {
                                                             <div className="conversation-name">{chat.userType === "sender" ? "Admin" : props.recentChatList[props.active_user].name}</div>
                                                         } */}
-
+  
                                                     </div>
                                                 </div>
                                             </li>

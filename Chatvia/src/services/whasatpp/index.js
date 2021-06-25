@@ -72,6 +72,7 @@ const WhatsApp = () => ({
                             
                         })
 
+                        
                         conversations = {
                             "id"             : count,
                             "jid"            : item.jid,
@@ -83,12 +84,15 @@ const WhatsApp = () => ({
                             "roomType"       : "contact",
                             "status"         : "online",
                             "unRead"         : 0
+                        }   
+
+
+                        if(!item.name){
+                            conversations.name = item.jid.split("@")[0]
                         }
 
-                        if(item.name){
-                            count++
-                            await Chats.push(conversations)
-                        }
+                        count++
+                        await Chats.push(conversations)
                         
                     })
                    return Chats
@@ -291,7 +295,12 @@ const WhatsApp = () => ({
 
     ProcessMessage : async (data, key2, userType) => {
        return ProcessMessage(data, key2, userType)
-    }
+    },
+
+    ChatRead : (jid) => {
+        const response = axios.get(`http://127.0.0.1:3001/whatsapp/read/chat/${jid}`)
+        return response
+     }
 
 }); 
 
@@ -302,14 +311,11 @@ function ProcessMessage(data, key2, userType){
         let message = { 
              "id": key2, "message": data.conversation, "time": "01:05", "userType": userType, "isImageMessage" : false, "isFileMessage" : false 
          }
-
-        
          return message
      }
      
      if(data.imageMessage){
          let message
-        
          message = { 
              "id"              : key2, "message": data.conversation, 
              "time"            : "01:05", "userType": userType, 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { Button, Card, Media, Badge, Input } from "reactstrap";
 
@@ -41,6 +41,27 @@ function UserProfileSidebar(props) {
 
     /* intilize t variable for multi language implementation */
     const { t } = useTranslation();
+
+
+
+    useEffect(() => {
+        getClient()
+    }, [props.activeUser.jid]);
+
+
+    const getClient = () =>{
+        CrmService.GetClient(props.activeUser.jid).then((response)=>{
+            settextname(response.nombres)
+            settextidentification(response.identificacion)
+            settelefono(response.telefono)
+            settextemail(response.email)
+        }).catch(()=>{
+            settextname("")
+            settextidentification("")
+            settelefono("")
+            settextemail("")
+        })
+    }
 
     const toggleCollapse1 = () => {
         setIsOpen1(!isOpen1);
@@ -85,21 +106,23 @@ function UserProfileSidebar(props) {
     }
 
 
-
     const SaveClient = e => {
 
         const data = {
-            "nombres"        : textname,
-            "identificacion" : textidentification,
-            "telefono"       : telefono,
-            "email"          : textemail,
-            "id_line"        : 20,
-            "user_id"        : 86,
-            "jid"            : props.activeUser.jid
+            "nombres"         : textname,
+            "identificacion"  : textidentification,
+            "telefono"        : telefono,
+            "email"           : textemail,
+            "origen"          : "Sistema de WhatsApp",
+            "id_line"         : process.env.REACT_APP_ID_LINE,
+            "id_user_asesora" : process.env.REACT_APP_USER_ID,
+            "jid"             : props.activeUser.jid
         }
+
+        console.log(data)
         CrmService.RegisterClient(data).then((response)=>{
-            console.log(response)
-        })
+            alert("El Px se registro con exito")
+        }).catch(error => alert("El Px ya se encuentra en Base de Datos"));
     }
 
     

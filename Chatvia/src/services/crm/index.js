@@ -5,10 +5,13 @@ const Crm = () => ({
 
     RegisterClient : async (data) => {
 
-        return data
+        
         const response = await axios({method: "post",
-                                        url: base_url(`${ApiCrm}/register`),
-                                        data})
+                                        url: base_url(ApiCrm, `whatsapp/register/client`),
+                                        data,
+                                        headers: { 
+                                            "Accept": "application/json",
+                                            "Content-Type": "application/json" }})
 
         return response
     },

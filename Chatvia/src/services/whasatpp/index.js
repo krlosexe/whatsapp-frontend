@@ -13,86 +13,88 @@ const WhatsApp = () => ({
                     let Chats = []
 
                      let count = 0
-                     await response.data.chats.map(async (item, key)=>{
+                     await response.map(async (item, key)=>{
                         
-                        
-                        let messages = []
-                        let conversations
+                        if(item){
+                            let messages = []
+                            let conversations
 
-                        await item.messages.map(async (item2, key2)=>{
+                            await item.messages.map(async (item2, key2)=>{
 
-                            let userType
-                            if(item2.key.fromMe == false){
-                                userType = "receiver"
-                            }else{
-                                userType = "sender"
-                            }
+                                let userType
+                                if(item2.key.fromMe == false){
+                                    userType = "receiver"
+                                }else{
+                                    userType = "sender"
+                                }
 
-                            if(item2.message){
-                                
-                                if(item2.message.conversation){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
+                                if(item2.message){
+                                    
+                                    if(item2.message.conversation){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+                                    
+                                    if(item2.message.imageMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+                                    
+                                    if(item2.message.documentMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+
+
+                                    if(item2.message.audioMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+
+
+
+                                    if(item2.message.videoMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+
+
+                                    if(item2.message.extendedTextMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+
+                                    if(item2.message.locationMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+
+
+
+                                    if(item2.message.contactMessage){
+                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                    }
+
                                 }
                                 
-                                if(item2.message.imageMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
-                                
-                                if(item2.message.documentMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
+                            })
 
-
-                                if(item2.message.audioMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
-
-
-
-                                if(item2.message.videoMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
-
-
-                                if(item2.message.extendedTextMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
-
-                                if(item2.message.locationMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
-
-
-
-                                if(item2.message.contactMessage){
-                                    messages.push(ProcessMessage(item2.message, key2, userType))
-                                }
-
-                            }
                             
-                        })
-
-                        
-                        conversations = {
-                            "id"             : count,
-                            "jid"            : item.jid,
-                            "isGroup"        : false,
-                            "messages"       : messages,
-                            "name"           : item.name,
-                           // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
-                           "profilePicture" :  "Null",
-                            "roomType"       : "contact",
-                            "status"         : "online",
-                            "unRead"         : 0
-                        }   
+                            conversations = {
+                                "id"             : count,
+                                "jid"            : item.jid,
+                                "isGroup"        : false,
+                                "messages"       : messages,
+                                "name"           : item.name,
+                                "profilePicture" : item.profilePicture,
+                                "roomType"       : "contact",
+                                "status"         : "online",
+                                "unRead"         : 0
+                            }   
 
 
-                        if(!item.name){
-                            conversations.name = item.jid.split("@")[0]
+                            if(!item.name){
+                                conversations.name = item.jid.split("@")[0]
+                            }
+
+                            count++
+                            await Chats.push(conversations)
+
                         }
-
-                        count++
-                        await Chats.push(conversations)
+                        
                         
                     })
                    return Chats
@@ -300,7 +302,19 @@ const WhatsApp = () => ({
     ChatRead : (jid) => {
         const response = axios.get(`http://127.0.0.1:3001/whatsapp/read/chat/${jid}`)
         return response
-     }
+    },
+
+
+    RegisterChat : (jid, message) => {
+
+        console.log("GUARDANDO Y BUSCANDO CHAT")
+        const data = {
+            jid,
+            message
+        }
+        const response = axios.post(`http://127.0.0.1:3001/whatsapp/register/chat`, data)
+        return response
+    }
 
 }); 
 

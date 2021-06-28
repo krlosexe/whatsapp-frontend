@@ -12,6 +12,10 @@ import { setconversationNameInOpenChat, activeUser } from "../../../redux/action
 //components
 import OnlineUsers from "./OnlineUsers";
 
+
+import {WhatsAppService} from '../../../services'
+
+
 import socketIOClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:3001/";
 
@@ -35,10 +39,17 @@ class Chats extends Component {
         console.log("QUE PASO ¿?")
 
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
+
+            if(data.messages[0].key.fromMe){
+              //  WhatsAppService.RegisterChat(data.jid, data.messages[0])
+            }
             if(!data.messages[0].key.fromMe){
 
-                const conversationNew  = this.state.recentChatList.find( item => item.jid == data.jid )
+               // WhatsAppService.RegisterChat(data.jid, data.messages[0])
 
+                const conversationNew  = this.state.recentChatList.find( item => item.jid == data.jid )
+                
+                console.log(conversationNew)
                 let message = false
                 if(conversationNew){
                     conversationNew.unRead = 1
@@ -105,9 +116,6 @@ class Chats extends Component {
                     }
 
                 }else{
-
-                   
-
                     const chat = {
                         "id"             : 0,
                         "jid"            : data.jid,
@@ -121,13 +129,18 @@ class Chats extends Component {
                         "unRead"         : 1
                     } 
 
-                    this.state.recentChatList.push(chat)
+                    let filtered = [...[chat], ...this.state.recentChatList]
+
+                    filtered.map((item, key)=>{
+                        item.id = key
+                    })
+
+                    this.setState({
+                        recentChatList : filtered
+                    });
+                   
                    
                 }
-
-
-                
-
                 
             }
             

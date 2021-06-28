@@ -45,7 +45,7 @@ const DOMPurify = createDOMPurify(window)
 
 
 function UserChat(props) {
-
+    
     const ref = useRef();
  
     const [modal, setModal] = useState(false);
@@ -131,6 +131,7 @@ function UserChat(props) {
 
 
     const getChats = async (cursor) => {
+        
         await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
             setCursor(data.cursor)
             if(cursor == "0"){

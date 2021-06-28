@@ -5,11 +5,9 @@ import ChatLeftSidebar from "./ChatLeftSidebar";
 import UserChat from "./UserChat/";
 
 import { connect } from "react-redux";
-import axios from 'axios';
 
 import {WhatsAppService} from '../../services'
 
-import img4 from "../../assets/images/small/img-4.jpg";
 
 
     function Index(props){
@@ -20,12 +18,13 @@ import img4 from "../../assets/images/small/img-4.jpg";
             getChats()
         }, []);
 
-
         async function getChats(){
-            await WhatsAppService.GetChats().then(setConversations)
+            await WhatsAppService.GetChats().then((data) =>{
+                if(data){
+                    setConversations(data)
+                }
+            })
         }
-
-        
 
         return (
             <React.Fragment>

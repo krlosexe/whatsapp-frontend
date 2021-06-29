@@ -134,6 +134,7 @@ function UserChat(props) {
         await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
             setCursor(data.cursor)
             if(cursor == "0"){
+                console.log(data.messages, "DATA:MESSAGES")
                 setchatMessages(data.messages)
             }else{
                 setchatMessages([...data.messages, ...chatMessages])
@@ -398,7 +399,7 @@ function UserChat(props) {
                                                             
                                                         </div>
                                                         {
-                                                            <div className="conversation-name">{chat.userType === "sender" ? "Patricia Smith" : chat.userName}</div>
+                                                            <div className="conversation-name">{chat.userType === "sender" ? "" : chat.userName}</div>
                                                         }
                                                     </div>
                                                 </div>
@@ -558,7 +559,7 @@ function UserChat(props) {
 
 
                                                         {
-                                                            chatMessages[key+1] ? chatMessages[key].userType === chatMessages[key+1].userType ? null :  <div className="conversation-name">{chat.userType === "sender" ? "Patricia Smith" : props.recentChatList[props.active_user].name}</div> : <div className="conversation-name">{chat.userType === "sender" ? "Admin" : props.recentChatList[props.active_user].name}</div>
+                                                            chatMessages[key+1] ? chatMessages[key].userType === chatMessages[key+1].userType ? null :  <div className="conversation-name">{chat.userType === "sender" ? "" : props.recentChatList[props.active_user].name}</div> : <div className="conversation-name">{chat.userType === "sender" ? "Admin" : props.recentChatList[props.active_user].name}</div>
                                                         }
                                                         {/* {
                                                             <div className="conversation-name">{chat.userType === "sender" ? "Admin" : props.recentChatList[props.active_user].name}</div>

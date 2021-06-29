@@ -35,8 +35,8 @@ class Chats extends Component {
 
 
     NewMessage(data){
-        console.log(data, "NEW ERROR")
-        console.log("QUE PASO ¿?")
+        // console.log(data, "NEW ERROR")
+        // console.log("QUE PASO ¿?")
 
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
 

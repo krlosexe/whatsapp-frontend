@@ -31,41 +31,41 @@ const WhatsApp = () => ({
                                 if(item2.message){
                                     
                                     if(item2.message.conversation){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
                                     
                                     if(item2.message.imageMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
                                     
                                     if(item2.message.documentMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
 
 
                                     if(item2.message.audioMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
 
 
 
                                     if(item2.message.videoMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
 
 
                                     if(item2.message.extendedTextMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
 
                                     if(item2.message.locationMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
 
 
 
                                     if(item2.message.contactMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
                                     }
 
                                 }
@@ -124,9 +124,8 @@ const WhatsApp = () => ({
                                     })
 
             
-        let messages = []
 
-        await response.messages.map(async (item2, key2)=>{
+        const conversations = Promise.all(response.messages.map(async (item2, key2)=>{
 
             let userType
             if(item2.key.fromMe == false){
@@ -135,55 +134,82 @@ const WhatsApp = () => ({
                 userType = "sender"
             }
 
-            console.log(item2, "DATA")
+
+            const data = {
+                jid,
+                "id" : item2.key.id
+            }
+
+            let userName = ""
+
+            
+            const valid = await axios({ method: "post",
+                                        url: "http://127.0.0.1:3001/whatsapp/verify/message",
+                                        data
+            })
+            if(valid.messages){
+                userName = valid.messages[0].user_name
+            }else{
+                userName = ""
+            }
 
             if(item2.message){
-
-                
-
+                let chatresponse = {}
                 if(item2.message.conversation){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
-                }
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    
+                }   
                 
                 if(item2.message.imageMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
-                 
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    
                 }
                 
                 if(item2.message.documentMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    
                 }
 
 
                 if(item2.message.audioMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    
                 }
 
 
 
                 if(item2.message.videoMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    
                 }
 
 
                 if(item2.message.extendedTextMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    
                 }
 
                 if(item2.message.locationMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
                 }
 
 
 
                 if(item2.message.contactMessage){
-                    messages.push(ProcessMessage(item2.message, key2, userType))
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
                 }
 
+                return chatresponse
+                
             }
-            
-        })
 
+            
+        }))
+
+       
+        const messages = await conversations.then((data)=>{
+            return data
+        })
         const cursor = response.cursor
         return {messages, cursor}
 
@@ -324,7 +350,7 @@ const WhatsApp = () => ({
 }); 
 
 
-function ProcessMessage(data, key2, userType){
+function ProcessMessage(data, key2, userType, userName){
 
     if(data.conversation){
         let message = { 
@@ -337,7 +363,7 @@ function ProcessMessage(data, key2, userType){
          }
 
          if(userType == "sender"){
-            message.nameUser = "Carlos Cardenas"
+           message.nameUser = userName
          }
          return message
      }
@@ -446,7 +472,7 @@ function ProcessMessage(data, key2, userType){
          }
 
          if(userType == "sender"){
-            message.nameUser = "Carlos Cardenas"
+           message.nameUser = userName
          }
         return message
      }

@@ -135,7 +135,12 @@ const WhatsApp = () => ({
                 userType = "sender"
             }
 
+            console.log(item2, "DATA")
+
             if(item2.message){
+
+                
+
                 if(item2.message.conversation){
                     messages.push(ProcessMessage(item2.message, key2, userType))
                 }
@@ -323,7 +328,16 @@ function ProcessMessage(data, key2, userType){
 
     if(data.conversation){
         let message = { 
-             "id": key2, "message": data.conversation, "time": "01:05", "userType": userType, "isImageMessage" : false, "isFileMessage" : false 
+             "id": key2, 
+             "message": data.conversation, 
+             "time": "01:05",
+             "userType": userType,
+             "isImageMessage" : false, 
+             "isFileMessage" : false 
+         }
+
+         if(userType == "sender"){
+            message.nameUser = "Carlos Cardenas"
          }
          return message
      }
@@ -429,6 +443,10 @@ function ProcessMessage(data, key2, userType){
              "isAudioMessage"  : false,
              "isVideoMessage"  : false,
              "jpegThumbnail"   : data.extendedTextMessage.jpegThumbnail
+         }
+
+         if(userType == "sender"){
+            message.nameUser = "Carlos Cardenas"
          }
         return message
      }

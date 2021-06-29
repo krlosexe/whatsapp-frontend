@@ -62,7 +62,6 @@ function UserChat(props) {
 
 
     useEffect(() => {
-        
         const socket = socketIOClient(ENDPOINT);
 
         socket.on("chat-update", data => {
@@ -445,8 +444,14 @@ function UserChat(props) {
                                                     
                 
                                                     <div className="user-chat-content">
+                                                        
+                                                        {chat.userType == "sender" && 
+                                                            <p>{chat.nameUser}</p>
+                                                        }
+                                                        
                                                         <div className="ctext-wrap">
                                                             <div className="ctext-wrap-content">
+
                                                                 { chat.description &&
                                                                     <LinkList image={chat.jpegThumbnail} description = {chat.description} link = {chat.link} />
 

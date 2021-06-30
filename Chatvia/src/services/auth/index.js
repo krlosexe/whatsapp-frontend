@@ -15,7 +15,14 @@ const Auth = () => ({
         
         return response
         
-    }
+    },
+
+    GetUsers : async () => {
+        const response = await axios.get(base_url(ApiWhatsapp, `whatsapp/get/users`))
+        return response
+    },
+
+
 }); 
 
 export default Auth

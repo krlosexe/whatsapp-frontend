@@ -7,16 +7,25 @@ import UserChat from "./UserChat/";
 import { connect } from "react-redux";
 
 import {WhatsAppService} from '../../services'
-
+import {AuthService} from '../../services'
 
 
     function Index(props){
 
         const [Conversations, setConversations] = useState([]);
+        const [UsersAdvisers, setUsersAdvisers] = useState([]);
 
         useEffect(() => {
             getChats()
+            getUsers()
         }, []);
+
+
+        const getUsers = async () => {
+            const users = await AuthService.GetUsers()
+            setUsersAdvisers(users)
+        };
+
 
         async function getChats(){
             await WhatsAppService.GetChats().then((data) =>{
@@ -32,7 +41,7 @@ import {WhatsAppService} from '../../services'
                 <ChatLeftSidebar recentChatList={Conversations} />
                 {/* user chat */}
                 {Conversations.length > 0 &&
-                    <UserChat recentChatList={Conversations} />
+                    <UserChat recentChatList={Conversations} users_advisers = {UsersAdvisers}/>
                 }
             </React.Fragment>
         );

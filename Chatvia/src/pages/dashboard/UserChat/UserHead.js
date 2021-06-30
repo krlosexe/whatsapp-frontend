@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dropdown, DropdownMenu, DropdownItem, DropdownToggle, Media, Button, Input, Row, Col } from "reactstrap";
+import { Dropdown, DropdownMenu, DropdownItem, DropdownToggle, Media, Button, Input, Row, Col, FormGroup, Label } from "reactstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -17,7 +17,8 @@ function UserHead(props) {
     const openUserSidebar = (e) => {
         e.preventDefault();
         props.openUserSidebar();
-    }
+    }   
+
 
     function closeUserChat(e){
         e.preventDefault();
@@ -36,11 +37,17 @@ function UserHead(props) {
         props.setFullUser(copyallUsers);
     }
 
+    function onDropdownSelected(e) {
+        console.log("THE VAL", e.target.value);
+        //here you will see the current selected value of the select input
+    }
+
+
     return (
         <React.Fragment>
             <div className="p-3 p-lg-4 border-bottom">
                             <Row className="align-items-center">
-                                <Col sm={4} xs={8}>
+                                <Col sm={4} xs={4}>
                                     <Media className="align-items-center">
                                         <div className="d-block d-lg-none mr-2">
                                             <Link to="#" onClick={(e) => closeUserChat(e)} className="user-chat-remove text-muted font-size-16 p-2">
@@ -97,7 +104,22 @@ function UserHead(props) {
                                         </Media>
                                     </Media>
                                 </Col>
-                                <Col sm={8} xs={4} >
+
+
+                                <Col sm={4} xs={4}>
+                                    <FormGroup>
+                                        <Label for="selectAdviser">Asesor</Label>
+                                        <Input type="select" name="select" id="selectAdviser" onChange={onDropdownSelected}>
+                                            <option>Seleccione</option>
+                                            {props.users_advisers.map(fbb =>
+                                                <option key={fbb.key} value={fbb._id}>{fbb.name}</option>
+                                            )};
+                                        </Input>
+                                    </FormGroup>
+                                </Col>
+
+
+                                <Col sm={4} xs={4} >
                                     <ul className="list-inline user-chat-nav text-right mb-0">
                                         
                                         <li className="list-inline-item">

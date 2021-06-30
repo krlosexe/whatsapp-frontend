@@ -33,6 +33,7 @@ import {WhatsAppService} from '../../../services'
 
 
 
+
 import createDOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
 
@@ -74,6 +75,7 @@ function UserChat(props) {
 
         setchatMessages([])
         getChats("0")
+       
         WhatsAppService.ChatRead(props.recentChatList[props.active_user].jid)
 
         localStorage.setItem("active_user", props.active_user)
@@ -141,6 +143,12 @@ function UserChat(props) {
             }
         })
     };
+
+
+   
+
+
+
 
 
     const toggle = () => setModal(!modal);
@@ -309,7 +317,7 @@ function UserChat(props) {
                     <div className={ props.userSidebar ? "w-70" : "w-100" }>
 
                         {/* render user head */}
-                        <UserHead chats={props.recentChatList}/> 
+                        <UserHead chats={props.recentChatList} users_advisers = {props.users_advisers}/> 
 
                             <SimpleBar
                                 style={{ maxHeight: "100%" }}

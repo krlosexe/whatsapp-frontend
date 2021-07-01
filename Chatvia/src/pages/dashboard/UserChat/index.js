@@ -136,7 +136,7 @@ function UserChat(props) {
         await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
             setCursor(data.cursor)
             if(cursor == "0"){
-                console.log(data.messages, "DATA:MESSAGES")
+              //  console.log(data.messages, "DATA:MESSAGES")
                 setchatMessages(data.messages)
             }else{
                 setchatMessages([...data.messages, ...chatMessages])
@@ -336,7 +336,7 @@ function UserChat(props) {
                                         //         <span className="title">Today</span>
                                         //     </div>
                                         // </li> : 
-                                        (props.recentChatList[props.active_user].isGroup === true) ? 
+                                        (props.recentChatList[props.active_user].id && props.recentChatList[props.active_user].isGroup === true) ? 
                                             <li key={key} className={chat.userType === "sender" ? "right" : ""}>
                                                 <div className="conversation-list">
                                                     
@@ -413,6 +413,8 @@ function UserChat(props) {
                                                 </div>
                                             </li>
                                         :
+
+
                                             <li key={key} className={chat.userType === "sender" ? "right" : ""}>
                                                 <div className="conversation-list">
                                                         {

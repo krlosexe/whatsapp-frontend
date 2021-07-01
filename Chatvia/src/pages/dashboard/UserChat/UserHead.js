@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownToggle, Media, Button, Input, Row, Col, FormGroup, Label } from "reactstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { openUserSidebar,setFullUser } from "../../../redux/actions";
+
+
+import {WhatsAppService} from '.././../../services'
+
 
 function UserHead(props) {
 
@@ -14,10 +18,23 @@ function UserHead(props) {
     const toggle = () => setDropdownOpen(!dropdownOpen);
     const toggle1 = () => setDropdownOpen1(!dropdownOpen1);
 
+    const [Advisor, setAdvisor] = useState("");
+
+    useEffect(() => {
+        console.log(props.chats[props.active_user].advisor, "ADVISOR")
+        if(props.chats[props.active_user].advisor){
+            setAdvisor(props.chats[props.active_user].advisor)
+        }else{
+            setAdvisor("")
+        }
+        
+    }, [props.chats[props.active_user].jid]);
+
+
     const openUserSidebar = (e) => {
         e.preventDefault();
         props.openUserSidebar();
-    }   
+    }       
 
 
     function closeUserChat(e){
@@ -38,8 +55,8 @@ function UserHead(props) {
     }
 
     function onDropdownSelected(e) {
-        console.log("THE VAL", e.target.value);
-        //here you will see the current selected value of the select input
+        WhatsAppService.AssignAdvisor(props.chats[props.active_user].jid, e.target.value)
+       
     }
 
 
@@ -109,7 +126,7 @@ function UserHead(props) {
                                 <Col sm={4} xs={4}>
                                     <FormGroup>
                                         <Label for="selectAdviser">Asesor</Label>
-                                        <Input type="select" name="select" id="selectAdviser" onChange={onDropdownSelected}>
+                                        <Input type="select" name="select" id="selectAdviser" onChange={onDropdownSelected} value={Advisor}>
                                             <option>Seleccione</option>
                                             {props.users_advisers.map(fbb =>
                                                 <option key={fbb.key} value={fbb._id}>{fbb.name}</option>

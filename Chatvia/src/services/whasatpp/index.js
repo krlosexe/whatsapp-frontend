@@ -8,12 +8,13 @@ const WhatsApp = () => ({
 
             const req = 'http://127.0.0.1:3001/whatsapp/get/chats'
                 try {
-                    const response = await axios.post(req)
+                    const response = await axios.post(req, {id_user : localStorage.getItem("user_id")})
 
                     let Chats = []
 
                      let count = 0
                      await response.map(async (item, key)=>{
+                         
                         
                         if(item){
                             let messages = []
@@ -79,6 +80,7 @@ const WhatsApp = () => ({
                                 "isGroup"        : false,
                                 "messages"       : messages,
                                 "name"           : item.name,
+                                "advisor"        : item.advisor,
                                 "profilePicture" : item.profilePicture,
                                 "roomType"       : "contact",
                                 "status"         : "online",
@@ -360,7 +362,6 @@ const WhatsApp = () => ({
 
 
     RegisterChat : (jid, message) => {
-
         console.log("GUARDANDO Y BUSCANDO CHAT")
         const data = {
             jid,
@@ -368,7 +369,31 @@ const WhatsApp = () => ({
         }
         const response = axios.post(`http://127.0.0.1:3001/whatsapp/register/chat`, data)
         return response
+    },
+
+
+    RegisterChat : (jid, message) => {
+        console.log("GUARDANDO Y BUSCANDO CHAT")
+        const data = {
+            jid,
+            message
+        }
+        const response = axios.post(`http://127.0.0.1:3001/whatsapp/register/chat`, data)
+        return response
+    },
+
+    
+
+    AssignAdvisor: (jid, user_id) => {
+        console.log("Asignando Asesor")
+        const data = {
+            jid,
+            user_id
+        }
+        const response = axios.post(`http://127.0.0.1:3001/whatsapp/assign/advisor`, data)
+        return response
     }
+    
 
 }); 
 

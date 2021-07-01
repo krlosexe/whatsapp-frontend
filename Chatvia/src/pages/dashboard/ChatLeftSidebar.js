@@ -6,6 +6,7 @@ import { TabContent, TabPane } from "reactstrap";
 //Import Components
 import Profile from "./Tabs/Profile";
 import Chats from "./Tabs/Chats";
+import ChatsNews from "./Tabs/ChatsNews";
 import Groups from "./Tabs/Groups";
 import Contacts from "./Tabs/Contacts";
 import Settings from "./Tabs/Settings";
@@ -28,7 +29,7 @@ function ChatLeftSidebar(props) {
                     {/* Start Profile tab-pane */}
                     <TabPane tabId="profile" id="pills-user">
                         {/* profile content  */}
-                        <Profile />
+                        <ChatsNews recentChatList={props.recentChatList}/>
                     </TabPane>
                    {/* End Profile tab-pane  */}
 

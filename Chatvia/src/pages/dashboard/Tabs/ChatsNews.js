@@ -280,7 +280,7 @@ class Chats extends Component {
                                             this.state.recentChatList.map((chat, key) =>
 
 
-                                            (chat.advisor) ? 
+                                            (!chat.advisor) ? 
                                                 <li key={key} id={"conversation" + key} className={chat.unRead ? "unread" : chat.isTyping ?  "typing" :  key === this.props.active_user ? "active" : ""}>
                                                     <Link to="#" onClick={(e) => this.openUserChat(e, chat)}>
                                                         <Media>

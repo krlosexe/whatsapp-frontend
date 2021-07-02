@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import { Nav, NavItem, NavLink, UncontrolledTooltip, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from "reactstrap";
+import { Nav, NavItem, NavLink, UncontrolledTooltip, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, Badge } from "reactstrap";
 import classnames from "classnames";
 import { connect } from "react-redux";
 
@@ -78,13 +78,15 @@ function LeftSidebarMenu(props) {
                 {/* Start side-menu nav */}
                 <div className="flex-lg-column my-auto">
                     <Nav pills className="side-menu-nav justify-content-center" role="tablist">
+                    <Badge color="danger" pill>4</Badge>
                         <NavItem id="profile">
                             <NavLink id="pills-user-tab" className={classnames({ active: activeTab === 'profile' })} onClick={() => { toggleTab('profile'); }}>
                                 <i className="ri-user-2-line"></i>
                             </NavLink>
+                            
                         </NavItem>
                         <UncontrolledTooltip target="profile" placement="top">
-                            Profile
+                            Nuevos Chats
                         </UncontrolledTooltip>
                         <NavItem id="Chats">
                             <NavLink id="pills-chat-tab" className={classnames({ active: activeTab === 'chat' })} onClick={() => { toggleTab('chat'); }}>

@@ -21,6 +21,21 @@ import {AuthService} from '../../services'
         }, []);
 
 
+        let countChats = 0
+        useEffect(() => {
+             Conversations.map((chat, key)=>{
+                 if(!chat.advisor){
+                     localStorage.setItem("chatsNews", countChats++)
+                 }
+             })
+        }, [Conversations]);
+
+
+
+       
+
+
+
         const getUsers = async () => {
             const users = await AuthService.GetUsers()
             setUsersAdvisers(users)

@@ -155,7 +155,6 @@ class Chats extends Component {
             li.classList.add("active");
         }
 
-
         const socket = socketIOClient(ENDPOINT);
 
         socket.on("chat-update", data => {

@@ -136,7 +136,7 @@ function UserChat(props) {
         await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
             setCursor(data.cursor)
             if(cursor == "0"){
-              //  console.log(data.messages, "DATA:MESSAGES")
+                console.log(data.messages, "DATA:MESSAGES")
                 setchatMessages(data.messages)
             }else{
                 setchatMessages([...data.messages, ...chatMessages])
@@ -336,7 +336,10 @@ function UserChat(props) {
                                         //         <span className="title">Today</span>
                                         //     </div>
                                         // </li> : 
-                                        (props.recentChatList[props.active_user].id && props.recentChatList[props.active_user].isGroup === true) ? 
+
+                                        (chat) ? 
+
+                                            (props.recentChatList[props.active_user].id && props.recentChatList[props.active_user].isGroup === true) ? 
                                             <li key={key} className={chat.userType === "sender" ? "right" : ""}>
                                                 <div className="conversation-list">
                                                     
@@ -360,7 +363,7 @@ function UserChat(props) {
                                                                 {
                                                                     chat.message &&
                                                                         <p className="mb-0">
-                                                                           { <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(chat.message) }} /> }
+                                                                        { <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(chat.message) }} /> }
                                                                         </p>
                                                                 }
                                                                 {
@@ -388,7 +391,7 @@ function UserChat(props) {
                                                                     !chat.isTyping && <p className="chat-time mb-0"><i className="ri-time-line align-middle"></i> <span className="align-middle">{chat.time}</span></p>
                                                                 }
 
-                                                               
+                                                            
                                                             </div>
                                                             {
                                                                 !chat.isTyping &&
@@ -469,13 +472,13 @@ function UserChat(props) {
                                                                 }
                                                                 {
                                                                     chat.message &&
-                                                                     <div dangerouslySetInnerHTML={{ __html: chat.message.replace(/\n/g, '<br />')}} /> 
+                                                                    <div dangerouslySetInnerHTML={{ __html: chat.message.replace(/\n/g, '<br />')}} /> 
                                                                 }
 
 
                                                                 {
                                                                     chat.address &&
-                                                                     <p> {chat.address} </p> 
+                                                                    <p> {chat.address} </p> 
                                                                 }
 
 
@@ -521,7 +524,7 @@ function UserChat(props) {
                                                                 }
 
 
-                                                              
+                                                            
 
 
 
@@ -558,14 +561,14 @@ function UserChat(props) {
                                                                         </DropdownMenu>
                                                                     </UncontrolledDropdown>
                                                             }
-                                                                  
+                                                                
                                                         </div>
                                                         
 
                                                         {chat.userType === "sender" &&
-                                                             <p>VV</p>
+                                                            <p>VV</p>
                                                         }
-                                                       
+                                                    
 
 
                                                         {
@@ -574,10 +577,18 @@ function UserChat(props) {
                                                         {/* {
                                                             <div className="conversation-name">{chat.userType === "sender" ? "Admin" : props.recentChatList[props.active_user].name}</div>
                                                         } */}
-  
+
                                                     </div>
                                                 </div>
                                             </li>
+                                        :
+
+                                        <li></li>
+
+
+
+                                        
+                                        
                                     )
                                 }
                                  </ul>

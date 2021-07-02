@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Nav, NavItem, NavLink, UncontrolledTooltip, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, Badge } from "reactstrap";
 import classnames from "classnames";
@@ -20,17 +20,56 @@ import germany from "../../assets/images/flags/germany.jpg";
 import italy from "../../assets/images/flags/italy.jpg";
 import russia from "../../assets/images/flags/russia.jpg";
 
+
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:3001/";
+
+
 function LeftSidebarMenu(props) {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [dropdownOpen2, setDropdownOpen2] = useState(false);
     const [dropdownOpenMobile, setDropdownOpenMobile] = useState(false);
     const [ lng, setlng ] = useState("English");
+    const [ChatsNews, setChatsNews] = useState(localStorage.getItem("chatsNews"));
+
 
 
     const toggle = () => setDropdownOpen(!dropdownOpen);
     const toggle2 = () => setDropdownOpen2(!dropdownOpen2);
     const toggleMobile = () => setDropdownOpenMobile(!dropdownOpenMobile);
+    
+
+    useEffect(() => {
+        const socket = socketIOClient(ENDPOINT);
+        socket.on("chat-new", data => {
+            NewMessage(data)
+        });
+
+
+
+        socket.on("RemoveChat", data => {
+           setChatsNews(parseInt(ChatsNews) - parseInt(1))
+           console.log("RemoveChat")
+        });
+
+
+
+        
+
+    }, []); 
+
+
+
+   const  NewMessage = (data) =>{
+
+    console.log(parseInt(ChatsNews) + parseInt(1), "COUNTS")
+        setChatsNews(parseInt(ChatsNews) + parseInt(1))
+        console.log(data, "NEW CHAT")
+    }
+
+
+
 
     const toggleTab = tab => {
         props.setActiveTab(tab)
@@ -78,7 +117,7 @@ function LeftSidebarMenu(props) {
                 {/* Start side-menu nav */}
                 <div className="flex-lg-column my-auto">
                     <Nav pills className="side-menu-nav justify-content-center" role="tablist">
-                    <Badge color="danger" pill>4</Badge>
+                        <Badge color="danger" pill>{ChatsNews}</Badge>
                         <NavItem id="profile">
                             <NavLink id="pills-user-tab" className={classnames({ active: activeTab === 'profile' })} onClick={() => { toggleTab('profile'); }}>
                                 <i className="ri-user-2-line"></i>
@@ -191,8 +230,12 @@ function LeftSidebarMenu(props) {
 }
 
 const mapStatetoProps = state => {
+
+    const chats_news = state.Chat.chats_news;
+
     return {
-      ...state.Layout
+      ...state.Layout,
+      chats_news
     };
 };
 

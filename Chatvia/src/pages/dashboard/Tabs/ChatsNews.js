@@ -26,7 +26,7 @@ class Chats extends Component {
         this.state = {
             searchChat : "",
             recentChatList : this.props.recentChatList,
-            ActiveUser     : 0
+            ActiveUser     : 0,
         }
         this.handleChange = this.handleChange.bind(this);
         this.openUserChat = this.openUserChat.bind(this);
@@ -38,6 +38,8 @@ class Chats extends Component {
         // console.log(data, "NEW ERROR")
         // console.log("QUE PASO ¿?")
 
+      
+        console.log(this.props.chats_news)
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
 
             if(data.messages[0].key.fromMe){
@@ -161,6 +163,10 @@ class Chats extends Component {
         socket.on("chat-update", data => {
             this.NewMessage(data)
         });
+
+        let countChats = 0
+
+       
     }
 
     componentDidUpdate(prevProps) {
@@ -281,6 +287,7 @@ class Chats extends Component {
 
 
                                             (!chat.advisor) ? 
+
                                                 <li key={key} id={"conversation" + key} className={chat.unRead ? "unread" : chat.isTyping ?  "typing" :  key === this.props.active_user ? "active" : ""}>
                                                     <Link to="#" onClick={(e) => this.openUserChat(e, chat)}>
                                                         <Media>
@@ -360,8 +367,8 @@ class Chats extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { active_user } = state.Chat;
-    return { active_user };
+    const { active_user, chats_news } = state.Chat;
+    return { active_user, chats_news };
 };
 
 export default connect(mapStateToProps, { setconversationNameInOpenChat, activeUser })(Chats);

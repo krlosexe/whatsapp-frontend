@@ -155,6 +155,8 @@ const WhatsApp = () => ({
                 userName = ""
             }
 
+           
+
             if(item2.message){
                 let chatresponse = {}
                 if(item2.message.conversation){
@@ -201,6 +203,7 @@ const WhatsApp = () => ({
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
                 }
 
+
                 return chatresponse
                 
             }
@@ -209,10 +212,11 @@ const WhatsApp = () => ({
         }))
 
        
-        const messages = await conversations.then((data)=>{
-            return data
-        })
+        const messages = await conversations.then((data)=>{return data })
+
+
         const cursor = response.cursor
+        let chats    = messages.find(item => item != null)
         return {messages, cursor}
 
     },

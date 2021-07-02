@@ -20,6 +20,7 @@ import img7 from "../../assets/images/small/img-7.jpg";
 
 const INIT_STATE = {
 	active_user : 0,
+    chats_news  : 11,
     users: [
         //admin is sender and user in receiver
         { id : 0, name : "Patrick Hendricks", profilePicture : avatar2, status : "online", unRead : 0, roomType : "contact", isGroup: false, 

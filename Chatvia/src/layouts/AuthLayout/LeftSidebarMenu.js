@@ -41,6 +41,7 @@ function LeftSidebarMenu(props) {
     
 
     useEffect(() => {
+        
         const socket = socketIOClient(ENDPOINT);
         socket.on("chat-new", data => {
             NewMessage(data)
@@ -49,8 +50,15 @@ function LeftSidebarMenu(props) {
 
 
         socket.on("RemoveChat", data => {
-           setChatsNews(parseInt(ChatsNews) - parseInt(1))
-           console.log("RemoveChat")
+
+            const calc = parseInt(localStorage.getItem("chatsNews")) - 1
+            console.log(parseInt(calc))
+
+           setChatsNews(calc)
+
+           
+
+           console.log(calc, "RemoveChat")
         });
 
 
@@ -58,6 +66,14 @@ function LeftSidebarMenu(props) {
         
 
     }, []); 
+
+
+
+    useEffect(() => {
+        localStorage.setItem("chatsNews", ChatsNews)
+        console.log(ChatsNews)
+    }, [ChatsNews]); 
+
 
 
 

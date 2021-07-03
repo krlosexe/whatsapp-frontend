@@ -56,6 +56,7 @@ function UserHead(props) {
 
     function onDropdownSelected(e) {
         WhatsAppService.AssignAdvisor(props.chats[props.active_user].jid, e.target.value)
+        setAdvisor(e.target.value)
        
     }
 

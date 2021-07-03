@@ -48,17 +48,11 @@ function LeftSidebarMenu(props) {
         });
 
 
-
         socket.on("RemoveChat", data => {
-
             const calc = parseInt(localStorage.getItem("chatsNews")) - 1
             console.log(parseInt(calc))
-
-           setChatsNews(calc)
-
-           
-
-           console.log(calc, "RemoveChat")
+            setChatsNews(calc)
+            console.log(calc, "RemoveChat")
         });
 
 

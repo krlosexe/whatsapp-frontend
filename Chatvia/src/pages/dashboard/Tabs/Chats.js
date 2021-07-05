@@ -116,6 +116,7 @@ class Chats extends Component {
                     }
 
                 }else{
+                    
                     const chat = {
                         "id"             : 0,
                         "jid"            : data.jid,

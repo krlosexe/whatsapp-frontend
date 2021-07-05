@@ -110,7 +110,18 @@ const WhatsApp = () => ({
         }
     },
 
+    GetChat : async (jid) => {
+       const response = await axios.get(`http://127.0.0.1:3001/whatsapp/verify/chat/${jid}`).then((data)=>{
+            return data
+        }).catch(()=>{
+            console.log("ERROR")
+            return false
+        })
 
+        return response
+        
+        
+    },
 
     GetConversation : async (jid, cursor_data) => {
      
@@ -375,18 +386,6 @@ const WhatsApp = () => ({
         return response
     },
 
-
-    RegisterChat : (jid, message) => {
-        console.log("GUARDANDO Y BUSCANDO CHAT")
-        const data = {
-            jid,
-            message
-        }
-        const response = axios.post(`http://127.0.0.1:3001/whatsapp/register/chat`, data)
-        return response
-    },
-
-    
 
     AssignAdvisor: (jid, user_id) => {
         console.log("Asignando Asesor")

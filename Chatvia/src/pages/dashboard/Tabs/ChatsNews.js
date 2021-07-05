@@ -34,7 +34,7 @@ class Chats extends Component {
     }
 
 
-    NewMessage(data){
+   async NewMessage(data){
         // console.log(data, "NEW ERROR")
         // console.log("QUE PASO ¿?")
 
@@ -118,30 +118,39 @@ class Chats extends Component {
                     }
 
                 }else{
-                    const chat = {
-                        "id"             : 0,
-                        "jid"            : data.jid,
-                        "isGroup"        : false,
-                        "messages"       : [],
-                        "name"           :  data.jid,
-                       // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
-                       "profilePicture" :  "Null",
-                        "roomType"       : "contact",
-                        "status"         : "online",
-                        "unRead"         : 1
-                    } 
 
-                    let filtered = [...[chat], ...this.state.recentChatList]
+                    const chat_new = await WhatsAppService.GetChat(data.jid)
 
-                    filtered.map((item, key)=>{
-                        item.id = key
-                    })
+                    console.log(chat_new, "CHAT_NEWS")
 
-                    this.setState({
-                        recentChatList : filtered
-                    });
-                   
-                   
+                    if(!chat_new){
+                        const chat = {
+                            "id"             : 0,
+                            "jid"            : data.jid,
+                            "isGroup"        : false,
+                            "messages"       : [],
+                            "name"           :  data.jid,
+                            // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
+                            "profilePicture" :  "Null",
+                            "roomType"       : "contact",
+                            "status"         : "online",
+                            "unRead"         : 1
+                        } 
+    
+                        let filtered = [...[chat], ...this.state.recentChatList]
+    
+                        filtered.map((item, key)=>{
+                            item.id = key
+                        })
+    
+                        this.setState({
+                            recentChatList : filtered
+                        });
+                    }                    
+
+                        
+                       
+
                 }
                 
             }

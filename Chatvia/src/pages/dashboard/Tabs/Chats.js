@@ -60,8 +60,10 @@ class Chats extends Component {
 
             console.log(precense, "precense")
 
-            if(precense.contac){
+            //if(precense.contac){
                 const type     = precense.contact.lastKnownPresence
+
+                console.log(type, "type")
                 if(type == "composing"){
                     console.log(data.jid, "composing")
                     this.state.recentChatList.map((item, key)=>{
@@ -78,7 +80,7 @@ class Chats extends Component {
                     this.ResetTyping(data.jid)
                 
                 }
-            }
+            //}
             
             
         }

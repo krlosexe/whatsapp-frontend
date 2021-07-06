@@ -91,6 +91,8 @@ function UserChat(props) {
 
 
     const NewMessage = async (data) => {
+
+        console.log(data, "DATAS")
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
 
 
@@ -565,9 +567,20 @@ function UserChat(props) {
                                                         </div>
                                                         
 
-                                                        {chat.userType === "sender" &&
+                                                        {chat.userType === "sender" && chat.status == "READ" &&
+                                                            <p>VVV</p>
+                                                        }
+
+
+                                                        {chat.userType === "sender" && chat.status == "DELIVERY_ACK" &&
                                                             <p>VV</p>
                                                         }
+
+                                                        {chat.userType === "sender" && chat.status == "SERVER_ACK" &&
+                                                            <p>V</p>
+                                                        }
+
+
                                                     
 
 

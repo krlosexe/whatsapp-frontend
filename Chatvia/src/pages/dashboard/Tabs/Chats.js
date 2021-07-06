@@ -33,10 +33,57 @@ class Chats extends Component {
 
     }
 
+    ResetTyping(jid){
+
+        setTimeout(()=>{
+            this.state.recentChatList.map((item, key)=>{
+                if(item.jid == jid){
+                    item.isTyping = false
+                }
+                
+            })
+    
+            this.setState({
+                recentChatList : this.state.recentChatList
+            });
+        }, 5000)
+    }
+
 
     NewMessage(data){
         // console.log(data, "NEW ERROR")
         // console.log("QUE PASO ¿?")
+
+
+        if(data.presences){
+            const precense = JSON.parse(JSON.stringify(data.presences).replace(`${data.jid}`, "contact"))
+
+            console.log(precense, "precense")
+
+            if(precense.contac){
+                const type     = precense.contact.lastKnownPresence
+                if(type == "composing"){
+                    console.log(data.jid, "composing")
+                    this.state.recentChatList.map((item, key)=>{
+                        if(item.jid == data.jid){
+                            item.isTyping = true
+                        }
+                        
+                    })
+
+                    this.setState({
+                        recentChatList : this.state.recentChatList
+                    });
+
+                    this.ResetTyping(data.jid)
+                
+                }
+            }
+            
+            
+        }
+
+        
 
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
 

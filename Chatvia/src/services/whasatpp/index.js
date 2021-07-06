@@ -85,6 +85,7 @@ const WhatsApp = () => ({
                                 "roomType"       : "contact",
                                 "status"         : "online",
                                 "unRead"         : 0
+                                //"isTyping"       : true
                             }   
 
 
@@ -172,46 +173,48 @@ const WhatsApp = () => ({
                 let chatresponse = {}
                 if(item2.message.conversation){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
-                    
+                    chatresponse.status = item2.status
                 }   
                 
                 if(item2.message.imageMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
-                    
+                    chatresponse.status = item2.status
                 }
                 
                 if(item2.message.documentMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
-                    
+                    chatresponse.status = item2.status
                 }
 
 
                 if(item2.message.audioMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
-                    
+                    chatresponse.status = item2.status
                 }
 
 
 
                 if(item2.message.videoMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
-                    
+                    chatresponse.status = item2.status
                 }
 
 
                 if(item2.message.extendedTextMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
-                    
+                    chatresponse.status = item2.status
                 }
 
                 if(item2.message.locationMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse.status = item2.status
                 }
 
 
 
                 if(item2.message.contactMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse.status = item2.status
                 }
 
 

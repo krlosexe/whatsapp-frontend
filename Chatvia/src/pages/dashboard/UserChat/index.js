@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useRef } from 'react';
-import { DropdownMenu, DropdownItem, DropdownToggle, UncontrolledDropdown, Modal, ModalHeader, ModalBody, CardBody, Button, ModalFooter } from "reactstrap";
+import { DropdownMenu, DropdownItem, DropdownToggle, UncontrolledDropdown, Modal, ModalHeader, ModalBody, CardBody, Button, ModalFooter, Alert } from "reactstrap";
 import { connect } from "react-redux";
 
 import SimpleBar from "simplebar-react";
@@ -47,28 +47,33 @@ const DOMPurify = createDOMPurify(window)
 
 function UserChat(props) {
     
-    const ref = useRef();
+    const ref = useRef()
  
-    const [modal, setModal] = useState(false);
+    const [modal, setModal]               = useState(false)
+    const [OpenReply, setOpenReply]       = useState(false)
+    const [Message, setMessage]           = useState(false)
+    const [NameContat, setNameContac]     = useState(false)
+    const [NumberContac, setNumberContac] = useState(false)
+    const [Quoted, setQuoted]             = useState(false)
 
     /* intilize t variable for multi language implementation */
-    const { t } = useTranslation();
+    const { t } = useTranslation()
 
     //demo conversation messages
     //userType must be required
-    const [ allUsers ] = useState(props.recentChatList);
-    const [ chatMessages, setchatMessages ] = useState([]);
-    const [ Cursor, setCursor ] = useState("0");
+    const [ allUsers ] = useState(props.recentChatList)
+    const [ chatMessages, setchatMessages ] = useState([])
+    const [ Cursor, setCursor ] = useState("0")
 
 
 
     useEffect(() => {
-        const socket = socketIOClient(ENDPOINT);
+        const socket = socketIOClient(ENDPOINT)
 
         socket.on("chat-update", data => {
             NewMessage(data)
-        });
-    }, []);
+        })
+    }, [])
 
 
     useEffect(() => {
@@ -80,11 +85,11 @@ function UserChat(props) {
 
         localStorage.setItem("active_user", props.active_user)
 
-        ref.current.recalculate();
+        ref.current.recalculate()
         if (ref.current.el) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
         }
-    },[props.active_user, props.recentChatList]);
+    },[props.active_user, props.recentChatList])
 
 
 
@@ -153,15 +158,15 @@ function UserChat(props) {
 
 
 
-    const toggle = () => setModal(!modal);
+    const toggle = () => setModal(!modal)
 
     const addMessage = (message, type) => {
         var messageObj = null;
 
         const user = props.recentChatList[props.active_user].jid
 
-        let d = new Date();
-        var n = d.getSeconds();
+        let d = new Date()
+        var n = d.getSeconds()
 
         //matches the message type is text, file or image, and create object according to it
         switch (type) {
@@ -175,6 +180,9 @@ function UserChat(props) {
                     isFileMessage : false,
                     isImageMessage : false
                 }
+
+                console.log(Quoted, "setQuoted")
+                return false
 
                 WhatsAppService.SendMmessageText(messageObj, user)
 
@@ -281,14 +289,14 @@ function UserChat(props) {
         
 
         //add message object to chat        
-        setchatMessages([...chatMessages, messageObj]);
+        setchatMessages([...chatMessages, messageObj])
 
         let copyallUsers = [...allUsers];
         copyallUsers[props.active_user].messages = [...chatMessages, messageObj];
         copyallUsers[props.active_user].isTyping = false;
-        props.setFullUser(copyallUsers);
+        props.setFullUser(copyallUsers)
 
-        scrolltoBottom();
+        scrolltoBottom()
     }
 
     function scrolltoBottom(){
@@ -304,10 +312,24 @@ function UserChat(props) {
 
         var filtered = conversation.filter(function (item) {
             return item.id !== id;
-        });
+        })
 
-        setchatMessages(filtered);
+        setchatMessages(filtered)
+    }   
+
+
+    const Reply = (data) => {
+        console.log(data, "DAT")
+        setOpenReply(true)
+        setMessage(data.message)
+        setNameContac(props.recentChatList[props.active_user].name)
+        setNumberContac(props.recentChatList[props.active_user].jid.split("@")[0])
+        setQuoted(data.chat)
     }
+
+
+    const onDismiss = () => setOpenReply(false)
+
 
     
     return (
@@ -557,7 +579,7 @@ function UserChat(props) {
                                                                         </DropdownToggle>
                                                                         <DropdownMenu>
                                                                             <DropdownItem>{t('Copy')} <i className="ri-file-copy-line float-right text-muted"></i></DropdownItem>
-                                                                            <DropdownItem>{t('Save')} <i className="ri-save-line float-right text-muted"></i></DropdownItem>
+                                                                            <DropdownItem onClick={() => {Reply(chat)}}>{t('Reply')} <i className="ri-chat-forward-line float-right text-muted"></i></DropdownItem>
                                                                             <DropdownItem onClick={toggle}>Forward <i className="ri-chat-forward-line float-right text-muted"></i></DropdownItem>
                                                                             <DropdownItem onClick={() => deleteMessage(chat.id) }>Delete <i className="ri-delete-bin-line float-right text-muted"></i></DropdownItem>
                                                                         </DropdownMenu>
@@ -620,8 +642,19 @@ function UserChat(props) {
                                 </CardBody>
                             </ModalBody>
                         </Modal>
-    
+
+
+                       
+                       
+
+                        {OpenReply &&
+                            <Alert color="dark" toggle={onDismiss}>
+                                <p>{NumberContac && NumberContac} - { NameContat && NameContat }</p>
+                                {Message && <p>{Message}</p>}   
+                            </Alert>
+                        }
                         <ChatInput onaddMessage={addMessage} />
+                       
                     </div>
 
                     <UserProfileSidebar activeUser={props.recentChatList[props.active_user]} />
@@ -629,7 +662,7 @@ function UserChat(props) {
                 </div>
             </div>
         </React.Fragment>
-    );
+    )
 }
 
 const mapStateToProps = (state) => {
@@ -638,5 +671,5 @@ const mapStateToProps = (state) => {
     return { active_user,userSidebar };
 };
 
-export default withRouter(connect(mapStateToProps, { openUserSidebar,setFullUser })(UserChat));
+export default withRouter(connect(mapStateToProps, { openUserSidebar,setFullUser })(UserChat))
 

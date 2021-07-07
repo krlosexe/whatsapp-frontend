@@ -210,12 +210,12 @@ const WhatsApp = () => ({
                     chatresponse.status = item2.status
                 }
 
-
-
                 if(item2.message.contactMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
                     chatresponse.status = item2.status
                 }
+
+                chatresponse.chat = item2
 
 
                 return chatresponse

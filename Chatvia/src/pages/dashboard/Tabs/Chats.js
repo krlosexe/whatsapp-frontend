@@ -56,30 +56,30 @@ class Chats extends Component {
 
 
         if(data.presences){
-            const precense = JSON.parse(JSON.stringify(data.presences).replace(`${data.jid}`, "contact"))
+            // const precense = JSON.parse(JSON.stringify(data.presences).replace(`${data.jid}`, "contact"))
 
-            console.log(precense, "precense")
+            // console.log(precense, "precense")
 
-            //if(precense.contac){
-                const type     = precense.contact.lastKnownPresence
+            // //if(precense.contac){
+            //     const type     = precense.contact.lastKnownPresence
 
-                console.log(type, "type")
-                if(type == "composing"){
-                    console.log(data.jid, "composing")
-                    this.state.recentChatList.map((item, key)=>{
-                        if(item.jid == data.jid){
-                            item.isTyping = true
-                        }
+            //     console.log(type, "type")
+            //     if(type == "composing"){
+            //         console.log(data.jid, "composing")
+            //         this.state.recentChatList.map((item, key)=>{
+            //             if(item.jid == data.jid){
+            //                 item.isTyping = true
+            //             }
                         
-                    })
+            //         })
 
-                    this.setState({
-                        recentChatList : this.state.recentChatList
-                    });
+            //         this.setState({
+            //             recentChatList : this.state.recentChatList
+            //         });
 
-                    this.ResetTyping(data.jid)
+            //         this.ResetTyping(data.jid)
                 
-                }
+            //     }
             //}
             
             

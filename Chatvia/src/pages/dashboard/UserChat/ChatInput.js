@@ -54,8 +54,6 @@ function ChatInput(props) {
 
         }
 
-        
-        
     }
 
     //function for image input change
@@ -117,41 +115,12 @@ function ChatInput(props) {
         }
     }
 
+
+   
     return (
         <React.Fragment>
             <div className="p-3 p-lg-4 border-top mb-0">
                             <Form onSubmit={(e) => onaddMessage(e, textMessage)} >
-
-
-
-                            <div className="App">
-                                <OpusMediaRecorderView
-                                    onDataAvailable={(e) => {
-
-                                        let reader = new window.FileReader();
-                                        reader.onloadend = async function() {
-                                            const data = reader.result;
-
-                                            await setAudioBase64(data)
-                                            await onaddMessage(e, "", data)
-                                            //console.log(data);
-                                        };
-
-                                        reader.readAsDataURL(e.data);
-                                    }}
-                                    render={({ state, start, stop, pause, resume }) => (
-                                        <div>
-                                        <p>{state}</p>
-
-                                        <Label id="files" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
-                                                        <i className="ri-attachment-line"></i>
-                                                    </Label>   
-                                        <button onClick={start}>Start Recording</button>
-                                        <button onClick={stop}>Stop Recording</button>
-                                        </div>
-                                    )}
-                                    />
-                            </div>
 
 
 
@@ -161,24 +130,65 @@ function ChatInput(props) {
                             <button onClick={start}>Start</button>
                             <button onClick={stop}>Stop</button> */}
 
-
+                               
                                 <Row noGutters>
-                                    <Col>
+
+
+                                    <Col sm="6">
                                         <div>
                                             <Input type="text" value={textMessage} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
                                         </div>
                                     </Col>
-                                    <Col xs="auto">
+
+
+                                    <Col xs="6">
+
                                         <div className="chat-input-links ml-md-2">
                                             <ul className="list-inline mb-0">
+                                                 <li className="list-inline-item">
+                                                    <OpusMediaRecorderView
+                                                        onDataAvailable={(e) => {
+
+                                                            let reader = new window.FileReader();
+                                                            reader.onloadend = async function() {
+                                                                const data = reader.result;
+
+                                                                await setAudioBase64(data)
+                                                                await onaddMessage(e, "", data)
+                                                                //console.log(data);
+                                                            };
+
+                                                            reader.readAsDataURL(e.data);
+                                                        }}
+                                                        render={({ state, start, stop, pause, resume }) => (
+                                                            <div>
+                                                                <Label onClick={start} id="mic" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
+                                                                    <i className="ri-mic-fill"></i>
+                                                                </Label>   
+
+                                                                <UncontrolledTooltip target="mic" placement="top">
+                                                                    Grabar Audio
+                                                                </UncontrolledTooltip>
+
+                                                                {state == "recording" &&
+                                                                    <p>00:00</p>
+                                                                }
+
+                                                                {state == "recording" &&
+                                                                    <button onClick={stop}>Stop Recording</button>
+                                                                }
+                                                            </div>
+                                                        )}
+                                                    />
+                                                </li>
                                                 <li className="list-inline-item">
-                                                <ButtonDropdown className="emoji-dropdown" direction="up" isOpen={isOpen} toggle={toggle}>
-                                                    <DropdownToggle id="emoji" color="link" className="text-decoration-none font-size-16 btn-lg waves-effect">
-                                                        <i className="ri-emotion-happy-line"></i>
-                                                    </DropdownToggle>
-                                                    <DropdownMenu className="dropdown-menu-lg-right">
-                                                        <Picker onSelect={addEmoji} />
-                                                    </DropdownMenu>
+                                                    <ButtonDropdown className="emoji-dropdown" direction="up" isOpen={isOpen} toggle={toggle}>
+                                                        <DropdownToggle id="emoji" color="link" className="text-decoration-none font-size-16 btn-lg waves-effect">
+                                                            <i className="ri-emotion-happy-line"></i>
+                                                        </DropdownToggle>
+                                                        <DropdownMenu className="dropdown-menu-lg-right">
+                                                            <Picker onSelect={addEmoji} />
+                                                        </DropdownMenu>
                                                     </ButtonDropdown>
                                                     <UncontrolledTooltip target="emoji" placement="top">
                                                         Emoji
@@ -203,13 +213,6 @@ function ChatInput(props) {
                                                     </UncontrolledTooltip>
                                                 </li>
 
-
-                                                <li>
-
-                                                
-
-
-                                                </li>
                                                 <li className="list-inline-item">
                                                     <Button type="submit" color="primary" className="font-size-16 btn-lg chat-send waves-effect waves-light">
                                                         <i className="ri-send-plane-2-fill"></i>

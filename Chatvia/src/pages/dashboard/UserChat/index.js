@@ -538,6 +538,7 @@ function UserChat(props) {
                                                                     (chat.quotedMessage.contextInfo) ? 
 
                                                                         (chat.quotedMessage.contextInfo.quotedMessage) ?
+                                                                    
                                                                             <Alert color="dark">
 
                                                                                {chat.quotedMessage.contextInfo.participant == process.env.REACT_APP_NUMBER_PHONE &&
@@ -560,7 +561,28 @@ function UserChat(props) {
 
                                                                     :
                                                                     <p></p>
+                                                                    
                                                                 }
+
+
+
+
+                                                                    {chat.quotedMessage &&
+
+                                                                    (chat.quotedMessage.contextInfo) ? 
+
+                                                                        (chat.quotedMessage.contextInfo.isForwarded) ?
+
+                                                                            <small>Reenviado</small>
+                                                                        :
+                                                                        <p></p>
+
+                                                                    :
+                                                                    <p></p>
+
+                                                                    }
+
+
                                                                
 
                                                                 { chat.description &&

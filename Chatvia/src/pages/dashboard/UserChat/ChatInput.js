@@ -142,6 +142,10 @@ function ChatInput(props) {
                                     render={({ state, start, stop, pause, resume }) => (
                                         <div>
                                         <p>{state}</p>
+
+                                        <Label id="files" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
+                                                        <i className="ri-attachment-line"></i>
+                                                    </Label>   
                                         <button onClick={start}>Start Recording</button>
                                         <button onClick={stop}>Stop Recording</button>
                                         </div>

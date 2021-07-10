@@ -13,7 +13,7 @@ class SelectContact extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contacts : this.props.contacts
+            contacts : this.props.contact
         }
         this.sortContact = this.sortContact.bind(this);
     }
@@ -21,7 +21,7 @@ class SelectContact extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
           this.setState({
-            contacts : this.props.contacts
+            contacts : this.props.contact
           });
         }
     }
@@ -52,6 +52,8 @@ class SelectContact extends Component {
 
     componentDidMount(){
         this.sortContact();
+
+        console.log(this.props, "PROPS")
     }
 
     componentWillUnmount(){
@@ -75,7 +77,7 @@ class SelectContact extends Component {
                                                     
                                                         <li key={keyChild}>
                                                             <div className="custom-control custom-checkbox">
-                                                                <Input type="checkbox" className="custom-control-input" onChange={(e) => this.props.handleCheck(e, child.id)} id={"memberCheck"+child.id} value={child.name} />
+                                                                <Input type="checkbox" className="custom-control-input" onChange={(e) => this.props.handleCheck(e, child.jid)} id={"memberCheck"+child.id} value={child.name} />
                                                                 <Label className="custom-control-label" htmlFor={"memberCheck"+child.id}>{child.name}</Label>
                                                             </div>
                                                         </li>

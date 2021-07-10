@@ -217,6 +217,10 @@ const WhatsApp = () => ({
 
                 chatresponse.chat = item2
 
+                if(item2.participant){
+                    chatresponse.participant = item2.participant
+                }
+
 
                 return chatresponse
                 
@@ -301,11 +305,13 @@ const WhatsApp = () => ({
 
         var bodyFormData = {
             "message" : messageObj.message,
+            "quoted"  : messageObj.quoted,
             user,
             user_name : localStorage.getItem("name"),
             user_id   : localStorage.getItem("user_id")
         }
         console.log(bodyFormData)
+
         const response = await axios({ method: "post",
                                         url: "http://127.0.0.1:3001/whatsapp/send/message/text",
                                         data: bodyFormData})
@@ -372,6 +378,22 @@ const WhatsApp = () => ({
     ProcessMessage : async (data, key2, userType) => {
        return ProcessMessage(data, key2, userType)
     },
+
+
+    ForwardingMessages : async (contacts, message) => {
+        contacts.map((item, key)=>{
+            console.log(item, "ITEM")
+            var bodyFormData = {
+                "jid"     : item, 
+                "messaje" : message,
+            }
+            const response = axios({ method: "post",
+                                            url: "http://127.0.0.1:3001/whatsapp/forwardin/messages",
+                                            data: bodyFormData})
+        })
+        return true
+    },
+
 
     ChatRead : (jid) => {
         const response = axios.get(`http://127.0.0.1:3001/whatsapp/read/chat/${jid}`)
@@ -523,6 +545,11 @@ function ProcessMessage(data, key2, userType, userName){
              "isAudioMessage"  : false,
              "isVideoMessage"  : false,
              "jpegThumbnail"   : data.extendedTextMessage.jpegThumbnail
+         }
+
+
+         if(data.extendedTextMessage){
+            message.quotedMessage = data.extendedTextMessage
          }
 
          if(userType == "sender"){

@@ -49,13 +49,15 @@ function UserChat(props) {
     
     const ref = useRef()
  
-    const [modal, setModal]               = useState(false)
-    const [OpenReply, setOpenReply]       = useState(false)
-    const [Message, setMessage]           = useState(false)
-    const [NameContat, setNameContac]     = useState(false)
-    const [NumberContac, setNumberContac] = useState(false)
-    const [Quoted, setQuoted]             = useState(false)
+    const [modal, setModal]                    = useState(false)
+    const [OpenReply, setOpenReply]            = useState(false)
+    const [Message, setMessage]                = useState(false)
+    const [NameContat, setNameContac]          = useState(false)
+    const [NumberContac, setNumberContac]      = useState(false)
+    const [Quoted, setQuoted]                  = useState(false)
+    const [MessageForward, setMessageForward]  = useState([])
 
+    let ContactsForward = []
     /* intilize t variable for multi language implementation */
     const { t } = useTranslation()
 
@@ -89,17 +91,43 @@ function UserChat(props) {
         if (ref.current.el) {
             ref.current.getScrollElement().scrollTop = ref.current.getScrollElement().scrollHeight;
         }
+
+        setQuoted(false)
     },[props.active_user, props.recentChatList])
 
 
+
+    const AddContactsForward = (check, jid) =>{
+        if(check){
+            ContactsForward.push(jid)
+        }else{
+            if(ContactsForward.length > 0){
+                for( var i = 0; i < ContactsForward.length; i++){ 
+                    if ( ContactsForward[i] === jid) { 
+                        ContactsForward.splice(i, 1); 
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    const toggle = (modal, data) => {
+        setMessageForward(data.chat)
+        setModal(modal)
+    }
+
+
+    const Forward = () =>{
+        WhatsAppService.ForwardingMessages(ContactsForward, MessageForward)
+    }
 
 
 
     const NewMessage = async (data) => {
 
-        console.log(data, "DATAS")
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
-
 
             let userType
             if(data.messages[0].key.fromMe == false){
@@ -151,15 +179,6 @@ function UserChat(props) {
         })
     };
 
-
-   
-
-
-
-
-
-    const toggle = () => setModal(!modal)
-
     const addMessage = (message, type) => {
         var messageObj = null;
 
@@ -178,11 +197,9 @@ function UserChat(props) {
                     userType : "sender",
                     image : avatar4,
                     isFileMessage : false,
-                    isImageMessage : false
+                    isImageMessage : false,
+                    quoted : Quoted
                 }
-
-                console.log(Quoted, "setQuoted")
-                return false
 
                 WhatsAppService.SendMmessageText(messageObj, user)
 
@@ -198,7 +215,8 @@ function UserChat(props) {
                     userType : "sender",
                     image : avatar4,
                     isFileMessage : true,
-                    isImageMessage : false
+                    isImageMessage : false,
+                    quoted : Quoted
                 }
 
                 console.log(message.fileBase64)
@@ -225,7 +243,8 @@ function UserChat(props) {
                     userType : "sender",
                     image : avatar4,
                     isImageMessage : true,
-                    isFileMessage : false
+                    isFileMessage : false,
+                    quoted : Quoted
                 }   
 
                 WhatsAppService.SendMmessageImage(message, user)
@@ -251,6 +270,7 @@ function UserChat(props) {
                         'base64Audio'     : message,
                         "mediaKey"        : false,
                         "mimetype"        : false,
+                        "quoted" : Quoted
                     } 
 
                     WhatsAppService.SendMmessageAudio(message, user)
@@ -274,7 +294,8 @@ function UserChat(props) {
                         "url"             : false,
                         "mediaKey"        : false,
                         "mimetype"        : false,
-                        "jpegThumbnail"   : false
+                        "jpegThumbnail"   : false,
+                        "quoted" : Quoted
                     } 
 
                     WhatsAppService.SendMmessageVideo(message, user)
@@ -284,7 +305,10 @@ function UserChat(props) {
             default:
                 break;
         }
-        
+
+
+        setQuoted(false)
+        setOpenReply(false)
 
         
 
@@ -319,7 +343,6 @@ function UserChat(props) {
 
 
     const Reply = (data) => {
-        console.log(data, "DAT")
         setOpenReply(true)
         setMessage(data.message)
         setNameContac(props.recentChatList[props.active_user].name)
@@ -327,6 +350,19 @@ function UserChat(props) {
         setQuoted(data.chat)
     }
 
+    const SearchContact =(props)=> {
+         const conversation = props.chats.find( item => item.jid == props.jid)
+         if(conversation){
+            return conversation.name
+         }else{
+             return props.jid.split("@")[0]
+         }
+         
+    }
+
+  
+
+    
 
     const onDismiss = () => setOpenReply(false)
 
@@ -490,6 +526,43 @@ function UserChat(props) {
                                                         <div className="ctext-wrap">
                                                             <div className="ctext-wrap-content">
 
+
+
+                                                                {chat.participant &&
+                                                                    <SearchContact jid={chat.participant} chats = {props.recentChatList}/>
+                                                                }
+
+
+                                                                {chat.quotedMessage &&
+
+                                                                    (chat.quotedMessage.contextInfo) ? 
+
+                                                                        (chat.quotedMessage.contextInfo.quotedMessage) ?
+                                                                            <Alert color="dark">
+
+                                                                               {chat.quotedMessage.contextInfo.participant == process.env.REACT_APP_NUMBER_PHONE &&
+                                                                                 <p>Yo</p>
+                                                                               }
+
+                                                                               {chat.quotedMessage.contextInfo.participant != process.env.REACT_APP_NUMBER_PHONE &&
+                                                                                 <p>
+                                                                                     
+                                                                                     
+                                                                                     
+                                                                                     
+                                                                                     <SearchContact jid={chat.quotedMessage.contextInfo.participant} chats = {props.recentChatList}/></p>
+                                                                               }
+
+                                                                                <p>{chat.quotedMessage.contextInfo.quotedMessage.conversation}</p>
+                                                                            </Alert>
+                                                                        :
+                                                                        <p></p>
+
+                                                                    :
+                                                                    <p></p>
+                                                                }
+                                                               
+
                                                                 { chat.description &&
                                                                     <LinkList image={chat.jpegThumbnail} description = {chat.description} link = {chat.link} />
 
@@ -580,7 +653,7 @@ function UserChat(props) {
                                                                         <DropdownMenu>
                                                                             <DropdownItem>{t('Copy')} <i className="ri-file-copy-line float-right text-muted"></i></DropdownItem>
                                                                             <DropdownItem onClick={() => {Reply(chat)}}>{t('Reply')} <i className="ri-chat-forward-line float-right text-muted"></i></DropdownItem>
-                                                                            <DropdownItem onClick={toggle}>Forward <i className="ri-chat-forward-line float-right text-muted"></i></DropdownItem>
+                                                                            <DropdownItem onClick={()=>toggle(true, chat)}>Forward <i className="ri-chat-forward-line float-right text-muted"></i></DropdownItem>
                                                                             <DropdownItem onClick={() => deleteMessage(chat.id) }>Delete <i className="ri-delete-bin-line float-right text-muted"></i></DropdownItem>
                                                                         </DropdownMenu>
                                                                     </UncontrolledDropdown>
@@ -620,31 +693,28 @@ function UserChat(props) {
 
                                         <li></li>
 
-
-
-                                        
                                         
                                     )
                                 }
                                  </ul>
                                 </SimpleBar>
 
-                        <Modal backdrop="static" isOpen={modal} centered toggle={toggle}>
-                            <ModalHeader toggle={toggle}>Forward to...</ModalHeader>
-                            <ModalBody>
-                                <CardBody className="p-2">
-                                    <SimpleBar style={{maxHeight: "200px"}}>
-                                        <SelectContact handleCheck={() => {}} />
-                                    </SimpleBar>
-                                    <ModalFooter className="border-0">
-                                        <Button color="primary">Forward</Button>
-                                    </ModalFooter>
-                                </CardBody>
-                            </ModalBody>
-                        </Modal>
 
 
-                       
+                                <Modal backdrop="static" isOpen={modal} centered>
+                                    <ModalHeader toggle={()=>setModal(false)}>Reenviar a ...</ModalHeader>
+                                    <ModalBody>
+                                        <CardBody className="p-2">
+                                            <SimpleBar style={{maxHeight: "200px"}}>
+                                                <SelectContact handleCheck={(e, jid) => AddContactsForward(e.target.checked, jid)}  contact = {props.recentChatList} />
+                                            </SimpleBar>
+                                            <ModalFooter className="border-0">
+                                                <Button color="primary" onClick = {()=>Forward()}>Reenviar</Button>
+                                            </ModalFooter>
+                                        </CardBody>
+                                    </ModalBody>
+                                </Modal>
+
                        
 
                         {OpenReply &&

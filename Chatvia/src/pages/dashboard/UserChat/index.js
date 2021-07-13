@@ -746,6 +746,8 @@ function UserChat(props) {
                             </Alert>
                         }
                         <ChatInput onaddMessage={addMessage} />
+
+                       
                        
                     </div>
 

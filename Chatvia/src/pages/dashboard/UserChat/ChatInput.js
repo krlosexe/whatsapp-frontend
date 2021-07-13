@@ -5,7 +5,7 @@ import 'emoji-mart/css/emoji-mart.css'
 
 
 import OpusMediaRecorderView from './OpusMediaRecorderView'
-import {WhatsAppService} from '../../../services'
+import Chronometer from "../../../components/Chronometer";
 
 function ChatInput(props) {
     const [textMessage, settextMessage] = useState("");
@@ -170,13 +170,37 @@ function ChatInput(props) {
                                                                     Grabar Audio
                                                                 </UncontrolledTooltip>
 
-                                                                {state == "recording" &&
-                                                                    <p>00:00</p>
-                                                                }
 
-                                                                {state == "recording" &&
-                                                                    <button onClick={stop}>Stop Recording</button>
-                                                                }
+                                                                <div>
+                                                                    <Row>
+                                                                        {state == "recording" &&
+                                                                            <Col sm="4">
+                                                                                <Label onClick={stop} id="close-audio" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
+                                                                                    <i className="ri-close-circle-line"></i>
+                                                                                    <UncontrolledTooltip target="close-audio" placement="top">
+                                                                                        Cancelar
+                                                                                    </UncontrolledTooltip>
+                                                                                </Label>   
+                                                                            </Col>
+                                                                        }
+                                                                        {state == "recording" &&
+                                                                            <Col sm="4">
+                                                                                 <Chronometer />
+                                                                            </Col>
+                                                                        }
+                                                                        {state == "recording" &&
+                                                                            <Col sm="4">
+                                                                                <Label onClick={stop} id="send-audio" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
+                                                                                    <i className="ri-check-line"></i>
+                                                                                    <UncontrolledTooltip target="send-audio" placement="top">
+                                                                                        Enviar
+                                                                                    </UncontrolledTooltip>
+                                                                                </Label>   
+                                                                            </Col>
+                                                                        }
+                                                                    </Row>
+                                                                    
+                                                                </div>
                                                             </div>
                                                         )}
                                                     />

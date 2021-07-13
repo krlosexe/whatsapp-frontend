@@ -161,6 +161,7 @@ function ChatInput(props) {
                                                             reader.readAsDataURL(e.data);
                                                         }}
                                                         render={({ state, start, stop, pause, resume }) => (
+                                                            
                                                             <div>
                                                                 <Label onClick={start} id="mic" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
                                                                     <i className="ri-mic-fill"></i>
@@ -170,12 +171,11 @@ function ChatInput(props) {
                                                                     Grabar Audio
                                                                 </UncontrolledTooltip>
 
-
-                                                                <div>
+                                                                <div className="record">
                                                                     <Row>
                                                                         {state == "recording" &&
                                                                             <Col sm="4">
-                                                                                <Label onClick={stop} id="close-audio" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
+                                                                                <Label onClick={pause} id="close-audio" className="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
                                                                                     <i className="ri-close-circle-line"></i>
                                                                                     <UncontrolledTooltip target="close-audio" placement="top">
                                                                                         Cancelar

@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useRef } from 'react';
-import { DropdownMenu, DropdownItem, DropdownToggle, UncontrolledDropdown, Modal, ModalHeader, ModalBody, CardBody, Button, ModalFooter, Alert } from "reactstrap";
+import { DropdownMenu, DropdownItem, DropdownToggle, UncontrolledDropdown, Modal, ModalHeader, ModalBody, CardBody, Button, ModalFooter, Alert, Spinner } from "reactstrap";
 import { connect } from "react-redux";
 
 import SimpleBar from "simplebar-react";
@@ -66,6 +66,8 @@ function UserChat(props) {
     const [ allUsers ] = useState(props.recentChatList)
     const [ chatMessages, setchatMessages ] = useState([])
     const [ Cursor, setCursor ] = useState("0")
+
+    const [ Load, setLoad ] = useState(false)
 
 
 
@@ -167,9 +169,11 @@ function UserChat(props) {
 
 
     const getChats = async (cursor) => {
-        
+
+        setLoad(true)
         await WhatsAppService.GetConversation(props.recentChatList[props.active_user].jid, cursor).then((data)=>{
             setCursor(data.cursor)
+            setLoad(false)
             if(cursor == "0"){
                 console.log(data.messages, "DATA:MESSAGES")
                 setchatMessages(data.messages)
@@ -386,7 +390,19 @@ function UserChat(props) {
                                 id="messages">
                             <ul className="list-unstyled mb-0">
 
-                            <button onClick={() => getChats(Cursor)}>Scroll</button>
+                            
+
+                            <center>
+                                {Load &&
+                                    <Spinner color="primary" />
+                                }
+                                {!Load &&
+                                    <Button onClick={() => getChats(Cursor)} color="primary">Cargar Más</Button>
+                                }
+
+                            </center>
+                            
+
                             
                                 
                                 {
@@ -685,16 +701,16 @@ function UserChat(props) {
                                                         
 
                                                         {chat.userType === "sender" && chat.status == "READ" &&
-                                                            <p>VVV</p>
+                                                            <p className="color-blue"><i class="ri-check-double-line"></i></p>
                                                         }
 
 
                                                         {chat.userType === "sender" && chat.status == "DELIVERY_ACK" &&
-                                                            <p>VV</p>
+                                                            <p><i class="ri-check-double-line"></i></p>
                                                         }
 
                                                         {chat.userType === "sender" && chat.status == "SERVER_ACK" &&
-                                                            <p>V</p>
+                                                            <p><i class="ri-check-line"></i></p>
                                                         }
 
 

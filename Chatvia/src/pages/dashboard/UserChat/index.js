@@ -123,12 +123,24 @@ function UserChat(props) {
 
     const Forward = () =>{
         WhatsAppService.ForwardingMessages(ContactsForward, MessageForward)
+        setModal(false)
     }
 
 
 
     const NewMessage = async (data) => {
 
+        
+
+        if(data.messages){
+            console.log(data, "STATUS READ 1")
+            if(data.messages[0].status == "READ"){
+                console.log(data.messages[0].key.id, "STATUS READ 2")
+                console.log(chatMessages, "chatMessages")
+            }
+        }
+
+        
         if(data.hasNewMessage && data.jid != 'status@broadcast'){
 
             let userType
@@ -362,6 +374,19 @@ function UserChat(props) {
              return props.jid.split("@")[0]
          }
          
+    }
+
+
+    const DateTime = (props) =>{    
+        const datetime = parseInt(props.datetime)
+        const date     = new Date(datetime * 1000)
+        const day      = date.getDate()
+        const month    = date.getMonth()
+        const year     = date.getFullYear()
+        const time     = `${date.getHours()}:${date.getMinutes()}`
+
+        console.log(time, "datetime")
+        return `${day}/${month}/${year} ${time}`
     }
 
   
@@ -679,7 +704,7 @@ function UserChat(props) {
                                                                         </p>
                                                                 }
                                                                 {
-                                                                    !chat.isTyping && <p className="chat-time mb-0"><i className="ri-time-line align-middle"></i> <span className="align-middle">{chat.time}</span></p>
+                                                                    !chat.isTyping && <p className="chat-time mb-0"><i className="ri-time-line align-middle"></i> <span className="align-middle"><DateTime datetime = {chat.messageTimestamp} /></span></p>
                                                                 }
                                                             </div>
                                                             {

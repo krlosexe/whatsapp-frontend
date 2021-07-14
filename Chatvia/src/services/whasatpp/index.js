@@ -180,6 +180,14 @@ const WhatsApp = () => ({
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
                     chatresponse.status = item2.status
                 }
+
+
+                if(item2.message.stickerMessage){
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse.status = item2.status
+                }
+
+
                 
                 if(item2.message.documentMessage){
                     chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
@@ -215,7 +223,8 @@ const WhatsApp = () => ({
                     chatresponse.status = item2.status
                 }
 
-                chatresponse.chat = item2
+                chatresponse.chat             = item2
+                chatresponse.messageTimestamp = item2.messageTimestamp
 
                 if(item2.participant){
                     chatresponse.participant = item2.participant
@@ -463,6 +472,30 @@ function ProcessMessage(data, key2, userType, userName){
         return message
       
      }
+
+
+
+     if(data.stickerMessage){
+        let message
+        message = { 
+            "id"              : key2, "message": data.conversation, 
+            "time"            : "01:05", "userType": userType, 
+            "isImageMessage"  : true, 
+            "isFileMessage"   : false,
+            "isAudioMessage"  : false,
+            "isVideoMessage"  : false,
+            "imageMessage"    : [ { 
+                image : "",
+                "url"            : data.stickerMessage.url,
+                "mediaKey"       : data.stickerMessage.mediaKey,
+           } ]
+        }
+       return message
+     
+    }
+
+
+    
      
      if(data.documentMessage){
          let message

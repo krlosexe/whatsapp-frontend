@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-
+import {base_url, ApiWhatsapp} from '../../Env'
 const WhatsApp = () => ({
     
     GetChats : async () => {
         try {
 
-            const req = 'http://127.0.0.1:3001/whatsapp/get/chats'
+            const req = `${ApiWhatsapp}/whatsapp/get/chats`
                 try {
                     const response = await axios.post(req, {id_user : localStorage.getItem("user_id")})
 
@@ -112,7 +112,7 @@ const WhatsApp = () => ({
     },
 
     GetChat : async (jid) => {
-       const response = await axios.get(`http://127.0.0.1:3001/whatsapp/verify/chat/${jid}`).then((data)=>{
+       const response = await axios.get(`${ApiWhatsapp}/whatsapp/verify/chat/${jid}`).then((data)=>{
             return data
         }).catch(()=>{
             console.log("ERROR")
@@ -133,7 +133,7 @@ const WhatsApp = () => ({
         }
 
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/get/conversation",
+                                        url: `${ApiWhatsapp}/whatsapp/get/conversation`,
                                         data,
                                     })
 
@@ -158,7 +158,7 @@ const WhatsApp = () => ({
 
             
             const valid = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/verify/message",
+                                        url: `${ApiWhatsapp}/whatsapp/verify/message`,
                                         data
             })
             if(valid.messages){
@@ -257,7 +257,7 @@ const WhatsApp = () => ({
         bodyFormData.append('filenc', url)
 
         const response = await axios({ method: "post",
-                                        url: "http://31.220.60.218:5000/decrypt",
+                                        url: `http://31.220.60.218:5000/decrypt`,
                                         data: bodyFormData,
                                         headers: { "Content-Type": "multipart/form-data" }})
 
@@ -322,7 +322,7 @@ const WhatsApp = () => ({
         console.log(bodyFormData)
 
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/send/message/text",
+                                        url: `${ApiWhatsapp}/whatsapp/send/message/text`,
                                         data: bodyFormData})
 
         return response
@@ -337,7 +337,7 @@ const WhatsApp = () => ({
         }
         console.log(bodyFormData)
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/send/message/image",
+                                        url: `${ApiWhatsapp}/whatsapp/send/message/image`,
                                         data: bodyFormData})
 
         return response
@@ -351,7 +351,7 @@ const WhatsApp = () => ({
             user_id   : localStorage.getItem("user_id")
         }
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/send/message/audio",
+                                        url: `${ApiWhatsapp}/whatsapp/send/message/audio`,
                                         data: bodyFormData})
         return response
     },
@@ -364,7 +364,7 @@ const WhatsApp = () => ({
             user_id   : localStorage.getItem("user_id")
         }
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/send/message/video",
+                                        url: `${ApiWhatsapp}/whatsapp/send/message/video`,
                                         data: bodyFormData})
         return response
     },
@@ -379,7 +379,7 @@ const WhatsApp = () => ({
             user_id   : localStorage.getItem("user_id")
         }
         const response = await axios({ method: "post",
-                                        url: "http://127.0.0.1:3001/whatsapp/send/message/document",
+                                        url: `${ApiWhatsapp}/whatsapp/send/message/document`,
                                         data: bodyFormData})
         return response
     },
@@ -397,7 +397,7 @@ const WhatsApp = () => ({
                 "messaje" : message,
             }
             const response = axios({ method: "post",
-                                            url: "http://127.0.0.1:3001/whatsapp/forwardin/messages",
+                                            url: `${ApiWhatsapp}/whatsapp/forwardin/messages`,
                                             data: bodyFormData})
         })
         return true
@@ -405,7 +405,7 @@ const WhatsApp = () => ({
 
 
     ChatRead : (jid) => {
-        const response = axios.get(`http://127.0.0.1:3001/whatsapp/read/chat/${jid}`)
+        const response = axios.get(`${ApiWhatsapp}/whatsapp/read/chat/${jid}`)
         return response
     },
 
@@ -416,7 +416,7 @@ const WhatsApp = () => ({
             jid,
             message
         }
-        const response = axios.post(`http://127.0.0.1:3001/whatsapp/register/chat`, data)
+        const response = axios.post(`${ApiWhatsapp}/whatsapp/register/chat`, data)
         return response
     },
 
@@ -427,7 +427,7 @@ const WhatsApp = () => ({
             jid,
             user_id
         }
-        const response = axios.post(`http://127.0.0.1:3001/whatsapp/assign/advisor`, data)
+        const response = axios.post(`${ApiWhatsapp}/whatsapp/assign/advisor`, data)
         return response
     }
     

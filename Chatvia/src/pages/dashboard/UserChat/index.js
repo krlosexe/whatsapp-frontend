@@ -31,14 +31,14 @@ import { useTranslation } from 'react-i18next';
 
 import {WhatsAppService} from '../../../services'
 
-
+import {base_url, ApiWhatsapp} from '../../../Env'
 
 
 import createDOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:3001/";
+const ENDPOINT = `${ApiWhatsapp}/`;
 
 
 const window = (new JSDOM('')).window

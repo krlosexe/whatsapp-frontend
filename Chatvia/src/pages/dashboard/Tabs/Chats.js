@@ -15,9 +15,10 @@ import OnlineUsers from "./OnlineUsers";
 
 import {WhatsAppService} from '../../../services'
 
+import {base_url, ApiWhatsapp} from '../../../Env'
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:3001/";
+const ENDPOINT = `${ApiWhatsapp}/`;
 
 
 class Chats extends Component {

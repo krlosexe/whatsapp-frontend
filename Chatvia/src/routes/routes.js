@@ -7,6 +7,7 @@ const StarterPage = React.lazy(() => import("../pages/StarterPage/index"));
 
 // auth
 const Login = React.lazy(() => import("../pages/Auth/Login"));
+const Qr = React.lazy(() => import("../pages/Auth/Qr"));
 const Logout = React.lazy(() => import("../pages/Auth/Logout"));
 const ForgetPassword = React.lazy(() => import("../pages/Auth/ForgetPassword"));
 const Register = React.lazy(() => import("../pages/Auth/Register"));
@@ -29,7 +30,8 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/forget-password", component: ForgetPassword },
   { path: "/register", component: Register },
-  { path: "/lock-screen", component: LockScreen}
+  { path: "/lock-screen", component: LockScreen},
+  { path: "/qr", component: Qr}
 ];
 
 const routes = [...authProtectedRoutes, ...publicRoutes];

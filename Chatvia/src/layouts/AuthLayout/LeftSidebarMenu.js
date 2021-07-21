@@ -20,9 +20,9 @@ import germany from "../../assets/images/flags/germany.jpg";
 import italy from "../../assets/images/flags/italy.jpg";
 import russia from "../../assets/images/flags/russia.jpg";
 
-
+import {base_url, ApiWhatsapp} from '../../Env'
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:3001/";
+const ENDPOINT = `${ApiWhatsapp}/`;
 
 
 function LeftSidebarMenu(props) {

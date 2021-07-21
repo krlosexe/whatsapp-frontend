@@ -18,8 +18,10 @@ import logolight from "../../assets/images/logo-light.png";
 
 import QRCode from'qrcode.react';
 
+import {base_url, ApiWhatsapp} from '../../Env'
+
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:3001/";
+const ENDPOINT = `${ApiWhatsapp}/`;
 
 
 

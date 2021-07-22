@@ -109,12 +109,12 @@ function UserProfileSidebar(props) {
     const SaveClient = e => {
 
         const data = {
-            "nombres"         : textname,
+            "name"         : textname,
             "identificacion"  : textidentification,
             "telefono"        : telefono,
             "email"           : textemail,
             "origen"          : "Sistema de WhatsApp",
-            "id_line"         : process.env.REACT_APP_ID_LINE,
+           // "id_line"         : process.env.REACT_APP_ID_LINE,
             "id_user_asesora" : process.env.REACT_APP_USER_ID,
             "jid"             : props.activeUser.jid
         }

@@ -115,8 +115,15 @@ function ChatInput(props) {
         }
     }
 
-
    
+
+    function onKeyUpValue(event) {
+        if(event.key == "Enter"){
+            onaddMessage(event, textMessage)
+        }
+    }
+
+
     return (
         <React.Fragment>
             <div className="p-3 p-lg-4 border-top mb-0">
@@ -136,7 +143,7 @@ function ChatInput(props) {
 
                                     <Col sm="6">
                                         <div>
-                                            <Input type="text" value={textMessage} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
+                                            <Input type="text" value={textMessage} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
                                         </div>
                                     </Col>
 

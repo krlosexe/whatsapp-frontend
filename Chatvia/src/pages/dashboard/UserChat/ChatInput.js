@@ -6,6 +6,7 @@ import 'emoji-mart/css/emoji-mart.css'
 
 import OpusMediaRecorderView from './OpusMediaRecorderView'
 import Chronometer from "../../../components/Chronometer";
+import DragAndDrop from "../../../components/DragAndDrop";
 
 function ChatInput(props) {
     const [textMessage, settextMessage] = useState("");
@@ -123,13 +124,25 @@ function ChatInput(props) {
         }
     }
 
+    function handleDrop(data){
+        console.log(data)
+    }
+
+    function handleDragIn(data){
+        console.log(data)
+    }
+
+    
+
 
     return (
         <React.Fragment>
             <div className="p-3 p-lg-4 border-top mb-0">
                             <Form onSubmit={(e) => onaddMessage(e, textMessage)} >
 
+                            {/* <DragAndDrop handleDrop={this.handleDrop}> */}
 
+                              <DragAndDrop  handleDrop={(data)=>handleDrop(data)} handleDragIn={(data)=>handleDragIn(data)}>
 
 
                             {/* <AudioReactRecorder state={recordState} onStop={onStop} type="audio/mp3"/>
@@ -143,7 +156,17 @@ function ChatInput(props) {
 
                                     <Col sm="6">
                                         <div>
-                                            <Input type="text" value={textMessage} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
+
+                                          
+                                                <Input type="text" value={textMessage} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
+                                         
+                                           
+                                        </div>
+
+
+                                        <div>
+
+                                        
                                         </div>
                                     </Col>
 
@@ -253,6 +276,8 @@ function ChatInput(props) {
                                         </div>
                                     </Col>
                                 </Row>
+
+                                </DragAndDrop>
                             </Form>
                         </div>
         </React.Fragment>

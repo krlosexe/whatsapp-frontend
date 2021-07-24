@@ -52,6 +52,7 @@ const Login = (props) => {
                 localStorage.setItem("user_id", data._id)
                 localStorage.setItem("name", data.name)
                 localStorage.setItem("phone", data.phone)
+                localStorage.setItem("rol", data.rol)
                 window.location.href = "/";
             }).catch(()=>{
                 alert("Las credenciales son incorrectas")

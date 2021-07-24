@@ -11,6 +11,7 @@ import DragAndDrop from "../../../components/DragAndDrop";
 function ChatInput(props) {
     const [textMessage, settextMessage] = useState("");
     const [AudioBase64, setAudioBase64] = useState("");
+    const [ImageUpload, setImageUpload] = useState(false);
     const [VideoBase64, setVideoBase64] = useState(false);
     const [isOpen, setisOpen] = useState(false);
     const [file, setfile] = useState({
@@ -124,7 +125,26 @@ function ChatInput(props) {
         }
     }
 
-    function handleDrop(data){
+    async function handleDrop(data){
+
+
+
+        if(data.length !==0 ){
+
+            const type_file   = data[0].type
+            const extenxion   = type_file.split("/")[1]
+            console.log(type_file, extenxion)
+           
+            if(data[0].type == 'video/mp4'){
+                setVideoBase64(await toBase64(data[0]))
+            }else{
+                setfileImage(await toBase64(data[0]))
+            }
+
+        }
+
+
+
         console.log(data)
     }
 
@@ -140,10 +160,25 @@ function ChatInput(props) {
             <div className="p-3 p-lg-4 border-top mb-0">
                             <Form onSubmit={(e) => onaddMessage(e, textMessage)} >
 
+
                             {/* <DragAndDrop handleDrop={this.handleDrop}> */}
 
                               <DragAndDrop  handleDrop={(data)=>handleDrop(data)} handleDragIn={(data)=>handleDragIn(data)}>
+                              <Row noGutters>
+                                    <Col sm="12">
+                                        {fileImage != "" &&
+                                            <div>
+                                                <img src={`data:image/jpeg; base64,${fileImage}`} alt="chat" className="rounded border" width="200" height="200"/>
+                                                <Button color="danger" onClick={()=>setfileImage("")}>
+                                                    <i className="ri-delete-bin-fill"></i>
+                                                </Button>
+                                            </div>
+                                        }
+                                    </Col>
+                                </Row>
 
+                                <Row noGutters></Row>
+                                <Row noGutters></Row>
 
                             {/* <AudioReactRecorder state={recordState} onStop={onStop} type="audio/mp3"/>
  

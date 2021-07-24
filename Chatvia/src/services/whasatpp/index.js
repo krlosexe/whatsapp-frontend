@@ -8,7 +8,7 @@ const WhatsApp = () => ({
 
             const req = `${ApiWhatsapp}/whatsapp/get/chats`
                 try {
-                    const response = await axios.post(req, {id_user : localStorage.getItem("user_id")})
+                    const response = await axios.post(req, {id_user : localStorage.getItem("user_id"), rol : localStorage.getItem("rol")})
 
                     let Chats = []
 

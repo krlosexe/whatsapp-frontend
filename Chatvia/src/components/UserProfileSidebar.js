@@ -34,10 +34,14 @@ function UserProfileSidebar(props) {
     ]);
 
 
+    const [state, setstate]                           = useState("")
     const [textname, settextname]                     = useState("")
     const [textidentification, settextidentification] = useState("")
     const [telefono, settelefono]                     = useState("")
     const [textemail, settextemail]                   = useState("")
+    const [textfacebook, settextfacebook]             = useState("")
+    const [textinstagram, settextinstagram]           = useState("")
+    
 
     /* intilize t variable for multi language implementation */
     const { t } = useTranslation();
@@ -51,15 +55,21 @@ function UserProfileSidebar(props) {
 
     const getClient = () =>{
         CrmService.GetClient(props.activeUser.jid).then((response)=>{
-            settextname(response.nombres)
+            settextname(response.name)
             settextidentification(response.identificacion)
-            settelefono(response.telefono)
+            settelefono(response.phone)
             settextemail(response.email)
+            setstate(response.state)
+            settextfacebook(response.facebook)
+            settextinstagram(response.instagram)
         }).catch(()=>{
             settextname("")
             settextidentification("")
             settelefono("")
             settextemail("")
+            setstate("")
+            settextfacebook("")
+            settextinstagram("")
         })
     }
 
@@ -106,16 +116,31 @@ function UserProfileSidebar(props) {
     }
 
 
+    const handleChangeFacebook = e => {
+        settextfacebook(e.target.value)
+    }
+
+
+    const handleChangeInstagram = e => {
+        settextinstagram(e.target.value)
+    }
+
+
+
+
     const SaveClient = e => {
 
         const data = {
             "name"         : textname,
             "identificacion"  : textidentification,
-            "telefono"        : telefono,
+            "phone"           : telefono,
             "email"           : textemail,
+            "state"           : state,
+            "facebook"        : textfacebook,
+            "instagram"       : textinstagram,
             "origen"          : "Sistema de WhatsApp",
            // "id_line"         : process.env.REACT_APP_ID_LINE,
-            "id_user_asesora" : process.env.REACT_APP_USER_ID,
+            "id_user_asesora" : localStorage.getItem("id_advisor"),
             "jid"             : props.activeUser.jid
         }
 
@@ -124,6 +149,12 @@ function UserProfileSidebar(props) {
             alert("El Px se registro con exito")
         }).catch(error => alert("El Px ya se encuentra en Base de Datos"));
     }
+
+    function onDropdownSelected(e) {
+        setstate(e.target.value)
+    }
+
+
 
     
 
@@ -203,6 +234,38 @@ function UserProfileSidebar(props) {
                                             isOpen={isOpen1}
                                             toggleCollapse={toggleCollapse1}
                                         >
+
+                                            <div>
+                                                <p className="text-muted mb-2">Estado</p>
+                                                <Input type="select" name="state" id="selectState" className="form-control form-control-lg bg-light border-light" onChange={onDropdownSelected} value={state}>
+                                                    <option>Seleccione</option>
+                                                    <option key={'0'} value={'Afiliada'}>Afiliada</option>
+                                                    <option key={'1'} value={'Agendada'}>Agendada</option>
+                                                    <option key={'2'} value={'Aprobada'}>Aprobada</option>
+                                                    <option key={'3'} value={'Aprobada - Descartada'}>Aprobada - Descartada</option>
+                                                    <option key={'4'} value={'Asesorada No Agendada'}>Asesorada No Agendada</option>
+                                                    <option key={'5'} value={'Asesorado por FB esperando contacto Telefonico'}>Asesorado por FB esperando contacto Telefonico</option>
+                                                    <option key={'6'} value={'Demandada'}>Demandada</option>
+                                                    <option key={'7'} value={'Descartada'}>Descartada</option>
+                                                    <option key={'8'} value={'Llamada no Asesorada'}>Llamada no Asesorada</option>
+                                                    <option key={'9'} value={'No Asistio'}>No Asistio</option>
+                                                    <option key={'10'} value={'No Contactada'}>No Contactada</option>
+                                                    <option key={'11'} value={'No Contesta'}>No Contesta</option>
+                                                    <option key={'12'} value={'Numero Equivocado'}>Numero Equivocado</option>
+                                                    <option key={'13'} value={'Operada'}>Operada</option>
+                                                    <option key={'14'} value={'Procedimiento'}>Procedimiento</option>
+                                                    <option key={'15'} value={'Procedimiento - Finalizado'}>Procedimiento - Finalizado</option>
+                                                    <option key={'16'} value={'Programada'}>Programada</option>
+                                                    <option key={'17'} value={'Re Agendada a Valoracion'}>Re Agendada a Valoracion</option>
+                                                    <option key={'18'} value={'Valorada'}>Valorada</option>
+                                                    <option key={'19'} value={'Valorada / Descartada'}>Valorada / Descartada</option>
+                                                    <option key={'20'} value={'En mora'}>En mora</option>
+                                                    <option key={'21'} value={'Al Dia'}>Al Dia</option>
+                                                </Input>
+
+                                                <br></br>
+                                            </div>
+                                            
                                             <div>
                                                 <p className="text-muted mb-1">Nombre y Apellido</p>
                                                 <Input type="text" value={textname} onChange={handleChangeName} className="form-control form-control-lg bg-light border-light"/>
@@ -226,6 +289,17 @@ function UserProfileSidebar(props) {
                                                 <Input type="text" value={textemail} onChange={handleChangeEmail} className="form-control form-control-lg bg-light border-light"/>
                                             </div>
 
+
+                                            <div>
+                                                <p className="text-muted mb-3 mt-3">Facebook</p>
+                                                <Input type="text" value={textfacebook} onChange={handleChangeFacebook} className="form-control form-control-lg bg-light border-light"/>
+                                            </div>
+
+
+                                            <div>
+                                                <p className="text-muted mb-3 mt-3">Instagram</p>
+                                                <Input type="text" value={textinstagram} onChange={handleChangeInstagram} className="form-control form-control-lg bg-light border-light"/>
+                                            </div>
 
                                             <Button onClick={SaveClient} color="primary" className="font-size-16 btn-lg chat-send waves-effect waves-light mt-3">
                                                 Guardar <i className="ri-send-plane-2-fill"></i>

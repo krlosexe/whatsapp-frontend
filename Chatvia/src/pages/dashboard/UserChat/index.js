@@ -64,7 +64,8 @@ function UserChat(props) {
     //demo conversation messages
     //userType must be required
     const [ allUsers ] = useState(props.recentChatList)
-    const [ chatMessages, setchatMessages ] = useState([])
+    //const [ chatMessages, setchatMessages ] = useState([])
+    const [chatMessages, setchatMessages] = useState(props.recentChatList[props.active_user].messages);
     const [ Cursor, setCursor ] = useState("0")
 
     const [ Load, setLoad ] = useState(false)
@@ -82,8 +83,17 @@ function UserChat(props) {
 
     useEffect(() => {
 
-        setchatMessages([])
-        getChats("0")
+       // setchatMessages([])
+        setchatMessages(props.recentChatList[props.active_user].messages);
+
+        if(props.recentChatList[props.active_user].messages.length > 0){
+            setCursor({
+                fromMe : props.recentChatList[props.active_user].messages[0].key.fromMe,
+                id     : props.recentChatList[props.active_user].messages[0].key.id,
+            })
+        }
+       
+        //getChats("0")
        
         WhatsAppService.ChatRead(props.recentChatList[props.active_user].jid)
 

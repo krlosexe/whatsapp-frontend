@@ -32,44 +32,45 @@ const WhatsApp = () => ({
                                 if(item2.message){
                                     
                                     if(item2.message.conversation){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
-                                    }
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                    }   
                                     
                                     if(item2.message.imageMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
                                     
                                     if(item2.message.documentMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
 
 
                                     if(item2.message.audioMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
 
 
 
                                     if(item2.message.videoMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
 
 
                                     if(item2.message.extendedTextMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
 
                                     if(item2.message.locationMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
 
 
 
                                     if(item2.message.contactMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, ""))
+                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
                                     }
 
                                 }
+                                
                                 
                             })
 
@@ -172,54 +173,54 @@ const WhatsApp = () => ({
             if(item2.message){
                 let chatresponse = {}
                 if(item2.message.conversation){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }   
                 
                 if(item2.message.imageMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
 
                 if(item2.message.stickerMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
 
                 
                 if(item2.message.documentMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
 
                 if(item2.message.audioMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
 
 
                 if(item2.message.videoMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
 
                 if(item2.message.extendedTextMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
                 if(item2.message.locationMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
                 if(item2.message.contactMessage){
-                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName)
+                    chatresponse =  ProcessMessage(item2.message, key2, userType, userName, item2.key)
                     chatresponse.status = item2.status
                 }
 
@@ -435,7 +436,7 @@ const WhatsApp = () => ({
 }); 
 
 
-function ProcessMessage(data, key2, userType, userName){
+function ProcessMessage(data, key2, userType, userName, keyChat){
 
     if(data.conversation){
         let message = { 
@@ -444,7 +445,8 @@ function ProcessMessage(data, key2, userType, userName){
              "time": "01:05",
              "userType": userType,
              "isImageMessage" : false, 
-             "isFileMessage" : false 
+             "isFileMessage" : false ,
+             "key" : keyChat
          }
 
          if(userType == "sender"){
@@ -463,6 +465,7 @@ function ProcessMessage(data, key2, userType, userName){
              "isFileMessage"   : false,
              "isAudioMessage"  : false,
              "isVideoMessage"  : false,
+             "key" : keyChat,
              "imageMessage"    : [ { 
                  image : data.imageMessage.jpegThumbnail,
                  "url"            : data.imageMessage.url,
@@ -484,6 +487,7 @@ function ProcessMessage(data, key2, userType, userName){
             "isFileMessage"   : false,
             "isAudioMessage"  : false,
             "isVideoMessage"  : false,
+            "key" : keyChat,
             "imageMessage"    : [ { 
                 image : "",
                 "url"            : data.stickerMessage.url,
@@ -508,6 +512,7 @@ function ProcessMessage(data, key2, userType, userName){
              "isFileMessage"   : true, 
              "isAudioMessage"  : false, 
              "isVideoMessage"  : false,
+             "key" : keyChat,
              "fileMessage"    : data.documentMessage.fileName, 
              "size"           : `${data.documentMessage.fileLength} Kb`,
              "url"            : data.documentMessage.url,
@@ -530,6 +535,7 @@ function ProcessMessage(data, key2, userType, userName){
              "isAudioMessage"  : true, 
              "isVideoMessage"  : false, 
              "base64Audio"     : false,
+             "key" : keyChat,
              "fileAudio"       : "audio.mp3", 
              "size"            : `${data.audioMessage.fileLength} Kb`,
              "url"             : data.audioMessage.url,
@@ -553,6 +559,7 @@ function ProcessMessage(data, key2, userType, userName){
              "isAudioMessage"  : false,
              "isVideoMessage"  : true, 
              "fileVideo"       : "video.mp4", 
+             "key" : keyChat,
              "base64Video"     : false,
              "size"            : `${data.videoMessage.fileLength} Kb`,
              "url"             : data.videoMessage.url,
@@ -577,6 +584,7 @@ function ProcessMessage(data, key2, userType, userName){
              "isFileMessage"   : false, 
              "isAudioMessage"  : false,
              "isVideoMessage"  : false,
+             "key" : keyChat,
              "jpegThumbnail"   : data.extendedTextMessage.jpegThumbnail
          }
 
@@ -605,6 +613,7 @@ function ProcessMessage(data, key2, userType, userName){
              "isFileMessage"      : false, 
              "isAudioMessage"     : false,
              "isVideoMessage"     : false,
+             "key" : keyChat,
              "jpegThumbnail"      : data.locationMessage.jpegThumbnail
          }
         return message
@@ -624,8 +633,11 @@ function ProcessMessage(data, key2, userType, userName){
              "isFileMessage"      : false, 
              "isAudioMessage"     : false,
              "isVideoMessage"     : false,
+             "key" : keyChat,
              "vcard"              : data.contactMessage.vcard
          }
+
+        
         return message
      }
 

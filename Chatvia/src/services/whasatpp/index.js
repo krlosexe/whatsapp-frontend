@@ -32,41 +32,52 @@ const WhatsApp = () => ({
                                 if(item2.message){
                                     
                                     if(item2.message.conversation){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        chatresponse.chat             = item2
+                                        chatresponse.messageTimestamp = item2.messageTimestamp
+                                        chatresponse.status = item2.status
+                                        messages.push(chatresponse)
                                     }   
                                     
                                     if(item2.message.imageMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
                                     
                                     if(item2.message.documentMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
 
 
                                     if(item2.message.audioMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
 
 
 
                                     if(item2.message.videoMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
 
 
                                     if(item2.message.extendedTextMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
 
                                     if(item2.message.locationMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
 
 
 
                                     if(item2.message.contactMessage){
-                                        messages.push(ProcessMessage(item2.message, key2, userType, "", item2.key))
+                                        let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        messages.push(chatresponse)
                                     }
 
                                 }

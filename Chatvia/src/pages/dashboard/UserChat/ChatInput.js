@@ -139,7 +139,7 @@ function ChatInput(props) {
                 setVideoBase64(await toBase64(data[0]))
             }else{
                 setfileImage(await toBase64(data[0]))
-            }
+            }   
 
         }
 
@@ -152,7 +152,19 @@ function ChatInput(props) {
         console.log(data)
     }
 
-    
+    const handlePaste = (data) => {
+      
+       var item = data.clipboardData.items[0];
+
+       if (item.type.indexOf("image") === 0){
+            var blob = item.getAsFile();
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                setfileImage(event.target.result.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", "").replace("data:image/jpg;base64,", ""))
+            };
+            reader.readAsDataURL(blob);
+       }
+    };
 
 
     return (
@@ -193,7 +205,7 @@ function ChatInput(props) {
                                         <div>
 
                                           
-                                                <Input type="text" value={textMessage} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
+                                                <Input type="text" value={textMessage}  onPaste={(data)=>handlePaste(data)} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
                                          
                                            
                                         </div>

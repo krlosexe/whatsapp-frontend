@@ -37,7 +37,7 @@ function UserProfileSidebar(props) {
     const [state, setstate]                           = useState("")
     const [textname, settextname]                     = useState("")
     const [textidentification, settextidentification] = useState("")
-    const [telefono, settelefono]                     = useState("")
+    const [telefono, settelefono]                     = useState(props.activeUser.jid.split("@")[0])
     const [textemail, settextemail]                   = useState("")
     const [textfacebook, settextfacebook]             = useState("")
     const [textinstagram, settextinstagram]           = useState("")
@@ -65,7 +65,7 @@ function UserProfileSidebar(props) {
         }).catch(()=>{
             settextname("")
             settextidentification("")
-            settelefono("")
+            settelefono(props.activeUser.jid.split("@")[0])
             settextemail("")
             setstate("")
             settextfacebook("")

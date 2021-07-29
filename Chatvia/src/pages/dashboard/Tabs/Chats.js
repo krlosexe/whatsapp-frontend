@@ -203,6 +203,7 @@ class Chats extends Component {
 
 
     componentDidMount() {
+
         var li = document.getElementById("conversation" + this.props.active_user);
         if(li){
             li.classList.add("active");
@@ -299,6 +300,21 @@ class Chats extends Component {
             unread.style.display="none";
         }
     }
+
+
+     DateTime(messageTimestamp){    
+        const datetime = parseInt(messageTimestamp)
+        const date     = new Date(datetime * 1000)
+        const day      = date.getDate()
+        const month    = date.getMonth() + 1
+        const year     = date.getFullYear()
+        const time     = `${date.getHours()}:${date.getMinutes()}`
+
+        console.log(time, "datetime")
+        return `${day}/${month}/${year} ${time}`
+    }
+
+
     
     render() {
         return (
@@ -385,7 +401,7 @@ class Chats extends Component {
                                                                     
                                                                 </p>
                                                             </Media>
-                                                            <div className="font-size-11">{chat.messages && chat.messages.length > 0 ?  chat.messages[(chat.messages).length - 1].time : null}</div>
+                                                            <div className="font-size-11">{chat.messages && chat.messages.length > 0 ?  this.DateTime(chat.messages[(chat.messages).length - 1].messageTimestamp)  : null}</div>
                                                             {chat.unRead === 0 ? null :
                                                                 <div className="unread-message" id={"unRead" + chat.id}>
                                                                     <span className="badge badge-soft-danger badge-pill">{chat.messages && chat.messages.length > 0 ? chat.unRead >= 20 ? chat.unRead + "+" : chat.unRead  : ""}</span>

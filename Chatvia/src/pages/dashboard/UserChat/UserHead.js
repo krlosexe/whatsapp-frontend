@@ -88,7 +88,7 @@ function UserHead(props) {
                                         <Media body className="overflow-hidden">
                                             <h5 className="font-size-16 mb-0 text-truncate">
                                             <Link to="#" onClick={(e) => openUserSidebar(e)} className="text-reset user-profile-show">
-                                            {props.chats[props.active_user].name}
+                                            {props.chats[props.active_user].name} - {props.chats[props.active_user].jid.split("@")[0]}
                                             </Link> 
                                                                                 {(() => {
                                                                                     switch (props.chats[props.active_user].status) {

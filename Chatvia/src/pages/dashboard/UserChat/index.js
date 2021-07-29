@@ -391,7 +391,7 @@ function UserChat(props) {
         const datetime = parseInt(props.datetime)
         const date     = new Date(datetime * 1000)
         const day      = date.getDate()
-        const month    = date.getMonth()
+        const month    = date.getMonth() + 1
         const year     = date.getFullYear()
         const time     = `${date.getHours()}:${date.getMinutes()}`
 

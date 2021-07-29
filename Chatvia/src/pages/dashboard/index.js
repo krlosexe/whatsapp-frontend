@@ -18,7 +18,18 @@ import {AuthService} from '../../services'
         useEffect(() => {
             getChats()
             getUsers()
+            Notification.requestPermission();
+
+
         }, []);
+
+
+
+       function showNotification() {
+           Notification.requestPermission();
+            new Notification('Hey')
+        }
+
 
 
         let countChats = 0
@@ -52,6 +63,12 @@ import {AuthService} from '../../services'
 
         return (
             <React.Fragment>
+
+        {/* <button onClick={() =>showNotification()}>
+          Click to show notification
+        </button> */}
+
+
                 {/* chat left sidebar */}
                 <ChatLeftSidebar recentChatList={Conversations} />
                 {/* user chat */}

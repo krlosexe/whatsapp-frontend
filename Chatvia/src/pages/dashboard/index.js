@@ -19,15 +19,13 @@ import {AuthService} from '../../services'
             getChats()
             getUsers()
             Notification.requestPermission();
-
-
         }, []);
 
 
 
        function showNotification() {
            Notification.requestPermission();
-            new Notification('Hey')
+           
         }
 
 

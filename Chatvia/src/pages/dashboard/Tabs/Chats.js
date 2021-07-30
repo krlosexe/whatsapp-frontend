@@ -116,6 +116,20 @@ class Chats extends Component {
                             "isImageMessage" : false, 
                             "isFileMessage" : false 
                         }
+
+                        let icon
+                        if(conversationNew.profilePicture != "Null"){
+                            icon =  conversationNew.profilePicture
+                        }else{
+                            icon =  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png"
+                        }
+
+                        var options = {
+                            body: data.messages[0].message.conversation,
+                            icon: conversationNew.profilePicture
+                        }
+                       new Notification(conversationNew.name, options)
+
                     }
                     
 
@@ -164,6 +178,9 @@ class Chats extends Component {
                         this.setState({
                             recentChatList : filtered
                         });
+
+                        
+
     
                     }
 
@@ -191,8 +208,7 @@ class Chats extends Component {
                     this.setState({
                         recentChatList : filtered
                     });
-                   
-                   
+                    new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
                 }
                 
             }

@@ -65,6 +65,9 @@ const WhatsApp = () => ({
 
                                     if(item2.message.extendedTextMessage){
                                         let chatresponse = ProcessMessage(item2.message, key2, userType, "", item2.key)
+                                        chatresponse.chat             = item2
+                                        chatresponse.messageTimestamp = item2.messageTimestamp
+                                        chatresponse.status = item2.status
                                         messages.push(chatresponse)
                                     }
 

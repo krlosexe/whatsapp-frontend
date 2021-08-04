@@ -95,7 +95,10 @@ function UserChat(props) {
        
         //getChats("0")
        
-        WhatsAppService.ChatRead(props.recentChatList[props.active_user].jid)
+        if(localStorage.getItem("rol") != "administrador"){
+            WhatsAppService.ChatRead(props.recentChatList[props.active_user].jid)
+        }
+        
 
         localStorage.setItem("active_user", props.active_user)
 

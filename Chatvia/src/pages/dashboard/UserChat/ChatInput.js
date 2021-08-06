@@ -120,7 +120,8 @@ function ChatInput(props) {
    
 
     function onKeyUpValue(event) {
-        if(event.key == "Enter"){
+
+        if(event.key == "Enter" && !event.shiftKey){
             onaddMessage(event, textMessage)
         }
     }
@@ -205,7 +206,10 @@ function ChatInput(props) {
                                         <div>
 
                                           
-                                                <Input type="text" value={textMessage}  onPaste={(data)=>handlePaste(data)} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." />
+                                                {/* <Input type="text" value={textMessage}  onPaste={(data)=>handlePaste(data)} onKeyUp={(e)=>onKeyUpValue(e)} onChange={handleChange} className="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." /> */}
+
+
+                                                <textarea value={textMessage} onPaste={(data)=>handlePaste(data)} onChange={handleChange} onKeyPress={(e)=>onKeyUpValue(e)} className="form-control form-control-lg bg-light border-light" />
                                          
                                            
                                         </div>

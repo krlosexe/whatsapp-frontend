@@ -52,7 +52,7 @@ class Chats extends Component {
 
 
     NewMessage(data){
-        // console.log(data, "NEW ERROR")
+         console.log(data, "NEW MESSAGE")
         // console.log("QUE PASO ¿?")
 
 
@@ -148,7 +148,7 @@ class Chats extends Component {
                                 image : data.messages[0].message.imageMessage.jpegThumbnail,
                                 "url"            : data.messages[0].message.imageMessage.url,
                                 "mediaKey"       : data.messages[0].message.imageMessage.mediaKey,
-                        } ]
+                            } ]
                         }
                     
                     }
@@ -185,12 +185,23 @@ class Chats extends Component {
                     }
 
                 }else{
+
+
+                    let message = { 
+                        "id":  1, 
+                        "message": data.messages[0].message.conversation, 
+                        "time": "01:05",
+                        "userType": "receiver",
+                        "isImageMessage" : false, 
+                        "isFileMessage" : false 
+                    }
                     
                     const chat = {
                         "id"             : 0,
                         "jid"            : data.jid,
+                        "advisor"        : data.advisor,
                         "isGroup"        : false,
-                        "messages"       : [],
+                        "messages"       : [message],
                         "name"           :  data.jid,
                        // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
                        "profilePicture" :  "Null",
@@ -208,7 +219,15 @@ class Chats extends Component {
                     this.setState({
                         recentChatList : filtered
                     });
-                    new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
+
+                    if(localStorage.getItem("rol") == "administrador"){
+                        new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
+                    }else{
+                        if(localStorage.getItem("user_id") == data.advisor){
+                            new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
+                        }
+                    }
+                    
                 }
                 
             }

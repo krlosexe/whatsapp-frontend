@@ -180,6 +180,43 @@ function UserChat(props) {
                             setchatMessages([...conversation.messages, ...chatMessages])  
                         }
                     }
+                }else{
+
+                    console.log("FALTA CREAR EL CHAT")
+
+                    // let message = { 
+                    //     "id":  1, 
+                    //     "message": data.messages[0].message.conversation, 
+                    //     "time": "01:05",
+                    //     "userType": "receiver",
+                    //     "isImageMessage" : false, 
+                    //     "isFileMessage" : false 
+                    // }
+                    
+                    // const chat = {
+                    //     "id"             : 0,
+                    //     "jid"            : data.jid,
+                    //     "advisor"        : data.advisor,
+                    //     "isGroup"        : false,
+                    //     "messages"       : [message],
+                    //     "name"           :  data.jid,
+                    //    // "profilePicture" : item.imgUrl != "" ? item.imgUrl : "Null",
+                    //    "profilePicture" :  "Null",
+                    //     "roomType"       : "contact",
+                    //     "status"         : "online",
+                    //     "unRead"         : 1
+                    // } 
+
+                    // let filtered = [...[chat], ...props.recentChatList]
+
+                    // filtered.map((item, key)=>{
+                    //     item.id = key
+                    // })
+
+                    // this.setState({
+                    //     recentChatList : filtered
+                    // });
+
                 }
                 
             }
@@ -190,7 +227,14 @@ function UserChat(props) {
 
 
 
+    function urlify(text){ 
 
+        
+        var urlRegex = /(https?:\/\/[^\s]+)/g; 
+        return text.replace(urlRegex, function(url) { 
+            return '<a target="_blank" href="' + url.replace('<br', '') + '">' + url.replace('<br', '') + '</a>'; 
+        }) 
+    }
 
 
     const getChats = async (cursor) => {
@@ -645,7 +689,7 @@ function UserChat(props) {
                                                                 }
                                                                 {
                                                                     chat.message &&
-                                                                    <div dangerouslySetInnerHTML={{ __html: chat.message.replace(/\n/g, '<br />')}} /> 
+                                                                    <div dangerouslySetInnerHTML={{ __html: urlify(chat.message.replace(/\n/g, '<br />'))}} /> 
                                                                 }
 
 

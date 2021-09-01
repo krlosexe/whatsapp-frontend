@@ -312,3 +312,16 @@
 
 
   
+
+
+  .chat-conversation{
+    max-height: 70% !important;
+  }
+
+  
+
+  @media (max-width: 991.98px){
+    .chat-conversation {
+      height: calc(100vh - 362px);
+    }
+  }

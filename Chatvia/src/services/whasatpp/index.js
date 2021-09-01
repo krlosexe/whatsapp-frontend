@@ -272,7 +272,7 @@ const WhatsApp = () => ({
         bodyFormData.append('filenc', url)
 
         const response = await axios({ method: "post",
-                                        url: `http://31.220.60.218:5000/decrypt`,
+                                        url: `https://pdtclientsolutions.com:5000/decrypt`,
                                         data: bodyFormData,
                                         headers: { "Content-Type": "multipart/form-data" }})
 
@@ -289,7 +289,7 @@ const WhatsApp = () => ({
         bodyFormData.append('extension', extension)
 
         const response = await axios({ method: "post",
-                                        url: "http://31.220.60.218:5000/decrypt/document",
+                                        url: "https://pdtclientsolutions.com:5000/decrypt/document",
                                         data: bodyFormData,
                                         headers: { "Content-Type": "multipart/form-data" }})
 
@@ -304,7 +304,7 @@ const WhatsApp = () => ({
         bodyFormData.append('filenc', url)
 
         const response = await axios({ method: "post",
-                                        url: "http://31.220.60.218:5000/decrypt/audio",
+                                        url: "https://pdtclientsolutions.com:5000/decrypt/audio",
                                         data: bodyFormData,
                                         headers: { "Content-Type": "multipart/form-data" }})
 
@@ -318,7 +318,7 @@ const WhatsApp = () => ({
         bodyFormData.append('filenc', url)
 
         const response = await axios({ method: "post",
-                                        url: "http://31.220.60.218:5000/decrypt/video",
+                                        url: "https://pdtclientsolutions.com:5000/decrypt/video",
                                         data: bodyFormData,
                                         headers: { "Content-Type": "multipart/form-data" }})
 

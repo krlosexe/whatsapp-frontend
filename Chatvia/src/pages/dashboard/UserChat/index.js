@@ -146,10 +146,10 @@ function UserChat(props) {
         
 
         if(data.messages){
-            console.log(data, "STATUS READ 1")
+           // console.log(data, "STATUS READ 1")
             if(data.messages[0].status == "READ"){
-                console.log(data.messages[0].key.id, "STATUS READ 2")
-                console.log(chatMessages, "chatMessages")
+                //console.log(data.messages[0].key.id, "STATUS READ 2")
+                //console.log(chatMessages, "chatMessages")
             }
         }
 
@@ -182,7 +182,7 @@ function UserChat(props) {
                     }
                 }else{
 
-                    console.log("FALTA CREAR EL CHAT")
+                    //console.log("FALTA CREAR EL CHAT")
 
                     // let message = { 
                     //     "id":  1, 

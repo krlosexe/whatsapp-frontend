@@ -64,9 +64,9 @@ class Chats extends Component {
             if(precense.contact){
                 const type     = precense.contact.lastKnownPresence
 
-                console.log(type, "type")
+              //  console.log(type, "type")
                 if(type == "composing"){
-                    console.log(data.jid, "composing")
+                  //  console.log(data.jid, "composing")
                     this.state.recentChatList.map((item, key)=>{
                         if(item.jid == data.jid){
                             item.isTyping = true
@@ -83,7 +83,7 @@ class Chats extends Component {
                 }
             }
 
-            console.log(precense, "precense")
+           // console.log(precense, "precense")
             
             
         }
@@ -101,7 +101,7 @@ class Chats extends Component {
 
                 const conversationNew  = this.state.recentChatList.find( item => item.jid == data.jid )
                 
-                console.log(conversationNew)
+               // console.log(conversationNew)
                 let message = false
                 if(conversationNew){
                     conversationNew.unRead = 1
@@ -210,20 +210,33 @@ class Chats extends Component {
                         "unRead"         : 1
                     } 
 
-                    let filtered = [...[chat], ...this.state.recentChatList]
-
-                    filtered.map((item, key)=>{
-                        item.id = key
-                    })
-
-                    this.setState({
-                        recentChatList : filtered
-                    });
+                    
 
                     if(localStorage.getItem("rol") == "administrador"){
+
+                        let filtered = [...[chat], ...this.state.recentChatList]
+                        filtered.map((item, key)=>{
+                            item.id = key
+                        })
+
+                        this.setState({
+                            recentChatList : filtered
+                        });
+
                         new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
                     }else{
+                        console.log(data.advisor, "data.advisor")
                         if(localStorage.getItem("user_id") == data.advisor){
+
+                            let filtered = [...[chat], ...this.state.recentChatList]
+                            filtered.map((item, key)=>{
+                                item.id = key
+                            })
+
+                            this.setState({
+                                recentChatList : filtered
+                            });
+
                             new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
                         }
                     }

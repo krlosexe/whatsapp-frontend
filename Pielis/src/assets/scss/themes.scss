@@ -1,0 +1,327 @@
+//Import Icon css
+@import "./icons.scss";
+
+//light mode
+@import "./bootstrap.scss";
+@import "./app.scss";
+
+//rtl mode
+// @import "./bootstrap.scss";
+// @import "./app-rtl.scss";
+
+//dark mode
+// @import "./bootstrap-dark.scss";
+// @import "./app-dark.scss";
+
+.nav-item{
+    cursor: pointer;
+}
+
+.dropdown {
+    cursor: pointer;
+}
+
+.slick-slide{
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.slick-arrow{
+    display: none;
+}
+
+.emoji-mart{
+    border: none!important;
+}
+
+.emoji-mart-preview{
+    display: none!important;
+}
+
+.emoji-mart-bar{
+    border: none!important;
+}
+
+.alice-carousel__stage-item {
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 71px!important;
+}
+
+.input-file {
+    label{
+        margin-bottom: 0;
+    }        
+    input[type="file"] {
+        display: none;
+    }
+}
+
+.emoji-mart-light{
+    background-color: $card-bg!important;
+}
+
+.emoji-mart-search{
+    input{
+        background-color: $card-bg!important;
+        border-color: $card-border-color!important;
+    }
+}
+
+.emoji-mart-category-label{
+    span{
+        background-color: $card-bg!important;
+        color: $gray-700;
+    }
+}
+
+.emoji-mart-category{
+    .emoji-mart-emoji {
+        &:hover{
+            background-color: $gray-300!important;
+        }
+
+        &::before {
+            background-color: $gray-300!important;
+            border-radius: 100%!important;
+        }
+    }
+}
+.w-70
+{
+    width : 73%!important;
+}
+
+.ctext-wrap-content {
+    animation: flyIn 0.60s ease-in-out;
+}
+
+.blank-div {
+    width: 36px;
+    height: 36px;
+}
+
+.profile-user-dropdown{
+    .dropdown-item{
+        &.active {
+            color: $white;
+            text-decoration: none;
+            background-color: $primary;
+        }
+    }
+}
+
+
+.record{
+  position: absolute;
+    top: -100px;
+}
+
+.color-blue{
+  color:rgba(52, 172, 224, 1)
+}
+
+.blob {
+    background: black;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    margin: 10px;
+    height: 20px;
+    width: 20px;
+    transform: scale(1);
+    animation: pulse-black 2s infinite;
+  }
+  
+  @keyframes pulse-black {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+  }
+  
+  .blob.white {
+    background: white;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
+    animation: pulse-white 2s infinite;
+  }
+  
+  @keyframes pulse-white {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+  
+  .blob.red {
+    background: rgba(255, 82, 82, 1);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+  }
+  
+  @keyframes pulse-red {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+  }
+  
+  .blob.orange {
+    background: rgba(255, 121, 63, 1);
+    box-shadow: 0 0 0 0 rgba(255, 121, 63, 1);
+    animation: pulse-orange 2s infinite;
+  }
+  
+  @keyframes pulse-orange {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 121, 63, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 121, 63, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 121, 63, 0);
+    }
+  }
+  
+  .blob.yellow {
+    background: rgba(255, 177, 66, 1);
+    box-shadow: 0 0 0 0 rgba(255, 177, 66, 1);
+    animation: pulse-yellow 2s infinite;
+  }
+  
+  @keyframes pulse-yellow {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 177, 66, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 177, 66, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 177, 66, 0);
+    }
+  }
+  
+  .blob.blue {
+    background: rgba(52, 172, 224, 1);
+    box-shadow: 0 0 0 0 rgba(52, 172, 224, 1);
+    animation: pulse-blue 2s infinite;
+  }
+  
+  @keyframes pulse-blue {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(52, 172, 224, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(52, 172, 224, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(52, 172, 224, 0);
+    }
+  }
+  
+  .blob.green {
+    background: rgba(51, 217, 178, 1);
+    box-shadow: 0 0 0 0 rgba(51, 217, 178, 1);
+    animation: pulse-green 2s infinite;
+  }
+  
+  @keyframes pulse-green {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+    }
+  }
+  
+  .blob.purple {
+    background: rgba(142, 68, 173, 1);
+    box-shadow: 0 0 0 0 rgba(142, 68, 173, 1);
+    animation: pulse-purple 2s infinite;
+  }
+  
+  @keyframes pulse-purple {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(142, 68, 173, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(142, 68, 173, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(142, 68, 173, 0);
+    }
+  }
+
+
+  
+
+
+  .chat-conversation{
+    max-height: 70% !important;
+  }
+
+  
+
+  @media (max-width: 991.98px){
+    .chat-conversation {
+      height: calc(100vh - 362px);
+    }
+  }

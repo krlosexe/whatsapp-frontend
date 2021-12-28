@@ -3,12 +3,12 @@ import React, {useEffect, useState} from 'react';
 import {base_url, ApiWhatsapp} from '../../Env'
 const WhatsApp = () => ({
     
-    GetChats : async () => {
+    GetChats : async (id_user, rol) => {
         try {
 
             const req = `${ApiWhatsapp}/whatsapp/get/chats`
                 try {
-                    const response = await axios.post(req, {id_user : localStorage.getItem("user_id"), rol : localStorage.getItem("rol")})
+                    const response = await axios.post(req, {id_user , rol})
 
                     let Chats = []
 
@@ -94,9 +94,11 @@ const WhatsApp = () => ({
                                 "jid"            : item.jid,
                                 "isGroup"        : false,
                                 "messages"       : messages,
-                                "name"           : item.name,
+                                "name"           : `${item.name} ${item.jid}`,
                                 "advisor"        : item.advisor,
                                 "profilePicture" : item.profilePicture,
+                                "answered"       : item.answered,
+                                "count"          : item.count,
                                 "roomType"       : "contact",
                                 "status"         : "online",
                                 "unRead"         : 0
@@ -426,7 +428,6 @@ const WhatsApp = () => ({
 
 
     RegisterChat : (jid, message) => {
-        console.log("GUARDANDO Y BUSCANDO CHAT")
         const data = {
             jid,
             message
@@ -437,7 +438,6 @@ const WhatsApp = () => ({
 
 
     AssignAdvisor: (jid, user_id) => {
-        console.log("Asignando Asesor")
         const data = {
             jid,
             user_id

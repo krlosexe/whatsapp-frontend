@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Input, InputGroupAddon, InputGroup, Media, Button } from "reactstrap";
+import { Input, InputGroupAddon, InputGroup, Media, Button, Col, FormGroup, Label } from "reactstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 //simplebar
+import Loader from "react-loader-spinner";
+
 import SimpleBar from "simplebar-react";
 
 //actions
@@ -27,7 +29,8 @@ class Chats extends Component {
         this.state = {
             searchChat : "",
             recentChatList : this.props.recentChatList,
-            ActiveUser     : 0
+            ActiveUser     : 0,
+            Advisor : ""
         }
         this.handleChange = this.handleChange.bind(this);
         this.openUserChat = this.openUserChat.bind(this);
@@ -105,6 +108,8 @@ class Chats extends Component {
                 let message = false
                 if(conversationNew){
                     conversationNew.unRead = 1
+                    conversationNew.answered = false
+                    conversationNew.count    = data.count
                     conversationNew.id = 0
 
                     if(data.messages[0].message.conversation){
@@ -186,6 +191,9 @@ class Chats extends Component {
 
                 }else{
 
+                    new Notification("Mensaje nuevo: "+data.jid.split("@")[0])
+                    window.location.reload()
+                    return false
 
                     let message = { 
                         "id":  1, 
@@ -363,6 +371,13 @@ class Chats extends Component {
     }
 
 
+
+    onDropdownSelected(e) {
+        this.props.filter_chats(e.target.value, "asesor")
+        this.setState({Advisor : e.target.value})
+     }
+
+
     
     render() {
         return (
@@ -370,6 +385,26 @@ class Chats extends Component {
                         <div>
                             <div className="px-4 pt-4">
                                 <h4 className="mb-4">Chats</h4>
+
+
+
+                                {(localStorage.getItem("rol") == "administrador") &&
+                                    <Col sm={12} xs={12}>
+                                        <FormGroup>
+                                            <Label for="selectAdviser">Filtrar Asesor</Label>
+                                            <Input type="select" name="select" id="selectAdviser" onChange={(e) => this.onDropdownSelected(e)} value={this.state.Advisor}>
+                                                <option>Seleccione</option>
+                                                {(this.props.users_advisers.length > 0) &&
+                                                    this.props.users_advisers.map(fbb =>
+                                                        <option key={fbb.key} value={fbb._id}>{fbb.name}</option>
+                                                    )
+                                                }
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+                                }
+
+
                                 <div className="search-box chat-search-box">
                                     <InputGroup size="lg" className="mb-3 bg-light rounded-lg">
                                         <InputGroupAddon addonType="prepend">
@@ -392,7 +427,7 @@ class Chats extends Component {
                                 <SimpleBar style={{ maxHeight: "100%" }} className="chat-message-list">
 
                                     <ul className="list-unstyled chat-list chat-user-list" id="chat-list">
-                                        {
+                                        {this.state.recentChatList.length > 0 &&
                                             this.state.recentChatList.map((chat, key) =>
 
 
@@ -450,9 +485,9 @@ class Chats extends Component {
                                                                 </p>
                                                             </Media>
                                                             <div className="font-size-11">{chat.messages && chat.messages.length > 0 ?  this.DateTime(chat.messages[(chat.messages).length - 1].messageTimestamp)  : null}</div>
-                                                            {chat.unRead === 0 ? null :
+                                                            {chat.answered == false &&
                                                                 <div className="unread-message" id={"unRead" + chat.id}>
-                                                                    <span className="badge badge-soft-danger badge-pill">{chat.messages && chat.messages.length > 0 ? chat.unRead >= 20 ? chat.unRead + "+" : chat.unRead  : ""}</span>
+                                                                    <span className="badge badge-soft-danger badge-pill">{chat.count}</span>
                                                                 </div>
                                                             } 
                                                         </Media>
@@ -464,6 +499,20 @@ class Chats extends Component {
                                                 <li></li>
                                             )
                                         }
+
+
+                                        {this.state.recentChatList.length == 0 &&
+                                             <center>
+                                                 <Loader
+                                                    type="TailSpin"
+                                                    color="#7269ef"
+                                                    height={100}
+                                                    width={100}
+                                                    timeout={3000}  />
+                                             </center>
+                                        }
+
+
                                     </ul>
                                     </SimpleBar>
                                     

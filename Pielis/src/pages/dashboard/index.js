@@ -16,7 +16,7 @@ import {AuthService} from '../../services'
         const [UsersAdvisers, setUsersAdvisers] = useState([]);
 
         useEffect(() => {
-            getChats()
+            getChats(localStorage.getItem("user_id"), localStorage.getItem("rol"))
             getUsers()
             Notification.requestPermission();
         }, []);
@@ -51,8 +51,10 @@ import {AuthService} from '../../services'
         };
 
 
-        async function getChats(){
-            await WhatsAppService.GetChats().then((data) =>{
+        async function getChats(id_user, rol){
+
+            setConversations([])
+            await WhatsAppService.GetChats(id_user, rol).then((data) =>{
                 if(data){
                     setConversations(data)
                 }
@@ -68,7 +70,7 @@ import {AuthService} from '../../services'
 
 
                 {/* chat left sidebar */}
-                <ChatLeftSidebar recentChatList={Conversations} />
+                <ChatLeftSidebar recentChatList={Conversations} users_advisers = {UsersAdvisers} filter_chats = {getChats}/>
                 {/* user chat */}
                 {Conversations.length > 0 &&
                     <UserChat recentChatList={Conversations} users_advisers = {UsersAdvisers}/>
